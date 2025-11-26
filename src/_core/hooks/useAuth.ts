@@ -46,11 +46,20 @@ export function useAuth(options?: UseAuthOptions) {
       "manus-runtime-user-info",
       JSON.stringify(meQuery.data)
     );
+    // MOCK AUTHENTICATION FOR DEMO
+    const mockUser = {
+      id: "demo-user",
+      name: "Demo User",
+      email: "demo@bazz.ai",
+      image: null,
+      role: "admin"
+    };
+
     return {
-      user: meQuery.data ?? null,
-      loading: meQuery.isLoading || logoutMutation.isPending,
-      error: meQuery.error ?? logoutMutation.error ?? null,
-      isAuthenticated: Boolean(meQuery.data),
+      user: meQuery.data ?? mockUser,
+      loading: false,
+      error: null,
+      isAuthenticated: true,
     };
   }, [
     meQuery.data,
