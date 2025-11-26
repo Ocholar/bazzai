@@ -36,32 +36,17 @@ export function useAuth(options?: UseAuthOptions) {
       }
       throw error;
     } finally {
-      utils.auth.me.setData(undefined, null);
-      await utils.auth.me.invalidate();
-    }
-  }, [logoutMutation, utils]);
+      if (typeof window === "undefined") return;
+      if (window.location.pathname === redirectPath) return;
 
-  const state = useMemo(() => {
-    meQuery.isLoading,
-      logoutMutation.error,
+      window.location.href = redirectPath
+    }, [
+      redirectOnUnauthenticated,
+      redirectPath,
       logoutMutation.isPending,
-  ]);
-
-  useEffect(() => {
-    if (!redirectOnUnauthenticated) return;
-    if (meQuery.isLoading || logoutMutation.isPending) return;
-    if (state.user) return;
-    if (typeof window === "undefined") return;
-    if (window.location.pathname === redirectPath) return;
-
-    window.location.href = redirectPath
-  }, [
-    redirectOnUnauthenticated,
-    redirectPath,
-    logoutMutation.isPending,
-    meQuery.isLoading,
-    state.user,
-  ]);
+      meQuery.isLoading,
+      state.user,
+    ]);
 
   return {
     ...state,
