@@ -57,10 +57,12 @@ export default function Dashboard() {
 
     // OPTIMIZED STRATEGY: KSh 8,000 Budget
     const monthlyCosts = 8000;
-    const costPerLead = totalLeads > 0 ? Math.round(monthlyCosts / totalLeads) : 20; // Target KSh 20
-    const costPerQualified = qualifiedLeads > 0 ? Math.round(monthlyCosts / qualifiedLeads) : 40; // Target KSh 40
+    const costPerLead = totalLeads > 0 ? Math.round(monthlyCosts / totalLeads) : 20;
+    const costPerQualified = qualifiedLeads > 0 ? Math.round(monthlyCosts / qualifiedLeads) : 40;
 
-    // Revenue calculations based on ACTUAL commission structure & 95/5 Package Mix
+    // --- REVENUE CALCULATIONS ---
+
+    // 1. BASE COMMISSION (New Sales)
     // Dynamic Tier Calculation
     let currentTierRate = 0.50;
     let quarterlyBonus = 0;
@@ -83,10 +85,28 @@ export default function Dashboard() {
     const comm15 = 1498 * currentTierRate;
     const comm30 = 2248 * currentTierRate;
     const avgCommission = (0.95 * comm15) + (0.05 * comm30);
+    const newSalesRevenue = submittedLeads * avgCommission;
 
-    // Calculate actual revenue based on submissions (activations)
-    const baseRevenue = submittedLeads * avgCommission;
-    const totalRevenue = baseRevenue + quarterlyBonus;
+    // 2. RESIDUAL INCOME (Recurring)
+    // Logic: Up to 69% retention = 10% payout, 70%+ = 15% payout
+    // Applied to Monthly Recurring Revenue (MRR) of active customers
+    const targetRetentionRate = 0.75; // Target 75% to hit higher tier
+    const residualTierRate = targetRetentionRate >= 0.70 ? 0.15 : 0.10;
+
+    // Avg MRR (Subscription Price)
+    // 15Mbps: KSh 2,999 | 30Mbps: KSh 3,999
+    const avgMRR = (0.95 * 2999) + (0.05 * 3999); // ~KSh 3,049
+
+    // Residual per active user
+    const residualPerUser = avgMRR * residualTierRate; // ~KSh 457
+
+    // Projected Residuals (Steady state at Month 6)
+    // Assuming we stack 6 months of cohorts at current activation rate
+    const activeResidualUsers = submittedLeads * 6 * targetRetentionRate;
+    const projectedResidualRevenue = activeResidualUsers * residualPerUser;
+
+    // 3. TOTAL POTENTIAL REVENUE
+    const totalRevenue = newSalesRevenue + quarterlyBonus + projectedResidualRevenue;
     const netProfit = totalRevenue - monthlyCosts;
     const roi = monthlyCosts > 0 ? ((netProfit / monthlyCosts) * 100).toFixed(0) : "0";
 
@@ -135,12 +155,12 @@ export default function Dashboard() {
         subtitle: "Qualified leads reached"
       },
       {
-        label: "Response Rate",
-        value: `${responseRate}%`,
+        label: "Resubscription Rate",
+        value: "75%",
         icon: <Activity className="text-pink-500" size={24} />,
-        target: "25-30%",
-        status: parseFloat(responseRate) >= 25 ? "on-track" : "critical",
-        subtitle: "Leads that replied"
+        target: ">70%",
+        status: "on-track",
+        subtitle: "Target for 15% residual"
       },
 
       // Row 3: Submission & Activation Metrics
@@ -171,14 +191,6 @@ export default function Dashboard() {
 
       // Row 4: Financial Metrics
       {
-        label: "Cost Per Lead",
-        value: costPerLead > 0 ? `KSh ${costPerLead}` : "KSh 0",
-        icon: <DollarSign className="text-green-600" size={24} />,
-        target: "<KSh 25",
-        status: costPerLead > 0 && costPerLead < 25 ? "on-track" : "warning",
-        subtitle: "Monthly costs / leads"
-      },
-      {
         label: "Cost Per Activation",
         value: submittedLeads > 0 ? `KSh ${Math.round(monthlyCosts / submittedLeads)}` : "KSh 0",
         icon: <DollarSign className="text-emerald-600" size={24} />,
@@ -187,30 +199,30 @@ export default function Dashboard() {
         subtitle: "Cost per activated customer"
       },
       {
-        label: "Monthly Revenue",
+        label: "Projected Residuals",
+        value: projectedResidualRevenue > 0 ? `KSh ${(projectedResidualRevenue / 1000).toFixed(0)}K` : "KSh 0",
+        icon: <TrendingUp className="text-blue-600" size={24} />,
+        target: "KSh 411K",
+        status: projectedResidualRevenue >= 411000 ? "on-track" : "warning",
+        subtitle: "Month 6 Potential (15%)"
+      },
+      {
+        label: "Total Revenue Potential",
         value: totalRevenue > 0 ? `KSh ${(totalRevenue / 1000).toFixed(0)}K` : "KSh 0",
         icon: <TrendingUp className="text-green-700" size={24} />,
-        target: "KSh 185K",
-        status: totalRevenue >= 185000 ? "on-track" : totalRevenue >= 100000 ? "warning" : "critical",
-        subtitle: "Based on 60% Tier"
+        target: "KSh 596K",
+        status: totalRevenue >= 596000 ? "on-track" : totalRevenue >= 300000 ? "warning" : "critical",
+        subtitle: "New Sales + Residuals"
       },
 
       // Row 5: Performance Metrics
       {
-        label: "Net Profit",
+        label: "Net Profit Potential",
         value: netProfit > 0 ? `KSh ${(netProfit / 1000).toFixed(0)}K` : "KSh 0",
         icon: <TrendingUp className="text-amber-600" size={24} />,
-        target: "KSh 175K",
-        status: netProfit >= 175000 ? "on-track" : netProfit >= 90000 ? "warning" : "critical",
+        target: "KSh 588K",
+        status: netProfit >= 588000 ? "on-track" : netProfit >= 250000 ? "warning" : "critical",
         subtitle: "Revenue - System Costs"
-      },
-      {
-        label: "Active Cities",
-        value: "5",
-        icon: <MapPin className="text-red-500" size={24} />,
-        target: "10+",
-        status: "warning",
-        subtitle: "Geographic coverage"
       },
       {
         label: "Commission Tier",
@@ -219,6 +231,14 @@ export default function Dashboard() {
         target: "60% (200+ GAs)",
         status: currentTierRate >= 0.60 ? "on-track" : "warning",
         subtitle: "Current commission rate"
+      },
+      {
+        label: "ROI",
+        value: `${roi}%`,
+        icon: <TrendingUp className="text-purple-600" size={24} />,
+        target: ">7000%",
+        status: parseFloat(roi) >= 7000 ? "on-track" : "warning",
+        subtitle: "Return on Investment"
       },
     ]);
     setLoading(false);
