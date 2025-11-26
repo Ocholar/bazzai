@@ -55,22 +55,38 @@ export default function Dashboard() {
     // Response rate (mock for now - would come from communication_log)
     const responseRate = "0";
 
-    // Updated cost calculations for 400 activations/month target
-    const monthlyCosts = 55000; // KSh - scaled for 1,000 leads/month
-    const costPerLead = totalLeads > 0 ? Math.round(monthlyCosts / totalLeads) : 55;
-    const costPerQualified = qualifiedLeads > 0 ? Math.round(monthlyCosts / qualifiedLeads) : 110;
+    // OPTIMIZED STRATEGY: KSh 8,000 Budget
+    const monthlyCosts = 8000;
+    const costPerLead = totalLeads > 0 ? Math.round(monthlyCosts / totalLeads) : 20; // Target KSh 20
+    const costPerQualified = qualifiedLeads > 0 ? Math.round(monthlyCosts / qualifiedLeads) : 40; // Target KSh 40
 
-    // Revenue calculations based on actual commission structure
-    // 400 activations at 70% tier + quarterly bonus
-    const avgCommissionPer15Mbps = 1498 * 0.70; // KSh 1,048.60
-    const avgCommissionPer30Mbps = 2248 * 0.70; // KSh 1,573.60
-    const avgCommission = (0.90 * avgCommissionPer15Mbps) + (0.10 * avgCommissionPer30Mbps); // KSh 1,101.10
-    const quarterlyBonus = 132000; // For 400+ tier
-    const monthlyBonus = quarterlyBonus / 3; // KSh 44,000
+    // Revenue calculations based on ACTUAL commission structure & 95/5 Package Mix
+    // Dynamic Tier Calculation
+    let currentTierRate = 0.50;
+    let quarterlyBonus = 0;
+
+    if (submittedLeads >= 400) {
+      currentTierRate = 0.70;
+      quarterlyBonus = 132000 / 3;
+    } else if (submittedLeads >= 300) {
+      currentTierRate = 0.65;
+      quarterlyBonus = 66000 / 3;
+    } else if (submittedLeads >= 200) {
+      currentTierRate = 0.60;
+    } else if (submittedLeads >= 100) {
+      currentTierRate = 0.55;
+    } else {
+      currentTierRate = 0.50;
+    }
+
+    // Weighted Average Commission (95% 15Mbps, 5% 30Mbps)
+    const comm15 = 1498 * currentTierRate;
+    const comm30 = 2248 * currentTierRate;
+    const avgCommission = (0.95 * comm15) + (0.05 * comm30);
 
     // Calculate actual revenue based on submissions (activations)
     const baseRevenue = submittedLeads * avgCommission;
-    const totalRevenue = baseRevenue + (submittedLeads >= 400 ? monthlyBonus : 0);
+    const totalRevenue = baseRevenue + quarterlyBonus;
     const netProfit = totalRevenue - monthlyCosts;
     const roi = monthlyCosts > 0 ? ((netProfit / monthlyCosts) * 100).toFixed(0) : "0";
 
@@ -80,24 +96,24 @@ export default function Dashboard() {
         label: "Total Leads",
         value: totalLeads,
         icon: <Users className="text-blue-500" size={24} />,
-        target: "1,000/month",
-        status: totalLeads >= 1000 ? "on-track" : totalLeads >= 500 ? "warning" : "critical",
-        subtitle: "All discovered businesses"
+        target: "400/month",
+        status: totalLeads >= 400 ? "on-track" : totalLeads >= 200 ? "warning" : "critical",
+        subtitle: "Targeting high-quality leads"
       },
       {
         label: "New Leads (This Week)",
         value: newLeads,
         icon: <TrendingUp className="text-green-500" size={24} />,
-        target: "230+/week",
-        status: newLeads >= 230 ? "on-track" : newLeads >= 115 ? "warning" : "critical",
+        target: "100+/week",
+        status: newLeads >= 100 ? "on-track" : newLeads >= 50 ? "warning" : "critical",
         subtitle: "Fresh leads from scraping"
       },
       {
         label: "Qualified Leads",
         value: qualifiedLeads,
         icon: <CheckCircle className="text-purple-500" size={24} />,
-        target: "500/month",
-        status: qualifiedLeads >= 500 ? "on-track" : qualifiedLeads >= 250 ? "warning" : "critical",
+        target: "200/month",
+        status: qualifiedLeads >= 200 ? "on-track" : qualifiedLeads >= 100 ? "warning" : "critical",
         subtitle: "AI-approved prospects"
       },
 
@@ -132,9 +148,9 @@ export default function Dashboard() {
         label: "Total Activations",
         value: submittedLeads,
         icon: <FileCheck className="text-orange-500" size={24} />,
-        target: "400/month",
-        status: submittedLeads >= 400 ? "on-track" : submittedLeads >= 200 ? "warning" : "critical",
-        subtitle: "Activated with Airtel"
+        target: "200/month",
+        status: submittedLeads >= 200 ? "on-track" : submittedLeads >= 100 ? "warning" : "critical",
+        subtitle: "Targeting 60% Tier"
       },
       {
         label: "Activation Rate",
@@ -158,25 +174,25 @@ export default function Dashboard() {
         label: "Cost Per Lead",
         value: costPerLead > 0 ? `KSh ${costPerLead}` : "KSh 0",
         icon: <DollarSign className="text-green-600" size={24} />,
-        target: "<KSh 60",
-        status: costPerLead > 0 && costPerLead < 60 ? "on-track" : "warning",
+        target: "<KSh 25",
+        status: costPerLead > 0 && costPerLead < 25 ? "on-track" : "warning",
         subtitle: "Monthly costs / leads"
       },
       {
         label: "Cost Per Activation",
         value: submittedLeads > 0 ? `KSh ${Math.round(monthlyCosts / submittedLeads)}` : "KSh 0",
         icon: <DollarSign className="text-emerald-600" size={24} />,
-        target: "<KSh 140",
-        status: submittedLeads > 0 && (monthlyCosts / submittedLeads) < 140 ? "on-track" : "warning",
+        target: "<KSh 50",
+        status: submittedLeads > 0 && (monthlyCosts / submittedLeads) < 50 ? "on-track" : "warning",
         subtitle: "Cost per activated customer"
       },
       {
         label: "Monthly Revenue",
         value: totalRevenue > 0 ? `KSh ${(totalRevenue / 1000).toFixed(0)}K` : "KSh 0",
         icon: <TrendingUp className="text-green-700" size={24} />,
-        target: "KSh 484K",
-        status: totalRevenue >= 484000 ? "on-track" : totalRevenue >= 240000 ? "warning" : "critical",
-        subtitle: "Base + Quarterly Bonus"
+        target: "KSh 185K",
+        status: totalRevenue >= 185000 ? "on-track" : totalRevenue >= 100000 ? "warning" : "critical",
+        subtitle: "Based on 60% Tier"
       },
 
       // Row 5: Performance Metrics
@@ -184,8 +200,8 @@ export default function Dashboard() {
         label: "Net Profit",
         value: netProfit > 0 ? `KSh ${(netProfit / 1000).toFixed(0)}K` : "KSh 0",
         icon: <TrendingUp className="text-amber-600" size={24} />,
-        target: "KSh 429K",
-        status: netProfit >= 429000 ? "on-track" : netProfit >= 200000 ? "warning" : "critical",
+        target: "KSh 175K",
+        status: netProfit >= 175000 ? "on-track" : netProfit >= 90000 ? "warning" : "critical",
         subtitle: "Revenue - System Costs"
       },
       {
@@ -198,10 +214,10 @@ export default function Dashboard() {
       },
       {
         label: "Commission Tier",
-        value: submittedLeads >= 400 ? "70%" : submittedLeads >= 300 ? "65%" : submittedLeads >= 200 ? "60%" : submittedLeads >= 100 ? "55%" : "50%",
+        value: `${(currentTierRate * 100).toFixed(0)}%`,
         icon: <Target className="text-blue-600" size={24} />,
-        target: "70% (400+ GAs)",
-        status: submittedLeads >= 400 ? "on-track" : submittedLeads >= 300 ? "warning" : "critical",
+        target: "60% (200+ GAs)",
+        status: currentTierRate >= 0.60 ? "on-track" : "warning",
         subtitle: "Current commission rate"
       },
     ]);
