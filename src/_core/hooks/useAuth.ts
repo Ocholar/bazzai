@@ -42,31 +42,9 @@ export function useAuth(options?: UseAuthOptions) {
   }, [logoutMutation, utils]);
 
   const state = useMemo(() => {
-    localStorage.setItem(
-      "manus-runtime-user-info",
-      JSON.stringify(meQuery.data)
-    );
-    // MOCK AUTHENTICATION FOR DEMO
-    const mockUser = {
-      id: "demo-user",
-      name: "Demo User",
-      email: "demo@bazz.ai",
-      image: null,
-      role: "admin"
-    };
-
-    return {
-      user: meQuery.data ?? mockUser,
-      loading: false,
-      error: null,
-      isAuthenticated: true,
-    };
-  }, [
-    meQuery.data,
-    meQuery.error,
     meQuery.isLoading,
-    logoutMutation.error,
-    logoutMutation.isPending,
+      logoutMutation.error,
+      logoutMutation.isPending,
   ]);
 
   useEffect(() => {
