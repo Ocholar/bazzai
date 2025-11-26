@@ -72,7 +72,6 @@ function RouterComponent() {
 // - If you want to make theme switchable, pass `switchable` ThemeProvider and use `useTheme` hook
 
 function App() {
-  console.log("[DEBUG] App component rendering");
   return (
     <ErrorBoundary>
       <ThemeProvider defaultTheme="light">
