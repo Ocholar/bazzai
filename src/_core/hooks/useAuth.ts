@@ -36,17 +36,55 @@ export function useAuth(options?: UseAuthOptions) {
       }
       throw error;
     } finally {
-      if (typeof window === "undefined") return;
-      if (window.location.pathname === redirectPath) return;
+      utils.auth.me.setData(undefined, null);
+      await utils.auth.me.invalidate();
+    }
+  }, [logoutMutation, utils]);
 
-      window.location.href = redirectPath
-    }, [
-      redirectOnUnauthenticated,
-      redirectPath,
-      logoutMutation.isPending,
-      meQuery.isLoading,
-      state.user,
-    ]);
+  const state = useMemo(() => {
+    localStorage.setItem(
+      "manus-runtime-user-info",
+      JSON.stringify(meQuery.data)
+    );
+
+    // MOCK AUTHENTICATION FOR BAZZTECH NETWORKS
+    const mockUser = {
+      id: "bazztech-admin",
+      name: "Bazztech Networks",
+      email: "admin@bazztech.co.ke",
+      image: null,
+      role: "admin"
+    };
+
+    return {
+      user: meQuery.data ?? mockUser,
+      loading: false,
+      error: null,
+      isAuthenticated: true,
+    };
+  }, [
+    meQuery.data,
+    meQuery.error,
+    meQuery.isLoading,
+    logoutMutation.error,
+    logoutMutation.isPending,
+  ]);
+
+  useEffect(() => {
+    if (!redirectOnUnauthenticated) return;
+    if (meQuery.isLoading || logoutMutation.isPending) return;
+    if (state.user) return;
+    if (typeof window === "undefined") return;
+    if (window.location.pathname === redirectPath) return;
+
+    window.location.href = redirectPath
+  }, [
+    redirectOnUnauthenticated,
+    redirectPath,
+    logoutMutation.isPending,
+    meQuery.isLoading,
+    state.user,
+  ]);
 
   return {
     ...state,
