@@ -8,7 +8,7 @@ const plugins = [react(), tailwindcss(), jsxLocPlugin()];
 
 export default defineConfig({
   plugins,
-  base: "/",
+  base: "/bazzai/",
   resolve: {
     alias: {
       "@": path.resolve(import.meta.dirname, "src"),
