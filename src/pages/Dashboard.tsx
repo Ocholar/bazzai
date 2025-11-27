@@ -365,6 +365,33 @@ export default function Dashboard() {
               </div>
             </div>
           </Card>
+
+          <Card className="p-6 bg-gradient-to-r from-amber-50 to-orange-50 border-2 border-amber-200">
+            <h2 className="text-lg font-semibold text-slate-900 mb-4 flex items-center gap-2">
+              <FileCheck className="text-amber-600" size={20} />
+              Historical Performance (Manual)
+            </h2>
+            <div className="bg-white/70 p-4 rounded-lg">
+              <p className="text-sm text-slate-600 mb-2">📅 November 2025 (Bazztech Direct)</p>
+              <div className="flex items-center gap-8">
+                <div>
+                  <p className="text-2xl font-bold text-slate-900">2</p>
+                  <p className="text-xs text-slate-500">Total Leads</p>
+                </div>
+                <div>
+                  <p className="text-2xl font-bold text-green-600">1</p>
+                  <p className="text-xs text-slate-500">Conversions</p>
+                </div>
+                <div>
+                  <p className="text-2xl font-bold text-blue-600">50%</p>
+                  <p className="text-xs text-slate-500">Conversion Rate</p>
+                </div>
+              </div>
+              <p className="text-xs text-slate-500 mt-3 italic">
+                *Performance baseline without AI agents
+              </p>
+            </div>
+          </Card>
         </>
       )}
     </div>
