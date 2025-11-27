@@ -12,6 +12,7 @@ import Submissions from "./pages/Submissions";
 import Analytics from "./pages/Analytics";
 import Configuration from "./pages/Configuration";
 import { useAuth } from "./_core/hooks/useAuth";
+import { getLoginUrl } from "./const";
 
 function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -40,29 +41,30 @@ function RouterComponent() {
     );
   }
 
-  if (!isAuthenticated) {
-    return (
-      <Switch>
-        <Route path={"/"} component={Home} />
-        <Route path={"/404"} component={NotFound} />
-        <Route component={NotFound} />
-      </Switch>
-    );
-  }
-
   return (
-    <DashboardLayout>
-      <Switch>
-        <Route path="/dashboard" component={Dashboard} />
-        <Route path="/leads" component={Leads} />
-        <Route path="/submissions" component={Submissions} />
-        <Route path="/analytics" component={Analytics} />
-        <Route path="/configuration" component={Configuration} />
-        <Route path={"/"} component={Dashboard} />
-        <Route path={"/404"} component={NotFound} />
-        <Route component={NotFound} />
-      </Switch>
-    </DashboardLayout>
+    <Switch>
+      {/* Public routes - always accessible */}
+      <Route path="/" component={Home} />
+      <Route path="/404" component={NotFound} />
+
+      {/* Protected dashboard routes */}
+      {isAuthenticated ? (
+        <>
+          <Route path="/dashboard" component={() => <DashboardLayout><Dashboard /></DashboardLayout>} />
+          <Route path="/leads" component={() => <DashboardLayout><Leads /></DashboardLayout>} />
+          <Route path="/submissions" component={() => <DashboardLayout><Submissions /></DashboardLayout>} />
+          <Route path="/analytics" component={() => <DashboardLayout><Analytics /></DashboardLayout>} />
+          <Route path="/configuration" component={() => <DashboardLayout><Configuration /></DashboardLayout>} />
+        </>
+      ) : (
+        <Route path="/dashboard*" component={() => {
+          window.location.href = getLoginUrl();
+          return null;
+        }} />
+      )}
+
+      <Route component={NotFound} />
+    </Switch>
   );
 }
 
