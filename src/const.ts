@@ -14,7 +14,8 @@ export const getLoginUrl = () => {
     return "/login-error";
   }
 
-  const redirectUri = `${window.location.origin}/api/oauth/callback`;
+  const backendUrl = "https://bazz-ai-agentic-team-production.up.railway.app";
+  const redirectUri = `${backendUrl}/api/oauth/callback`;
   const state = btoa(redirectUri);
 
   try {
