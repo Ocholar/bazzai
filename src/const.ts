@@ -4,29 +4,24 @@ export const APP_TITLE = import.meta.env.VITE_APP_TITLE || "App";
 
 export const APP_LOGO = "https://placehold.co/128x128/E1E7EF/1F2937?text=App";
 
-// Generate login URL at runtime so redirect URI reflects the current origin.
+// Generate GitHub OAuth login URL
 export const getLoginUrl = () => {
-  const oauthPortalUrl = import.meta.env.VITE_OAUTH_PORTAL_URL;
-  const appId = import.meta.env.VITE_APP_ID;
+  const clientId = "Ov23liFUp6GWScjoRxZL";
+  const redirectUri = "https://bazz-ai-agentic-team-production.up.railway.app/api/oauth/callback";
 
-  if (!oauthPortalUrl || !appId) {
-    console.warn("Missing auth env vars");
+  if (!clientId || !redirectUri) {
+    console.warn("Missing GitHub auth configuration");
     return "/login-error";
   }
 
-  const backendUrl = "https://bazz-ai-agentic-team-production.up.railway.app";
-  const redirectUri = `${backendUrl}/api/oauth/callback`;
-  const state = btoa(redirectUri);
-
   try {
-    const url = new URL(`${oauthPortalUrl}/app-auth`);
-    url.searchParams.set("appId", appId);
-    url.searchParams.set("redirectUri", redirectUri);
-    url.searchParams.set("state", state);
-    url.searchParams.set("type", "signIn");
+    const url = new URL("https://github.com/login/oauth/authorize");
+    url.searchParams.set("client_id", clientId);
+    url.searchParams.set("redirect_uri", redirectUri);
+    url.searchParams.set("scope", "read:user user:email");
     return url.toString();
   } catch (e) {
-    console.error("Failed to construct login URL", e);
+    console.error("Failed to construct GitHub login URL", e);
     return "/login-error";
   }
 };
