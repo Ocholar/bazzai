@@ -59,7 +59,12 @@ export default function Analytics() {
       const date = new Date(today);
       date.setDate(date.getDate() - i);
       const dateStr = date.toISOString().split("T")[0];
-      const dayLeads = leads.filter((l: any) => l.createdAt.split("T")[0] === dateStr);
+      const dayLeads = leads.filter((l: any) => {
+        const createdDate = typeof l.createdAt === 'string'
+          ? l.createdAt.split("T")[0]
+          : new Date(l.createdAt).toISOString().split("T")[0];
+        return createdDate === dateStr;
+      });
       data.push({
         date: date.toLocaleDateString("en-US", { month: "short", day: "numeric" }),
         leads: dayLeads.length,
@@ -86,11 +91,10 @@ export default function Analytics() {
             <button
               key={days}
               onClick={() => setDaysBack(days)}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                daysBack === days
+              className={`px-4 py-2 rounded-lg font-medium transition-colors ${daysBack === days
                   ? "bg-blue-500 text-white"
                   : "bg-slate-100 text-slate-700 hover:bg-slate-200"
-              }`}
+                }`}
             >
               Last {days} days
             </button>
