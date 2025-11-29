@@ -20,6 +20,11 @@ export default function Home() {
     message: ""
   });
 
+  // Set SEO Title
+  useState(() => {
+    document.title = "Bazztech Networks | High-Speed Internet Solutions in Kenya";
+  });
+
   const createLead = trpc.leads.create.useMutation({
     onSuccess: () => {
       toast.success("Thank you! We'll contact you within 24 hours.");
@@ -334,7 +339,7 @@ export default function Home() {
             <p className="text-xl text-slate-600">Fill out the form and we'll contact you within 24 hours</p>
           </div>
 
-          <Card className="p-8">
+          <Card className="p-8 shadow-2xl border-t-4 border-red-600">
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="space-y-2">
@@ -458,7 +463,7 @@ export default function Home() {
                 </li>
                 <li className="flex items-center gap-2">
                   <Mail size={16} />
-                  <span>info@bazztech.net</span>
+                  <span>info@bazztech.co.ke</span>
                 </li>
                 <li className="flex items-center gap-2">
                   <MapPin size={16} />
