@@ -50,18 +50,22 @@ function RouterComponent() {
 
       {/* Protected dashboard routes */}
       {isAuthenticated ? (
-        <>
-          <Route path="/dashboard" component={() => <DashboardLayout><Dashboard /></DashboardLayout>} />
-          <Route path="/leads" component={() => <DashboardLayout><Leads /></DashboardLayout>} />
-          <Route path="/submissions" component={() => <DashboardLayout><Submissions /></DashboardLayout>} />
-          <Route path="/analytics" component={() => <DashboardLayout><Analytics /></DashboardLayout>} />
-          <Route path="/configuration" component={() => <DashboardLayout><Configuration /></DashboardLayout>} />
-        </>
+        <DashboardLayout>
+          <Switch>
+            <Route path="/dashboard" component={Dashboard} />
+            <Route path="/leads" component={Leads} />
+            <Route path="/submissions" component={Submissions} />
+            <Route path="/analytics" component={Analytics} />
+            <Route path="/configuration" component={Configuration} />
+          </Switch>
+        </DashboardLayout>
       ) : (
-        <Route path="/dashboard*" component={() => {
-          window.location.href = getLoginUrl();
-          return null;
-        }} />
+        <Route path="/dashboard*">
+          {() => {
+            window.location.href = getLoginUrl();
+            return null;
+          }}
+        </Route>
       )}
 
       <Route component={NotFound} />
