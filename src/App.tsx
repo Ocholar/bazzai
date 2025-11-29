@@ -17,10 +17,10 @@ import { getLoginUrl } from "./const";
 
 function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex flex-col md:flex-row h-screen bg-slate-100">
+    <div className="flex flex-col md:flex-row h-[100dvh] bg-slate-100 overflow-hidden">
       <DashboardNav />
-      <main className="flex-1 overflow-auto w-full">
-        <div className="p-4 md:p-8 pb-24 md:pb-8">
+      <main className="flex-1 overflow-y-auto overflow-x-hidden min-w-0">
+        <div className="p-4 md:p-8 pb-24 md:pb-8 min-h-full">
           {children}
         </div>
       </main>
