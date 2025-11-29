@@ -74,9 +74,9 @@ export default function Home() {
               <span className="text-xl font-bold text-slate-900">Bazztech Networks</span>
             </div>
             <div className="hidden md:flex items-center gap-8">
-              <a href="#products" className="text-slate-600 hover:text-red-600 transition-colors">Products</a>
-              <a href="#features" className="text-slate-600 hover:text-red-600 transition-colors">Features</a>
-              <a href="#contact-form" className="text-slate-600 hover:text-red-600 transition-colors">Contact</a>
+              <button onClick={() => document.getElementById("products")?.scrollIntoView({ behavior: "smooth" })} className="text-slate-600 hover:text-red-600 transition-colors">Products</button>
+              <button onClick={() => document.getElementById("features")?.scrollIntoView({ behavior: "smooth" })} className="text-slate-600 hover:text-red-600 transition-colors">Features</button>
+              <button onClick={() => document.getElementById("contact-form")?.scrollIntoView({ behavior: "smooth" })} className="text-slate-600 hover:text-red-600 transition-colors">Contact</button>
               <a href={getLoginUrl()} className="text-sm text-slate-600 hover:text-red-600 transition-colors">Agent Login</a>
             </div>
           </div>
