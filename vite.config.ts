@@ -7,7 +7,7 @@ const plugins = [react(), tailwindcss()];
 
 export default defineConfig({
   plugins,
-  base: "/bazzai/",
+  base: "/",
   resolve: {
     alias: {
       "@": path.resolve(import.meta.dirname, "src"),
