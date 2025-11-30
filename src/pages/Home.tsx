@@ -218,17 +218,20 @@ export default function Home() {
                   </div>
                 </motion.div>
 
-                {/* Main Image Placeholder / Abstract Graphic */}
-                <div className="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 relative group">
-                  <img
-                    src="https://images.unsplash.com/photo-1531297424005-06340e7a27f9?q=80&w=2000&auto=format&fit=crop"
-                    alt="Enterprise Grade Connectivity"
-                    className="absolute inset-0 w-full h-full object-cover opacity-90 transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                  <div className="absolute bottom-8 left-8 text-white">
-                    <p className="font-medium text-lg">Enterprise Grade</p>
-                    <p className="text-white/80 text-sm">Connectivity Solutions</p>
+                {/* Main Visual - Brand Gradient */}
+                <div className="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-red-500 via-red-600 to-orange-600 relative group shadow-2xl">
+                  {/* Center Icon */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <div className="text-white/20">
+                      <Wifi size={200} strokeWidth={1.5} />
+                    </div>
+                  </div>
+                  {/* Gradient overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+                  {/* Text overlay */}
+                  <div className="absolute bottom-8 left-8 text-white z-10">
+                    <p className="font-bold text-2xl mb-1">Enterprise Grade</p>
+                    <p className="text-white/90 text-base">Connectivity Solutions</p>
                   </div>
                 </div>
               </div>
