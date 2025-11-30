@@ -441,19 +441,44 @@ export default function Home() {
               { q: "Is there an installation fee?", a: "Installation is free for most of our standard plans. Some specialized business setups might incur a small one-time fee." },
               { q: "Can I upgrade my plan later?", a: "Absolutely! You can upgrade your speed or data package at any time through our portal or by contacting support." },
               { q: "What areas do you cover?", a: "We cover most major towns and cities in Kenya including Nairobi, Mombasa, Kisumu, Nakuru, and Eldoret. Use the 'Check Coverage' button to verify your specific location." }
-            ].map((item, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="border border-slate-200 rounded-xl p-6 hover:border-red-200 transition-colors cursor-pointer group"
-              >
-                <h3 className="font-bold text-slate-900 text-lg mb-2 group-hover:text-red-600 transition-colors">{item.q}</h3>
-                <p className="text-slate-600">{item.a}</p>
-              </motion.div>
-            ))}
+            ].map((item, index) => {
+              const [isOpen, setIsOpen] = useState(false);
+              return (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: index * 0.1 }}
+                  className="border border-slate-200 rounded-xl overflow-hidden hover:border-red-200 transition-colors bg-white"
+                >
+                  <button
+                    onClick={() => setIsOpen(!isOpen)}
+                    className="w-full flex items-center justify-between p-6 text-left"
+                  >
+                    <h3 className="font-bold text-slate-900 text-lg group-hover:text-red-600 transition-colors">{item.q}</h3>
+                    <ChevronDown
+                      className={`text-slate-400 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
+                      size={20}
+                    />
+                  </button>
+                  <AnimatePresence>
+                    {isOpen && (
+                      <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: "auto", opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <div className="px-6 pb-6 text-slate-600 border-t border-slate-50 pt-4">
+                          {item.a}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </section>
