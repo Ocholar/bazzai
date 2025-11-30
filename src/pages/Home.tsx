@@ -218,21 +218,129 @@ export default function Home() {
                   </div>
                 </motion.div>
 
-                {/* Main Visual - Brand Gradient */}
+                {/* Main Visual - Animated Network */}
                 <div className="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-red-500 via-red-600 to-orange-600 relative group shadow-2xl">
-                  {/* Center Icon */}
+                  {/* Animated network nodes */}
+                  <svg className="absolute inset-0 w-full h-full opacity-30" viewBox="0 0 400 400">
+                    {/* Connection lines with animation */}
+                    <motion.line
+                      x1="80" y1="80" x2="200" y2="150"
+                      stroke="white" strokeWidth="2"
+                      initial={{ pathLength: 0, opacity: 0 }}
+                      animate={{ pathLength: 1, opacity: 0.6 }}
+                      transition={{ duration: 1.5, repeat: Infinity, repeatType: "reverse" }}
+                    />
+                    <motion.line
+                      x1="200" y1="150" x2="320" y2="100"
+                      stroke="white" strokeWidth="2"
+                      initial={{ pathLength: 0, opacity: 0 }}
+                      animate={{ pathLength: 1, opacity: 0.6 }}
+                      transition={{ duration: 1.5, delay: 0.3, repeat: Infinity, repeatType: "reverse" }}
+                    />
+                    <motion.line
+                      x1="200" y1="150" x2="180" y2="280"
+                      stroke="white" strokeWidth="2"
+                      initial={{ pathLength: 0, opacity: 0 }}
+                      animate={{ pathLength: 1, opacity: 0.6 }}
+                      transition={{ duration: 1.5, delay: 0.6, repeat: Infinity, repeatType: "reverse" }}
+                    />
+                    <motion.line
+                      x1="320" y1="100" x2="300" y2="300"
+                      stroke="white" strokeWidth="2"
+                      initial={{ pathLength: 0, opacity: 0 }}
+                      animate={{ pathLength: 1, opacity: 0.6 }}
+                      transition={{ duration: 1.5, delay: 0.9, repeat: Infinity, repeatType: "reverse" }}
+                    />
+
+                    {/* Pulsing nodes */}
+                    <motion.circle
+                      cx="80" cy="80" r="8"
+                      fill="white"
+                      animate={{ scale: [1, 1.3, 1], opacity: [0.8, 1, 0.8] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    />
+                    <motion.circle
+                      cx="200" cy="150" r="12"
+                      fill="white"
+                      animate={{ scale: [1, 1.2, 1], opacity: [0.9, 1, 0.9] }}
+                      transition={{ duration: 2.5, repeat: Infinity }}
+                    />
+                    <motion.circle
+                      cx="320" cy="100" r="8"
+                      fill="white"
+                      animate={{ scale: [1, 1.3, 1], opacity: [0.8, 1, 0.8] }}
+                      transition={{ duration: 2.2, delay: 0.5, repeat: Infinity }}
+                    />
+                    <motion.circle
+                      cx="180" cy="280" r="10"
+                      fill="white"
+                      animate={{ scale: [1, 1.25, 1], opacity: [0.85, 1, 0.85] }}
+                      transition={{ duration: 2.3, delay: 0.8, repeat: Infinity }}
+                    />
+                    <motion.circle
+                      cx="300" cy="300" r="8"
+                      fill="white"
+                      animate={{ scale: [1, 1.3, 1], opacity: [0.8, 1, 0.8] }}
+                      transition={{ duration: 2.1, delay: 1, repeat: Infinity }}
+                    />
+                  </svg>
+
+                  {/* Center WiFi icon with pulse effect */}
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <div className="text-white/20">
-                      <Wifi size={200} strokeWidth={1.5} />
-                    </div>
+                    <motion.div
+                      animate={{ scale: [1, 1.05, 1] }}
+                      transition={{ duration: 3, repeat: Infinity }}
+                      className="relative"
+                    >
+                      <div className="text-white/30">
+                        <Wifi size={160} strokeWidth={1.5} />
+                      </div>
+                      {/* Pulse rings */}
+                      <motion.div
+                        className="absolute inset-0 rounded-full border-4 border-white/20"
+                        animate={{ scale: [1, 1.8], opacity: [0.5, 0] }}
+                        transition={{ duration: 2, repeat: Infinity }}
+                      />
+                      <motion.div
+                        className="absolute inset-0 rounded-full border-4 border-white/20"
+                        animate={{ scale: [1, 1.8], opacity: [0.5, 0] }}
+                        transition={{ duration: 2, delay: 1, repeat: Infinity }}
+                      />
+                    </motion.div>
                   </div>
+
                   {/* Gradient overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+
                   {/* Text overlay */}
                   <div className="absolute bottom-8 left-8 text-white z-10">
-                    <p className="font-bold text-2xl mb-1">Enterprise Grade</p>
-                    <p className="text-white/90 text-base">Connectivity Solutions</p>
+                    <motion.p
+                      className="font-bold text-2xl mb-1"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.5 }}
+                    >
+                      Enterprise Grade
+                    </motion.p>
+                    <motion.p
+                      className="text-white/90 text-base"
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.7 }}
+                    >
+                      Connectivity Solutions
+                    </motion.p>
                   </div>
+
+                  {/* Speed indicator badge */}
+                  <motion.div
+                    className="absolute top-8 right-8 bg-white/20 backdrop-blur-sm px-4 py-2 rounded-full border border-white/30"
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 1 }}
+                  >
+                    <p className="text-white font-bold text-sm">5G Ready</p>
+                  </motion.div>
                 </div>
               </div>
             </motion.div>
