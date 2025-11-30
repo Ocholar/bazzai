@@ -220,7 +220,11 @@ export default function Home() {
 
                 {/* Main Image Placeholder / Abstract Graphic */}
                 <div className="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 relative group">
-                  <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1531297424005-06340e7a27f9?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center opacity-90 transition-transform duration-700 group-hover:scale-110"></div>
+                  <img
+                    src="https://images.unsplash.com/photo-1531297424005-06340e7a27f9?q=80&w=2000&auto=format&fit=crop"
+                    alt="Enterprise Grade Connectivity"
+                    className="absolute inset-0 w-full h-full object-cover opacity-90 transition-transform duration-700 group-hover:scale-110"
+                  />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
                   <div className="absolute bottom-8 left-8 text-white">
                     <p className="font-medium text-lg">Enterprise Grade</p>
