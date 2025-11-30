@@ -7,8 +7,10 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { trpc } from "@/lib/trpc";
 import { toast } from "sonner";
 import { useState } from "react";
-import { Zap, Wifi, HeadphonesIcon, CheckCircle, ArrowRight, Phone, Mail, MapPin } from "lucide-react";
+import React from "react";
+import { Zap, Wifi, HeadphonesIcon, CheckCircle, ArrowRight, Phone, Mail, MapPin, MessageCircle, ChevronDown, Star, Facebook, Instagram, Linkedin } from "lucide-react";
 import { getLoginUrl } from "@/const";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Home() {
   const [formData, setFormData] = useState({
@@ -57,426 +59,633 @@ export default function Home() {
     });
   };
 
-  const scrollToForm = () => {
-    document.getElementById("contact-form")?.scrollIntoView({ behavior: "smooth" });
-  };
-
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white font-sans selection:bg-red-100 selection:text-red-900">
       {/* Navigation */}
-      <nav className="fixed top-0 w-full bg-white/95 backdrop-blur-sm border-b border-slate-200 z-50">
+      <nav className="fixed top-0 w-full bg-white/80 backdrop-blur-md border-b border-slate-200/50 z-50 transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-gradient-to-br from-red-600 to-red-700 rounded-lg flex items-center justify-center">
+          <div className="flex justify-between items-center h-20">
+            <div className="flex items-center gap-3 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
+              <div className="w-10 h-10 bg-gradient-to-br from-red-600 to-red-700 rounded-xl shadow-lg shadow-red-600/20 flex items-center justify-center transform hover:scale-105 transition-transform">
                 <Wifi className="text-white" size={24} />
               </div>
-              <span className="text-xl font-bold text-slate-900">Bazztech Networks</span>
+              <span className="text-xl font-bold text-slate-900 tracking-tight">Bazztech<span className="text-red-600">Networks</span></span>
             </div>
             <div className="hidden md:flex items-center gap-8">
-              <button onClick={() => document.getElementById("products")?.scrollIntoView({ behavior: "smooth" })} className="text-slate-600 hover:text-red-600 transition-colors">Products</button>
-              <button onClick={() => document.getElementById("features")?.scrollIntoView({ behavior: "smooth" })} className="text-slate-600 hover:text-red-600 transition-colors">Features</button>
-              <button onClick={() => document.getElementById("contact-form")?.scrollIntoView({ behavior: "smooth" })} className="text-slate-600 hover:text-red-600 transition-colors">Contact</button>
-              <a href={getLoginUrl()} className="text-sm text-slate-600 hover:text-red-600 transition-colors">Agent Login</a>
+              {['Products', 'Features', 'Testimonials'].map((item) => (
+                <button
+                  key={item}
+                  onClick={() => document.getElementById(item.toLowerCase())?.scrollIntoView({ behavior: "smooth" })}
+                  className="text-sm font-medium text-slate-600 hover:text-red-600 transition-colors relative group"
+                >
+                  {item}
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-600 transition-all group-hover:w-full" />
+                </button>
+              ))}
+              <button onClick={() => document.getElementById("contact-form")?.scrollIntoView({ behavior: "smooth" })} className="text-sm font-medium text-slate-600 hover:text-red-600 transition-colors relative group">
+                Contact
+                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-600 transition-all group-hover:w-full" />
+              </button>
+              <a
+                href={getLoginUrl()}
+                className="px-5 py-2.5 bg-slate-900 text-white text-sm font-medium rounded-full hover:bg-slate-800 transition-all hover:shadow-lg hover:-translate-y-0.5 active:translate-y-0"
+              >
+                Agent Login
+              </a>
             </div>
           </div>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-red-50 via-white to-slate-50 -z-10" />
-        <div className="absolute top-20 right-0 w-96 h-96 bg-red-100 rounded-full blur-3xl opacity-20 -z-10" />
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-100 rounded-full blur-3xl opacity-20 -z-10" />
+      <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        {/* Animated Background Elements */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-red-50/50 via-white to-slate-50 -z-10" />
+        <motion.div
+          animate={{ scale: [1, 1.1, 1], opacity: [0.3, 0.5, 0.3] }}
+          transition={{ duration: 8, repeat: Infinity }}
+          className="absolute top-0 right-0 w-[800px] h-[800px] bg-gradient-to-bl from-red-100/40 to-transparent rounded-full blur-3xl -z-10"
+        />
+        <motion.div
+          animate={{ scale: [1, 1.2, 1], opacity: [0.2, 0.4, 0.2] }}
+          transition={{ duration: 10, repeat: Infinity, delay: 1 }}
+          className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-gradient-to-tr from-blue-100/40 to-transparent rounded-full blur-3xl -z-10"
+        />
 
         <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="space-y-8">
-              <div className="inline-block">
-                <span className="px-4 py-2 bg-red-100 text-red-700 rounded-full text-sm font-semibold">
-                  Powered by Airtel Kenya
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="space-y-8"
+            >
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.2 }}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm border border-red-100 rounded-full shadow-sm"
+              >
+                <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
+                <span className="text-sm font-semibold text-slate-700">
+                  Powered by Airtel Kenya 5G
                 </span>
-              </div>
-              <h1 className="text-5xl lg:text-6xl font-bold text-slate-900 leading-tight">
-                High-Speed Internet for Your{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-red-700">
-                  Business & Home
-                </span>
+              </motion.div>
+
+              <h1 className="text-5xl lg:text-7xl font-bold text-slate-900 leading-[1.1] tracking-tight">
+                Internet that <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-orange-600">
+                  moves as fast
+                </span> <br />
+                as you do.
               </h1>
-              <p className="text-xl text-slate-600 leading-relaxed">
-                Experience lightning-fast 5G and Fiber connectivity with unlimited data options.
-                Free installation, reliable support, and competitive pricing.
+
+              <p className="text-xl text-slate-600 leading-relaxed max-w-lg">
+                Experience the future of connectivity with ultra-reliable 5G and Fiber.
+                Zero lag, unlimited possibilities, and support that actually cares.
               </p>
+
               <div className="flex flex-col sm:flex-row gap-4">
                 <Button
-                  onClick={scrollToForm}
-                  size="lg"
-                  className="bg-red-600 hover:bg-red-700 text-white px-8 py-6 text-lg"
+                  onClick={() => document.getElementById("contact-form")?.scrollIntoView({ behavior: "smooth" })}
+                  className="h-14 px-8 bg-red-600 hover:bg-red-700 text-white text-lg rounded-full shadow-lg shadow-red-600/20 hover:shadow-xl hover:shadow-red-600/30 transition-all hover:-translate-y-1 group"
                 >
                   Check Coverage
-                  <ArrowRight className="ml-2" size={20} />
+                  <ArrowRight className="ml-2 group-hover:translate-x-1 transition-transform" size={20} />
                 </Button>
                 <Button
-                  onClick={() => document.getElementById("products")?.scrollIntoView({ behavior: "smooth" })}
-                  size="lg"
                   variant="outline"
-                  className="border-slate-300 px-8 py-6 text-lg"
+                  onClick={() => document.getElementById("products")?.scrollIntoView({ behavior: "smooth" })}
+                  className="h-14 px-8 border-2 border-slate-200 text-slate-700 hover:border-slate-300 hover:bg-slate-50 text-lg rounded-full transition-all"
                 >
                   View Plans
                 </Button>
               </div>
-            </div>
-            <div className="relative">
-              <div className="relative z-10 bg-white rounded-2xl shadow-2xl p-8 border border-slate-200">
-                <div className="space-y-6">
-                  <div className="flex items-center gap-4 p-4 bg-green-50 rounded-lg">
-                    <CheckCircle className="text-green-600" size={24} />
-                    <div>
-                      <p className="font-semibold text-slate-900">Free Installation</p>
-                      <p className="text-sm text-slate-600">No hidden costs</p>
-                    </div>
+
+              <div className="flex items-center gap-8 pt-8 border-t border-slate-100">
+                <div>
+                  <p className="text-3xl font-bold text-slate-900">10k+</p>
+                  <p className="text-sm text-slate-500">Happy Customers</p>
+                </div>
+                <div className="w-px h-12 bg-slate-200"></div>
+                <div>
+                  <p className="text-3xl font-bold text-slate-900">99.9%</p>
+                  <p className="text-sm text-slate-500">Uptime Guarantee</p>
+                </div>
+                <div className="w-px h-12 bg-slate-200"></div>
+                <div>
+                  <p className="text-3xl font-bold text-slate-900">24/7</p>
+                  <p className="text-sm text-slate-500">Local Support</p>
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="relative hidden lg:block"
+            >
+              <div className="relative z-10 bg-white/40 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/50 p-8">
+                <div className="absolute inset-0 bg-gradient-to-br from-white/50 to-transparent rounded-3xl -z-10"></div>
+
+                {/* Floating Cards */}
+                <motion.div
+                  animate={{ y: [0, -10, 0] }}
+                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+                  className="absolute -top-12 -right-12 bg-white p-4 rounded-2xl shadow-xl border border-slate-100 flex items-center gap-3"
+                >
+                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                    <Wifi className="text-green-600" size={20} />
                   </div>
-                  <div className="flex items-center gap-4 p-4 bg-blue-50 rounded-lg">
-                    <Zap className="text-blue-600" size={24} />
-                    <div>
-                      <p className="font-semibold text-slate-900">Lightning Fast</p>
-                      <p className="text-sm text-slate-600">Up to 100 Mbps</p>
-                    </div>
+                  <div>
+                    <p className="text-xs text-slate-500 font-semibold uppercase">Speed</p>
+                    <p className="font-bold text-slate-900">100 Mbps</p>
                   </div>
-                  <div className="flex items-center gap-4 p-4 bg-purple-50 rounded-lg">
-                    <HeadphonesIcon className="text-purple-600" size={24} />
-                    <div>
-                      <p className="font-semibold text-slate-900">24/7 Support</p>
-                      <p className="text-sm text-slate-600">Always here to help</p>
-                    </div>
+                </motion.div>
+
+                <motion.div
+                  animate={{ y: [0, 10, 0] }}
+                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+                  className="absolute -bottom-8 -left-8 bg-white p-4 rounded-2xl shadow-xl border border-slate-100 flex items-center gap-3"
+                >
+                  <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                    <CheckCircle className="text-blue-600" size={20} />
+                  </div>
+                  <div>
+                    <p className="text-xs text-slate-500 font-semibold uppercase">Status</p>
+                    <p className="font-bold text-slate-900">Connected</p>
+                  </div>
+                </motion.div>
+
+                {/* Main Image Placeholder / Abstract Graphic */}
+                <div className="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200 relative group">
+                  <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1531297424005-06340e7a27f9?q=80&w=2000&auto=format&fit=crop')] bg-cover bg-center opacity-90 transition-transform duration-700 group-hover:scale-110"></div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                  <div className="absolute bottom-8 left-8 text-white">
+                    <p className="font-medium text-lg">Enterprise Grade</p>
+                    <p className="text-white/80 text-sm">Connectivity Solutions</p>
                   </div>
                 </div>
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
+
+        {/* Scroll Indicator */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1, y: [0, 10, 0] }}
+          transition={{ delay: 1, duration: 2, repeat: Infinity }}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 text-slate-400"
+        >
+          <ChevronDown size={24} />
+        </motion.div>
       </section>
 
       {/* Products Section */}
-      <section id="products" className="py-20 px-4 sm:px-6 lg:px-8 bg-slate-50">
+      <section id="products" className="py-24 px-4 sm:px-6 lg:px-8 bg-slate-50">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-4xl font-bold text-slate-900 mb-4">Choose Your Connection</h2>
-            <p className="text-xl text-slate-600">Flexible plans for every need and budget</p>
+            <h2 className="text-4xl font-bold text-slate-900 mb-4">Choose Your Perfect Plan</h2>
+            <p className="text-xl text-slate-600 max-w-2xl mx-auto">
+              Whether you need high-speed fiber for your home or reliable 5G for your business, we have a plan for you.
+            </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* 5G ODU */}
-            <Card className="p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-red-200">
-              <div className="space-y-4">
-                <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
-                  <Wifi className="text-red-600" size={24} />
-                </div>
-                <h3 className="text-xl font-bold text-slate-900">5G ODU</h3>
-                <p className="text-sm text-slate-600">Outdoor unit for quick installation</p>
-                <div className="pt-4 border-t border-slate-200">
-                  <p className="text-3xl font-bold text-slate-900">
-                    KES 1,999<span className="text-base font-normal text-slate-600">/mo</span>
-                  </p>
-                  <p className="text-sm text-slate-500 mt-1">Starting from</p>
-                </div>
-                <ul className="space-y-2 text-sm text-slate-600">
-                  <li className="flex items-center gap-2">
-                    <CheckCircle size={16} className="text-green-600" />
-                    15-40 Mbps options
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle size={16} className="text-green-600" />
-                    Unlimited plans available
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle size={16} className="text-green-600" />
-                    Quick outdoor setup
-                  </li>
-                </ul>
-              </div>
-            </Card>
-
-            {/* 5G IPLU */}
-            <Card className="p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-red-200">
-              <div className="space-y-4">
-                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                  <Wifi className="text-blue-600" size={24} />
-                </div>
-                <h3 className="text-xl font-bold text-slate-900">5G IPLU</h3>
-                <p className="text-sm text-slate-600">Indoor unit for office setups</p>
-                <div className="pt-4 border-t border-slate-200">
-                  <p className="text-3xl font-bold text-slate-900">
-                    KES 3,500<span className="text-base font-normal text-slate-600">/mo</span>
-                  </p>
-                  <p className="text-sm text-slate-500 mt-1">Starting from</p>
-                </div>
-                <ul className="space-y-2 text-sm text-slate-600">
-                  <li className="flex items-center gap-2">
-                    <CheckCircle size={16} className="text-green-600" />
-                    10-50 Mbps speeds
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle size={16} className="text-green-600" />
-                    Perfect for offices
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle size={16} className="text-green-600" />
-                    Indoor installation
-                  </li>
-                </ul>
-              </div>
-            </Card>
-
-            {/* FTTX Fiber */}
-            <Card className="p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 border-red-500 relative">
-              <div className="absolute -top-3 right-4 bg-red-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
-                POPULAR
-              </div>
-              <div className="space-y-4">
-                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                  <Zap className="text-green-600" size={24} />
-                </div>
-                <h3 className="text-xl font-bold text-slate-900">FTTX Fiber</h3>
-                <p className="text-sm text-slate-600">Best reliability for businesses</p>
-                <div className="pt-4 border-t border-slate-200">
-                  <p className="text-3xl font-bold text-slate-900">
-                    KES 2,500<span className="text-base font-normal text-slate-600">/mo</span>
-                  </p>
-                  <p className="text-sm text-slate-500 mt-1">Starting from</p>
-                </div>
-                <ul className="space-y-2 text-sm text-slate-600">
-                  <li className="flex items-center gap-2">
-                    <CheckCircle size={16} className="text-green-600" />
-                    10-100 Mbps speeds
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle size={16} className="text-green-600" />
-                    Ultra-reliable fiber
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle size={16} className="text-green-600" />
-                    Business-grade SLA
-                  </li>
-                </ul>
-              </div>
-            </Card>
-
-            {/* SmartNET */}
-            <Card className="p-6 hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border-2 hover:border-red-200">
-              <div className="space-y-4">
-                <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                  <Wifi className="text-purple-600" size={24} />
-                </div>
-                <h3 className="text-xl font-bold text-slate-900">SmartNET</h3>
-                <p className="text-sm text-slate-600">4G LTE budget option</p>
-                <div className="pt-4 border-t border-slate-200">
-                  <p className="text-3xl font-bold text-slate-900">
-                    KES 2,999<span className="text-base font-normal text-slate-600">/mo</span>
-                  </p>
-                  <p className="text-sm text-slate-500 mt-1">Starting from</p>
-                </div>
-                <ul className="space-y-2 text-sm text-slate-600">
-                  <li className="flex items-center gap-2">
-                    <CheckCircle size={16} className="text-green-600" />
-                    180GB-960GB bundles
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle size={16} className="text-green-600" />
-                    Daily data bonuses
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <CheckCircle size={16} className="text-green-600" />
-                    Budget-friendly
-                  </li>
-                </ul>
-              </div>
-            </Card>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[
+              {
+                title: "5G ODU",
+                desc: "Outdoor Unit for maximum signal strength",
+                speed: "Up to 100 Mbps",
+                color: "red",
+                features: ["High Gain Antenna", "Weather Resistant", "Professional Install", "Best for Rural Areas"],
+                popular: true
+              },
+              {
+                title: "5G IPLU",
+                desc: "Indoor Unit for plug-and-play simplicity",
+                speed: "Up to 100 Mbps",
+                color: "blue",
+                features: ["Self Installation", "Portable", "Instant Activation", "Best for Apartments"]
+              },
+              {
+                title: "FTTX Fiber",
+                desc: "Ultra-fast fiber optic connection",
+                speed: "Up to 1 Gbps",
+                color: "green",
+                features: ["Lowest Latency", "Unlimited Data", "Symmetric Speeds", "Best for Gaming"]
+              },
+              {
+                title: "SmartNET",
+                desc: "Reliable 4G backup solution",
+                speed: "Up to 40 Mbps",
+                color: "purple",
+                features: ["Cost Effective", "Wide Coverage", "Quick Setup", "Best for Light Use"]
+              }
+            ].map((product, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                whileHover={{ y: -10 }}
+              >
+                <Card className={`p-6 h-full border-2 hover:border-${product.color}-500 transition-all duration-300 relative overflow-hidden group`}>
+                  {product.popular && (
+                    <div className="absolute top-0 right-0 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-bl-lg">
+                      POPULAR
+                    </div>
+                  )}
+                  <div className={`w-12 h-12 rounded-xl bg-${product.color}-100 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
+                    <Wifi className={`text-${product.color}-600`} size={24} />
+                  </div>
+                  <h3 className="text-2xl font-bold text-slate-900 mb-2">{product.title}</h3>
+                  <p className="text-slate-600 mb-4 h-12">{product.desc}</p>
+                  <div className="text-3xl font-bold text-slate-900 mb-6">{product.speed}</div>
+                  <ul className="space-y-3 mb-8">
+                    {product.features.map((feature, i) => (
+                      <li key={i} className="flex items-center gap-2 text-sm text-slate-600">
+                        <CheckCircle size={16} className={`text-${product.color}-500`} />
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                  <Button className={`w-full bg-slate-900 hover:bg-${product.color}-600 text-white transition-colors`}>
+                    Get Started
+                  </Button>
+                </Card>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section id="features" className="py-20 px-4 sm:px-6 lg:px-8">
+      <section id="features" className="py-24 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-7xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-12">
+            {[
+              {
+                icon: Zap,
+                title: "Lightning Fast",
+                desc: "Experience speeds up to 1Gbps with our state-of-the-art fiber and 5G network infrastructure.",
+                color: "red"
+              },
+              {
+                icon: Wifi,
+                title: "Unlimited Data",
+                desc: "Stream, game, and download as much as you want. No caps, no throttling, just pure speed.",
+                color: "blue"
+              },
+              {
+                icon: HeadphonesIcon,
+                title: "24/7 Support",
+                desc: "Our local support team is always ready to help you with any issues, day or night.",
+                color: "green"
+              }
+            ].map((feature, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.2 }}
+                className="text-center group"
+              >
+                <div className={`w-20 h-20 mx-auto bg-${feature.color}-50 rounded-3xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-${feature.color}-100`}>
+                  <feature.icon className={`text-${feature.color}-600`} size={40} />
+                </div>
+                <h3 className="text-2xl font-bold text-slate-900 mb-4">{feature.title}</h3>
+                <p className="text-slate-600 leading-relaxed">{feature.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section id="testimonials" className="py-24 px-4 sm:px-6 lg:px-8 bg-slate-50 overflow-hidden">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-slate-900 mb-4">Trusted by Businesses</h2>
+            <p className="text-xl text-slate-600">See what our customers have to say about us</p>
+          </div>
+
           <div className="grid md:grid-cols-3 gap-8">
-            <div className="text-center space-y-4">
-              <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto">
-                <Zap className="text-red-600" size={32} />
-              </div>
-              <h3 className="text-2xl font-bold text-slate-900">Lightning Fast</h3>
-              <p className="text-slate-600">
-                Experience speeds up to 100 Mbps with our fiber and 5G connections. Perfect for streaming, gaming, and business.
-              </p>
-            </div>
-            <div className="text-center space-y-4">
-              <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto">
-                <Wifi className="text-blue-600" size={32} />
-              </div>
-              <h3 className="text-2xl font-bold text-slate-900">Unlimited Data</h3>
-              <p className="text-slate-600">
-                Choose from unlimited plans or generous data bundles. No more worrying about running out of data.
-              </p>
-            </div>
-            <div className="text-center space-y-4">
-              <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto">
-                <HeadphonesIcon className="text-green-600" size={32} />
-              </div>
-              <h3 className="text-2xl font-bold text-slate-900">24/7 Support</h3>
-              <p className="text-slate-600">
-                Our dedicated support team is always ready to help. Free installation and ongoing technical assistance.
-              </p>
-            </div>
+            {[
+              {
+                name: "Sarah K.",
+                role: "Operations Manager",
+                company: "TechHub Nairobi",
+                content: "The 5G ODU solution transformed our remote office connectivity. Speeds are consistent and the installation was professional.",
+                rating: 5
+              },
+              {
+                name: "David M.",
+                role: "Freelance Designer",
+                company: "Creative Studio",
+                content: "Best internet service I've used in Kenya. The SmartNET backup saved me during a critical deadline when power went out.",
+                rating: 5
+              },
+              {
+                name: "Grace W.",
+                role: "Director",
+                company: "EduCare Systems",
+                content: "We switched to Bazztech's FTTX Fiber and haven't looked back. The uptime is fantastic and support is actually responsive.",
+                rating: 4
+              }
+            ].map((testimonial, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <Card className="p-8 h-full hover:shadow-lg transition-shadow bg-white border-slate-100">
+                  <div className="flex gap-1 mb-4">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} size={16} className={`${i < testimonial.rating ? "text-yellow-400 fill-yellow-400" : "text-slate-200"}`} />
+                    ))}
+                  </div>
+                  <p className="text-slate-600 mb-6 italic">"{testimonial.content}"</p>
+                  <div className="flex items-center gap-4">
+                    <div className="w-10 h-10 bg-slate-200 rounded-full flex items-center justify-center font-bold text-slate-500">
+                      {testimonial.name[0]}
+                    </div>
+                    <div>
+                      <p className="font-bold text-slate-900">{testimonial.name}</p>
+                      <p className="text-xs text-slate-500">{testimonial.role}, {testimonial.company}</p>
+                    </div>
+                  </div>
+                </Card>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-24 px-4 sm:px-6 lg:px-8 bg-white">
+        <div className="max-w-3xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-slate-900 mb-6">Frequently Asked Questions</h2>
+          </div>
+
+          <div className="space-y-4">
+            {[
+              { q: "How long does installation take?", a: "For 5G ODU/IPLU, installation is typically completed within 24-48 hours. Fiber installations may take 3-5 business days depending on the location." },
+              { q: "Is there an installation fee?", a: "Installation is free for most of our standard plans. Some specialized business setups might incur a small one-time fee." },
+              { q: "Can I upgrade my plan later?", a: "Absolutely! You can upgrade your speed or data package at any time through our portal or by contacting support." },
+              { q: "What areas do you cover?", a: "We cover most major towns and cities in Kenya including Nairobi, Mombasa, Kisumu, Nakuru, and Eldoret. Use the 'Check Coverage' button to verify your specific location." }
+            ].map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="border border-slate-200 rounded-xl p-6 hover:border-red-200 transition-colors cursor-pointer group"
+              >
+                <h3 className="font-bold text-slate-900 text-lg mb-2 group-hover:text-red-600 transition-colors">{item.q}</h3>
+                <p className="text-slate-600">{item.a}</p>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Contact Form */}
-      <section id="contact-form" className="py-20 px-4 sm:px-6 lg:px-8 bg-slate-50">
-        <div className="max-w-3xl mx-auto">
-          <div className="text-center mb-12">
+      <section id="contact-form" className="py-24 px-4 sm:px-6 lg:px-8 bg-slate-50 relative">
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-5"></div>
+        <div className="max-w-4xl mx-auto relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
             <h2 className="text-4xl font-bold text-slate-900 mb-4">Get Connected Today</h2>
             <p className="text-xl text-slate-600">Fill out the form and we'll contact you within 24 hours</p>
-          </div>
+          </motion.div>
 
-          <Card className="p-8 shadow-2xl border-t-4 border-red-600">
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label htmlFor="name">Full Name *</Label>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+          >
+            <Card className="p-8 md:p-12 shadow-2xl border-0 bg-white/80 backdrop-blur-lg rounded-3xl">
+              <form onSubmit={handleSubmit} className="space-y-8">
+                <div className="grid md:grid-cols-2 gap-8">
+                  <div className="space-y-3">
+                    <Label htmlFor="name" className="text-base font-medium text-slate-700">Full Name *</Label>
+                    <Input
+                      id="name"
+                      value={formData.name}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, name: e.target.value })}
+                      placeholder="John Doe"
+                      required
+                      className="h-12 bg-slate-50 border-slate-200 focus:border-red-500 focus:ring-red-500/20 transition-all"
+                    />
+                  </div>
+                  <div className="space-y-3">
+                    <Label htmlFor="phone" className="text-base font-medium text-slate-700">Phone Number *</Label>
+                    <Input
+                      id="phone"
+                      type="tel"
+                      value={formData.phone}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, phone: e.target.value })}
+                      placeholder="0712345678"
+                      required
+                      className="h-12 bg-slate-50 border-slate-200 focus:border-red-500 focus:ring-red-500/20 transition-all"
+                    />
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <Label htmlFor="email" className="text-base font-medium text-slate-700">Email Address</Label>
                   <Input
-                    id="name"
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                    placeholder="John Doe"
-                    required
+                    id="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, email: e.target.value })}
+                    placeholder="john@example.com"
+                    className="h-12 bg-slate-50 border-slate-200 focus:border-red-500 focus:ring-red-500/20 transition-all"
                   />
                 </div>
-                <div className="space-y-2">
-                  <Label htmlFor="phone">Phone Number *</Label>
-                  <Input
-                    id="phone"
-                    type="tel"
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    placeholder="0712345678"
-                    required
+
+                <div className="grid md:grid-cols-2 gap-8">
+                  <div className="space-y-3">
+                    <Label htmlFor="location" className="text-base font-medium text-slate-700">Location/Town *</Label>
+                    <Input
+                      id="location"
+                      value={formData.location}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setFormData({ ...formData, location: e.target.value })}
+                      placeholder="Nairobi"
+                      required
+                      className="h-12 bg-slate-50 border-slate-200 focus:border-red-500 focus:ring-red-500/20 transition-all"
+                    />
+                  </div>
+                  <div className="space-y-3">
+                    <Label htmlFor="connectionType" className="text-base font-medium text-slate-700">Preferred Connection *</Label>
+                    <Select
+                      value={formData.connectionType}
+                      onValueChange={(value: string) => setFormData({ ...formData, connectionType: value })}
+                      required
+                    >
+                      <SelectTrigger className="h-12 bg-slate-50 border-slate-200 focus:border-red-500 focus:ring-red-500/20 transition-all">
+                        <SelectValue placeholder="Select connection type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="SmartConnect (5G ODU)">5G ODU (Outdoor)</SelectItem>
+                        <SelectItem value="SmartConnect (5G IPLU)">5G IPLU (Indoor)</SelectItem>
+                        <SelectItem value="SmartConnect (FTTX)">FTTX Fiber</SelectItem>
+                        <SelectItem value="SmartNET ODU">SmartNET (4G)</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <Label htmlFor="message" className="text-base font-medium text-slate-700">Additional Information</Label>
+                  <Textarea
+                    id="message"
+                    value={formData.message}
+                    onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setFormData({ ...formData, message: e.target.value })}
+                    placeholder="Tell us about your specific needs or provide your exact address..."
+                    rows={4}
+                    className="bg-slate-50 border-slate-200 focus:border-red-500 focus:ring-red-500/20 transition-all resize-none"
                   />
                 </div>
-              </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="email">Email Address</Label>
-                <Input
-                  id="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  placeholder="john@example.com"
-                />
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label htmlFor="location">Location/Town *</Label>
-                  <Input
-                    id="location"
-                    value={formData.location}
-                    onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-                    placeholder="Nairobi"
-                    required
-                  />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="connectionType">Preferred Connection *</Label>
-                  <Select
-                    value={formData.connectionType}
-                    onValueChange={(value) => setFormData({ ...formData, connectionType: value })}
-                    required
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select connection type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="SmartConnect (5G ODU)">5G ODU</SelectItem>
-                      <SelectItem value="SmartConnect (5G IPLU)">5G IPLU</SelectItem>
-                      <SelectItem value="SmartConnect (FTTX)">FTTX Fiber</SelectItem>
-                      <SelectItem value="SmartNET ODU">SmartNET (4G)</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="message">Additional Information</Label>
-                <Textarea
-                  id="message"
-                  value={formData.message}
-                  onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                  placeholder="Tell us about your specific needs or provide your exact address..."
-                  rows={4}
-                />
-              </div>
-
-              <Button
-                type="submit"
-                className="w-full bg-red-600 hover:bg-red-700 text-white py-6 text-lg"
-                disabled={createLead.isPending}
-              >
-                {createLead.isPending ? "Submitting..." : "Submit Request"}
-              </Button>
-            </form>
-          </Card>
+                <Button
+                  type="submit"
+                  className="w-full bg-red-600 hover:bg-red-700 text-white py-6 text-lg rounded-xl shadow-lg shadow-red-600/20 hover:shadow-xl hover:shadow-red-600/30 transition-all hover:-translate-y-1"
+                  disabled={createLead.isPending}
+                >
+                  {createLead.isPending ? (
+                    <div className="flex items-center gap-2">
+                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      Submitting...
+                    </div>
+                  ) : (
+                    "Submit Request"
+                  )}
+                </Button>
+              </form>
+            </Card>
+          </motion.div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-slate-900 text-white py-12 px-4 sm:px-6 lg:px-8">
+      <footer className="bg-slate-950 text-white py-16 px-4 sm:px-6 lg:px-8 border-t border-slate-900">
         <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-3 gap-8 mb-8">
-            <div>
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-10 h-10 bg-red-600 rounded-lg flex items-center justify-center">
+          <div className="grid md:grid-cols-4 gap-12 mb-12">
+            <div className="col-span-1 md:col-span-2">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center">
                   <Wifi className="text-white" size={24} />
                 </div>
-                <span className="text-xl font-bold">Bazztech Networks</span>
+                <span className="text-2xl font-bold tracking-tight">Bazztech<span className="text-red-500">Networks</span></span>
               </div>
-              <p className="text-slate-400">
+              <p className="text-slate-400 leading-relaxed max-w-md mb-6">
                 Your trusted partner for high-speed internet solutions in Kenya.
+                We provide reliable, fast, and affordable connectivity for homes and businesses.
               </p>
+              <div className="flex gap-4">
+                <a
+                  href="https://www.facebook.com/bazztechnetworks"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center text-slate-400 hover:bg-blue-600 hover:text-white transition-all"
+                  aria-label="Facebook"
+                >
+                  <Facebook size={20} />
+                </a>
+                <a
+                  href="https://www.instagram.com/BazztechNetworks"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center text-slate-400 hover:bg-pink-600 hover:text-white transition-all"
+                  aria-label="Instagram"
+                >
+                  <Instagram size={20} />
+                </a>
+                <a
+                  href="https://www.linkedin.com/company/99906757"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-10 h-10 rounded-full bg-slate-900 flex items-center justify-center text-slate-400 hover:bg-blue-700 hover:text-white transition-all"
+                  aria-label="LinkedIn"
+                >
+                  <Linkedin size={20} />
+                </a>
+              </div>
             </div>
+
             <div>
-              <h4 className="font-semibold mb-4">Quick Links</h4>
-              <ul className="space-y-2 text-slate-400">
-                <li><a href="#products" className="hover:text-white transition-colors">Products</a></li>
-                <li><a href="#features" className="hover:text-white transition-colors">Features</a></li>
-                <li><a href="#contact-form" className="hover:text-white transition-colors">Contact</a></li>
-                <li><a href={getLoginUrl()} className="hover:text-white transition-colors">Agent Login</a></li>
+              <h4 className="font-bold text-lg mb-6 text-slate-200">Quick Links</h4>
+              <ul className="space-y-4 text-slate-400">
+                <li><button onClick={() => document.getElementById("products")?.scrollIntoView({ behavior: "smooth" })} className="hover:text-red-500 transition-colors">Products</button></li>
+                <li><button onClick={() => document.getElementById("features")?.scrollIntoView({ behavior: "smooth" })} className="hover:text-red-500 transition-colors">Features</button></li>
+                <li><button onClick={() => document.getElementById("testimonials")?.scrollIntoView({ behavior: "smooth" })} className="hover:text-red-500 transition-colors">Testimonials</button></li>
+                <li><button onClick={() => document.getElementById("contact-form")?.scrollIntoView({ behavior: "smooth" })} className="hover:text-red-500 transition-colors">Contact</button></li>
+                <li><a href={getLoginUrl()} className="hover:text-red-500 transition-colors">Agent Login</a></li>
               </ul>
             </div>
+
             <div>
-              <h4 className="font-semibold mb-4">Contact Us</h4>
-              <ul className="space-y-3 text-slate-400">
-                <li className="flex items-center gap-2">
-                  <Phone size={16} />
+              <h4 className="font-bold text-lg mb-6 text-slate-200">Contact Us</h4>
+              <ul className="space-y-4 text-slate-400">
+                <li className="flex items-center gap-3 group">
+                  <div className="w-8 h-8 rounded-lg bg-slate-900 flex items-center justify-center group-hover:bg-red-600/20 group-hover:text-red-500 transition-colors">
+                    <Phone size={16} />
+                  </div>
                   <span>+254 781 751 937</span>
                 </li>
-                <li className="flex items-center gap-2">
-                  <Mail size={16} />
+                <li className="flex items-center gap-3 group">
+                  <div className="w-8 h-8 rounded-lg bg-slate-900 flex items-center justify-center group-hover:bg-red-600/20 group-hover:text-red-500 transition-colors">
+                    <Mail size={16} />
+                  </div>
                   <span>info@bazztech.co.ke</span>
                 </li>
-                <li className="flex items-center gap-2">
-                  <MapPin size={16} />
+                <li className="flex items-center gap-3 group">
+                  <div className="w-8 h-8 rounded-lg bg-slate-900 flex items-center justify-center group-hover:bg-red-600/20 group-hover:text-red-500 transition-colors">
+                    <MapPin size={16} />
+                  </div>
                   <span>Nairobi, Kenya</span>
                 </li>
               </ul>
             </div>
           </div>
-          <div className="border-t border-slate-800 pt-8 text-center text-slate-400">
-            <p>© 2025 Bazztech Networks. All rights reserved. Powered by Airtel Kenya.</p>
+
+          <div className="border-t border-slate-900 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-slate-500 text-sm">
+            <p>© 2025 Bazztech Networks. All rights reserved.</p>
+            <div className="flex items-center gap-2">
+              <span>Powered by</span>
+              <span className="font-bold text-slate-300">Airtel Kenya</span>
+            </div>
           </div>
         </div>
       </footer>
+
+      {/* WhatsApp FAB */}
+      <motion.a
+        href="https://wa.me/254781751937"
+        target="_blank"
+        rel="noopener noreferrer"
+        initial={{ scale: 0 }}
+        animate={{ scale: 1 }}
+        whileHover={{ scale: 1.1 }}
+        whileTap={{ scale: 0.9 }}
+        className="fixed bottom-8 right-8 z-50 bg-[#25D366] text-white p-4 rounded-full shadow-2xl flex items-center justify-center cursor-pointer hover:shadow-green-500/30 transition-shadow"
+      >
+        <MessageCircle size={32} fill="white" className="text-white" />
+      </motion.a>
     </div>
   );
 }
