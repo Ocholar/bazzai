@@ -34,16 +34,11 @@ jobs:
         with:
           node-version: "22"
           
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        with:
-          version: 8
-          
       - name: Install dependencies
-        run: pnpm install
+        run: npm install --legacy-peer-deps
         
       - name: Build
-        run: pnpm build
+        run: npm run build
         env:
           VITE_APP_ID: ${{ secrets.VITE_APP_ID }}
           VITE_OAUTH_PORTAL_URL: ${{ secrets.VITE_OAUTH_PORTAL_URL }}
@@ -53,6 +48,9 @@ jobs:
           VITE_FRONTEND_FORGE_API_KEY: ${{ secrets.VITE_FRONTEND_FORGE_API_KEY }}
           VITE_ANALYTICS_ENDPOINT: ${{ secrets.VITE_ANALYTICS_ENDPOINT }}
           VITE_ANALYTICS_WEBSITE_ID: ${{ secrets.VITE_ANALYTICS_WEBSITE_ID }}
+
+      - name: Create 404.html for SPA routing
+        run: cp dist/index.html dist/404.html
           
       - name: Setup Pages
         uses: actions/configure-pages@v4
