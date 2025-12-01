@@ -724,17 +724,17 @@ export default function Home() {
       {/* Footer */}
       <footer className="bg-slate-950 text-white py-16 px-4 sm:px-6 lg:px-8 border-t border-slate-900">
         <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-12 mb-12">
-            <div className="col-span-1 md:col-span-2">
+          <div className="grid md:grid-cols-4 gap-8 mb-12">
+            <div className="col-span-1">
               <div className="flex items-center gap-3 mb-6">
                 <div className="w-10 h-10 bg-red-600 rounded-xl flex items-center justify-center">
                   <Wifi className="text-white" size={24} />
                 </div>
                 <span className="text-2xl font-bold tracking-tight">Bazztech<span className="text-red-500">Networks</span></span>
               </div>
-              <p className="text-slate-400 leading-relaxed max-w-md mb-6">
+              <p className="text-slate-400 leading-relaxed max-w-md mb-6 text-sm">
                 Your trusted partner for high-speed internet solutions in Kenya.
-                We provide reliable, fast, and affordable connectivity for homes and businesses.
+                We provide reliable, fast, and affordable connectivity.
               </p>
               <div className="flex gap-4">
                 <a
@@ -779,13 +779,22 @@ export default function Home() {
             </div>
 
             <div>
+              <h4 className="font-bold text-lg mb-6 text-slate-200">Legal</h4>
+              <ul className="space-y-4 text-slate-400">
+                <li><a href="/privacy-policy" className="hover:text-red-500 transition-colors">Privacy Policy</a></li>
+                <li><a href="/user-data-deletion-policy" className="hover:text-red-500 transition-colors">Data Deletion</a></li>
+                <li><a href="/terms-of-service" className="hover:text-red-500 transition-colors">Terms of Service</a></li>
+              </ul>
+            </div>
+
+            <div>
               <h4 className="font-bold text-lg mb-6 text-slate-200">Contact Us</h4>
               <ul className="space-y-4 text-slate-400">
                 <li className="flex items-center gap-3 group">
                   <div className="w-8 h-8 rounded-lg bg-slate-900 flex items-center justify-center group-hover:bg-red-600/20 group-hover:text-red-500 transition-colors">
                     <Phone size={16} />
                   </div>
-                  <span>+254 781 751 937</span>
+                  <span>+254 103 339197</span>
                 </li>
                 <li className="flex items-center gap-3 group">
                   <div className="w-8 h-8 rounded-lg bg-slate-900 flex items-center justify-center group-hover:bg-red-600/20 group-hover:text-red-500 transition-colors">
@@ -815,7 +824,7 @@ export default function Home() {
 
       {/* WhatsApp FAB */}
       <motion.a
-        href="https://wa.me/254781751937"
+        href="https://wa.me/254103339197"
         target="_blank"
         rel="noopener noreferrer"
         initial={{ scale: 0 }}

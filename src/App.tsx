@@ -12,6 +12,9 @@ import Leads from "./pages/Leads";
 import Submissions from "./pages/Submissions";
 import Analytics from "./pages/Analytics";
 import Configuration from "./pages/Configuration";
+import PrivacyPolicy from "./pages/legal/PrivacyPolicy";
+import UserDataDeletion from "./pages/legal/UserDataDeletion";
+import TermsOfService from "./pages/legal/TermsOfService";
 import { useAuth } from "./_core/hooks/useAuth";
 import { getLoginUrl } from "./const";
 
@@ -45,7 +48,11 @@ function RouterComponent() {
   return (
     <Switch>
       {/* Public routes - always accessible */}
+      {/* Public routes - always accessible */}
       <Route path="/" component={Home} />
+      <Route path="/privacy-policy" component={PrivacyPolicy} />
+      <Route path="/user-data-deletion-policy" component={UserDataDeletion} />
+      <Route path="/terms-of-service" component={TermsOfService} />
       <Route path="/404" component={NotFound} />
 
       {/* Protected dashboard routes */}
