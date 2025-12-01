@@ -14,6 +14,7 @@ interface MetaTagsProps {
   twitterDescription?: string;
   twitterImage?: string;
   fbAppId?: string;
+  fbDomainVerification?: string;
 }
 
 export function MetaTags({
@@ -30,6 +31,7 @@ export function MetaTags({
   twitterDescription,
   twitterImage,
   fbAppId,
+  fbDomainVerification,
 }: MetaTagsProps) {
   useEffect(() => {
     // Update document title
@@ -66,10 +68,13 @@ export function MetaTags({
     if (fbAppId) updateMetaTag('fb:app_id', fbAppId);
 
     // Update Twitter tags
-    if (twitterCard) updateMetaTag('twitter:card', twitterCard);
-    if (twitterTitle) updateMetaTag('twitter:title', twitterTitle);
-    if (twitterDescription) updateMetaTag('twitter:description', twitterDescription);
-    if (twitterImage) updateMetaTag('twitter:image', twitterImage);
+    if (twitterCard) updateMetaTag('twitter:card', twitterCard, false);
+    if (twitterTitle) updateMetaTag('twitter:title', twitterTitle, false);
+    if (twitterDescription) updateMetaTag('twitter:description', twitterDescription, false);
+    if (twitterImage) updateMetaTag('twitter:image', twitterImage, false);
+
+    // Update Facebook domain verification
+    if (fbDomainVerification) updateMetaTag('facebook-domain-verification', fbDomainVerification, false);
   }, [
     title,
     description,
@@ -83,6 +88,8 @@ export function MetaTags({
     twitterTitle,
     twitterDescription,
     twitterImage,
+    fbAppId,
+    fbDomainVerification,
   ]);
 
   return null;

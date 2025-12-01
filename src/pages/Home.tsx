@@ -37,9 +37,10 @@ export default function Home() {
       ogImageAlt="Bazztech Networks Logo"
       twitterCard="summary_large_image"
       twitterTitle="Bazztech Networks | High-Speed Internet Solutions"
-      twitterDescription="Experience ultra-reliable 5G and Fiber internet in Kenya. Zero lag, unlimited possibilities, and 24/7 support."
+      twitterDescription="Experience ultra-reliable 5G and Fiber internet in Kenya. Zero lag, unlimited possibilities, and 24/8 support."
       twitterImage="https://bazztech.co.ke/logo.png"
-      fbAppId="1940970193127549" // TODO: Replace with your actual Facebook App ID
+      fbAppId="1940970193127549"
+      fbDomainVerification="3tq86nngcf4dgn4ms1uctldl1hz0mq"
     />
   );
 
