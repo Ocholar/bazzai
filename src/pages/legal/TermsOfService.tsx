@@ -148,7 +148,8 @@ const TermsOfService = () => {
                     Address: Nairobi, Kenya
                 </p>
             </LegalLayout>
-            );
+        </>
+    );
 };
 
-            export default TermsOfService;
+export default TermsOfService;
