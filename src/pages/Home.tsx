@@ -12,6 +12,8 @@ import { Zap, Wifi, HeadphonesIcon, CheckCircle, ArrowRight, Phone, Mail, MapPin
 import { getLoginUrl } from "@/const";
 import { motion, AnimatePresence } from "framer-motion";
 
+import { MetaTags } from "@/components/MetaTags";
+
 export default function Home() {
   const [formData, setFormData] = useState({
     name: "",
@@ -22,10 +24,24 @@ export default function Home() {
     message: ""
   });
 
-  // Set SEO Title
-  useState(() => {
-    document.title = "Bazztech Networks | High-Speed Internet Solutions in Kenya";
-  });
+  // SEO Meta Tags
+  const metaTags = (
+    <MetaTags
+      title="Bazztech Networks | High-Speed Internet Solutions in Kenya"
+      description="Experience ultra-reliable 5G and Fiber internet in Kenya. Zero lag, unlimited possibilities, and 24/7 support."
+      ogUrl="https://bazztech.co.ke/"
+      ogType="website"
+      ogTitle="Bazztech Networks | High-Speed Internet Solutions"
+      ogDescription="Experience ultra-reliable 5G and Fiber internet in Kenya. Zero lag, unlimited possibilities, and 24/7 support."
+      ogImage="https://bazztech.co.ke/logo.png"
+      ogImageAlt="Bazztech Networks Logo"
+      twitterCard="summary_large_image"
+      twitterTitle="Bazztech Networks | High-Speed Internet Solutions"
+      twitterDescription="Experience ultra-reliable 5G and Fiber internet in Kenya. Zero lag, unlimited possibilities, and 24/7 support."
+      twitterImage="https://bazztech.co.ke/logo.png"
+      fbAppId="1940970193127549" // TODO: Replace with your actual Facebook App ID
+    />
+  );
 
   const createLead = trpc.leads.create.useMutation({
     onSuccess: () => {
@@ -61,6 +77,7 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-white font-sans selection:bg-red-100 selection:text-red-900">
+      {metaTags}
       {/* Navigation */}
       <nav className="fixed top-0 w-full bg-white/80 backdrop-blur-md border-b border-slate-200/50 z-50 transition-all duration-300">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

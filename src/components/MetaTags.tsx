@@ -13,6 +13,7 @@ interface MetaTagsProps {
   twitterTitle?: string;
   twitterDescription?: string;
   twitterImage?: string;
+  fbAppId?: string;
 }
 
 export function MetaTags({
@@ -28,6 +29,7 @@ export function MetaTags({
   twitterTitle,
   twitterDescription,
   twitterImage,
+  fbAppId,
 }: MetaTagsProps) {
   useEffect(() => {
     // Update document title
@@ -39,13 +41,13 @@ export function MetaTags({
     const updateMetaTag = (property: string, content: string, isProperty = true) => {
       const attribute = isProperty ? 'property' : 'name';
       let element = document.querySelector(`meta[${attribute}="${property}"]`);
-      
+
       if (!element) {
         element = document.createElement('meta');
         element.setAttribute(attribute, property);
         document.head.appendChild(element);
       }
-      
+
       element.setAttribute('content', content);
     };
 
@@ -61,6 +63,7 @@ export function MetaTags({
     if (ogDescription) updateMetaTag('og:description', ogDescription);
     if (ogImage) updateMetaTag('og:image', ogImage);
     if (ogImageAlt) updateMetaTag('og:image:alt', ogImageAlt);
+    if (fbAppId) updateMetaTag('fb:app_id', fbAppId);
 
     // Update Twitter tags
     if (twitterCard) updateMetaTag('twitter:card', twitterCard);
