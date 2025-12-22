@@ -10,6 +10,10 @@ app.use(cors({
     credentials: true,
 }));
 
+app.get('/health', (req, res) => {
+    res.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
 app.use(
     '/api/trpc',
     createExpressMiddleware({
@@ -32,7 +36,7 @@ app.get('/api/oauth/callback', (req, res) => {
     res.redirect(`${frontendUrl}/dashboard`);
 });
 
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
+const port = Number(process.env.PORT) || 3000;
+app.listen(port, '0.0.0.0', () => {
     console.log(`Server running on port ${port}`);
 });
