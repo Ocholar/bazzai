@@ -155,7 +155,7 @@ export default function Home() {
                   Internet that
                   <span className="absolute inset-x-0 bottom-2 h-3 bg-red-100/60 -z-10"></span>
                 </span> <br />
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-orange-600">
+                <span className="text-red-600">
                   moves as fast
                 </span> <br />
                 <span className="relative inline-block">
