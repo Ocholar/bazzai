@@ -4,6 +4,9 @@
     "type": "module",
     "license": "MIT",
     "homepage": "https://Ocholar.github.io/portfolio",
+    "engines": {
+        "node": ">=20.0.0"
+    },
     "scripts": {
         "dev": "vite",
         "build": "vite build",
