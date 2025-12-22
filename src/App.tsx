@@ -9,10 +9,12 @@ import Analytics from "@/pages/Analytics";
 import Submissions from "@/pages/Submissions";
 import Configuration from "@/pages/Configuration";
 import NotFound from "@/pages/NotFound";
+import Home from "@/pages/Home";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { httpBatchLink } from "@trpc/client";
 import { trpc } from "@/lib/trpc";
 import superjson from "superjson";
+import { Toaster } from "@/components/ui/sonner";
 
 // Protected Route Wrapper
 function ProtectedRoute({ component: Component }: { component: React.ComponentType }) {
@@ -79,8 +81,10 @@ export default function App() {
     <TrpcProvider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>
         <AuthProvider>
+          <Toaster />
           <Switch>
-            <Route path="/" component={Portfolio} />
+            <Route path="/" component={Home} />
+            <Route path="/portfolio" component={Portfolio} />
             <Route path="/login" component={Login} />
 
             {/* Protected Routes */}
