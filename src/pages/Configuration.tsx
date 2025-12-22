@@ -8,7 +8,7 @@ export default function Configuration() {
   const [loading, setLoading] = useState(true);
   const [saved, setSaved] = useState(false);
 
-  const { data: configData } = trpc.config.getAll.useQuery();
+  const { data: configData } = trpc.config.getAll.useQuery(undefined, { refetchInterval: 5000 });
   const setConfigMutation = trpc.config.set.useMutation();
 
   useEffect(() => {

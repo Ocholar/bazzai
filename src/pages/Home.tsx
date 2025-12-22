@@ -84,8 +84,8 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             <div className="flex items-center gap-3 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-              <div className="w-10 h-10 bg-gradient-to-br from-red-600 to-red-700 rounded-xl shadow-lg shadow-red-600/20 flex items-center justify-center transform hover:scale-105 transition-transform">
-                <Wifi className="text-white" size={24} />
+              <div className="w-10 h-10 bg-white border-2 border-red-600 rounded-xl shadow-lg shadow-red-600/10 flex items-center justify-center transform hover:scale-105 transition-transform">
+                <Wifi className="text-red-600" size={24} />
               </div>
               <span className="text-xl font-bold text-slate-900 tracking-tight">Bazztech<span className="text-red-600">Networks</span></span>
             </div>
@@ -151,11 +151,17 @@ export default function Home() {
               </motion.div>
 
               <h1 className="text-5xl lg:text-7xl font-bold text-slate-900 leading-[1.1] tracking-tight">
-                Internet that <br />
+                <span className="relative inline-block">
+                  Internet that
+                  <span className="absolute inset-x-0 bottom-2 h-3 bg-red-100/60 -z-10"></span>
+                </span> <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-600 to-orange-600">
                   moves as fast
                 </span> <br />
-                as you do.
+                <span className="relative inline-block">
+                  as you do.
+                  <span className="absolute inset-x-0 bottom-2 h-3 bg-red-100/60 -z-10"></span>
+                </span>
               </h1>
 
               <p className="text-xl text-slate-600 leading-relaxed max-w-lg">
@@ -213,8 +219,8 @@ export default function Home() {
                   transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                   className="absolute -top-12 -right-12 bg-white p-4 rounded-2xl shadow-xl border border-slate-100 flex items-center gap-3"
                 >
-                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-                    <Wifi className="text-green-600" size={20} />
+                  <div className="w-10 h-10 bg-red-50 rounded-full flex items-center justify-center">
+                    <Wifi className="text-red-600" size={20} />
                   </div>
                   <div>
                     <p className="text-xs text-slate-500 font-semibold uppercase">Speed</p>

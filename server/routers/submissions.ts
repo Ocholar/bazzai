@@ -1,4 +1,3 @@
-```typescript
 import { router, publicProcedure } from '../trpc';
 import { db } from '../db';
 import { submissions } from '../schema';
@@ -9,4 +8,3 @@ export const submissionsRouter = router({
     return await db.select().from(submissions).orderBy(desc(submissions.createdAt));
   }),
 });
-```
