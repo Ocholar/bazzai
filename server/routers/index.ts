@@ -1,8 +1,8 @@
-import { router } from '../trpc';
-import { leadsRouter } from './leads';
-import { analyticsRouter } from './analytics';
-import { submissionsRouter } from './submissions';
-import { configRouter } from './config';
+import { router } from '../trpc.js';
+import { leadsRouter } from './leads.js';
+import { analyticsRouter } from './analytics.js';
+import { submissionsRouter } from './submissions.js';
+import { configRouter } from './config.js';
 
 export const appRouter = router({
     leads: leadsRouter,

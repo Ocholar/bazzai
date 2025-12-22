@@ -1,6 +1,6 @@
-import { router, publicProcedure } from '../trpc';
-import { db } from '../db';
-import { submissions } from '../schema';
+import { router, publicProcedure } from '../trpc.js';
+import { db } from '../db.js';
+import { submissions } from '../schema.js';
 import { desc } from 'drizzle-orm';
 
 export const submissionsRouter = router({

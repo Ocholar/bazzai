@@ -1,6 +1,6 @@
-import { router, publicProcedure } from '../trpc';
-import { db } from '../db';
-import { leads, submissions } from '../schema';
+import { router, publicProcedure } from '../trpc.js';
+import { db } from '../db.js';
+import { leads, submissions } from '../schema.js';
 import { count, eq } from 'drizzle-orm';
 
 export const analyticsRouter = router({

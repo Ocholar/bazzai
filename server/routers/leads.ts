@@ -1,6 +1,6 @@
-import { router, publicProcedure } from '../trpc';
-import { db } from '../db';
-import { leads } from '../schema';
+import { router, publicProcedure } from '../trpc.js';
+import { db } from '../db.js';
+import { leads } from '../schema.js';
 import { desc } from 'drizzle-orm';
 import { z } from 'zod';
 

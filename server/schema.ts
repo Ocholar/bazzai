@@ -1,24 +1,30 @@
-import { mysqlTable, serial, varchar, text, timestamp, int, json, date, decimal } from 'drizzle-orm/mysql-core';
+import { mysqlTable, serial, varchar, text, timestamp, int, json, date, mysqlEnum } from 'drizzle-orm/mysql-core';
 
 export const leads = mysqlTable('leads', {
     id: serial('id').primaryKey(),
     customerName: varchar('customerName', { length: 255 }),
     phoneNumber: varchar('phoneNumber', { length: 20 }),
-    status: varchar('status', { length: 50 }).default('new'),
+    status: mysqlEnum('status', ['new', 'contacted', 'qualified', 'submitted', 'installed', 'failed']).default('new'),
     preferredPackage: varchar('preferredPackage', { length: 50 }),
-    source: varchar('source', { length: 100 }),
-    tag: varchar('tag', { length: 50 }),
+    installationTown: text('installationTown'),
+    deliveryLocation: text('deliveryLocation'),
+    preferredDate: timestamp('preferredDate'),
+    preferredTime: varchar('preferredTime', { length: 20 }),
     conversationHistory: json('conversationHistory'),
     lastTemplateSent: varchar('lastTemplateSent', { length: 255 }),
     lastTemplateSentAt: date('lastTemplateSentAt'),
     createdAt: timestamp('createdAt').defaultNow(),
     updatedAt: timestamp('updatedAt').defaultNow().onUpdateNow(),
+    // These were in my previous schema but missing in DB, adding them back as optional
+    source: varchar('source', { length: 100 }),
+    tag: varchar('tag', { length: 50 }),
 });
 
 export const submissions = mysqlTable('submissions', {
     id: serial('id').primaryKey(),
     leadId: int('leadId'),
-    status: varchar('status', { length: 50 }),
+    status: mysqlEnum('status', ['pending', 'success', 'failed', 'retry']),
+    submissionPayload: json('submissionPayload'),
     responseCode: int('responseCode'),
     responseBody: text('responseBody'),
     errorMessage: text('errorMessage'),
@@ -48,9 +54,6 @@ export const analytics = mysqlTable('analytics', {
     failedLeads: int('failedLeads').default(0),
     package15Count: int('package15Count').default(0),
     package30Count: int('package30Count').default(0),
-    submissionSuccessRate: decimal('submissionSuccessRate', { precision: 5, scale: 2 }).default('0.00'),
-    conversionRate: decimal('conversionRate', { precision: 5, scale: 2 }).default('0.00'),
-    avgCommissionPerGA: decimal('avgCommissionPerGA', { precision: 10, scale: 2 }).default('0.00'),
     createdAt: timestamp('createdAt').defaultNow(),
     updatedAt: timestamp('updatedAt').defaultNow().onUpdateNow(),
 });
