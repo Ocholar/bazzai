@@ -1,0 +1,130 @@
+{
+    "name":  "07_facebook_lead_ads",
+    "nodes":  [
+                  {
+                      "parameters":  {
+                                         "pollTimes":  {
+                                                           "item":  [
+                                                                        {
+                                                                            "mode":  "everyMinute"
+                                                                        }
+                                                                    ]
+                                                       },
+                                         "pageId":  "103070799066553",
+                                         "formId":  "ALL"
+                                     },
+                      "id":  "facebook-lead-trigger",
+                      "name":  "Facebook Lead Ads Trigger",
+                      "type":  "n8n-nodes-base.facebookLeadAdsTrigger",
+                      "typeVersion":  1,
+                      "position":  [
+                                       250,
+                                       300
+                                   ],
+                      "credentials":  {
+                                          "facebookLeadAdsApi":  {
+                                                                     "id":  "facebook-lead-ads-credential",
+                                                                     "name":  "Facebook Lead Ads Account"
+                                                                 }
+                                      }
+                  },
+                  {
+                      "parameters":  {
+                                         "jsCode":  "// Format lead data for backend\nconst lead = $input.item.json;\n\nreturn {\n  name: lead.full_name || \u0027Unknown\u0027,\n  phone: lead.phone_number || \u0027\u0027,\n  email: lead.email || \u0027\u0027,\n  source: \u0027facebook_lead_ad\u0027,\n  platform: \u0027facebook\u0027,\n  notes: `Form: ${lead.form_name}, Campaign: ${lead.campaign_name}`,\n  timestamp: new Date().toISOString()\n};"
+                                     },
+                      "id":  "format-lead",
+                      "name":  "Format Lead Data",
+                      "type":  "n8n-nodes-base.code",
+                      "typeVersion":  2,
+                      "position":  [
+                                       450,
+                                       300
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "method":  "POST",
+                                         "url":  "={{$env.DASHBOARD_API_URL}}/api/store-lead",
+                                         "sendBody":  true,
+                                         "specifyBody":  "json",
+                                         "jsonBody":  "={{JSON.stringify($json)}}"
+                                     },
+                      "id":  "store-lead",
+                      "name":  "Store Lead in Backend",
+                      "type":  "n8n-nodes-base.httpRequest",
+                      "typeVersion":  4.1,
+                      "position":  [
+                                       650,
+                                       300
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "phoneNumberId":  "={{$env.WHATSAPP_PHONE_NUMBER_ID}}",
+                                         "recipientPhoneNumber":  "254781751937",
+                                         "textBody":  "=🚀 New Facebook Lead!\n\nName: {{$json.name}}\nPhone: {{$json.phone}}\nEmail: {{$json.email}}\n\nCheck dashboard for details."
+                                     },
+                      "id":  "notify-admin",
+                      "name":  "Notify Admin (WhatsApp)",
+                      "type":  "n8n-nodes-base.whatsappBusiness",
+                      "typeVersion":  1,
+                      "position":  [
+                                       850,
+                                       300
+                                   ],
+                      "credentials":  {
+                                          "whatsappBusinessApi":  {
+                                                                      "id":  "whatsapp-business-credential",
+                                                                      "name":  "WhatsApp Business Account"
+                                                                  }
+                                      }
+                  }
+              ],
+    "connections":  {
+                        "Facebook Lead Ads Trigger":  {
+                                                          "main":  [
+                                                                       [
+                                                                           {
+                                                                               "node":  "Format Lead Data",
+                                                                               "type":  "main",
+                                                                               "index":  0
+                                                                           }
+                                                                       ]
+                                                                   ]
+                                                      },
+                        "Format Lead Data":  {
+                                                 "main":  [
+                                                              [
+                                                                  {
+                                                                      "node":  "Store Lead in Backend",
+                                                                      "type":  "main",
+                                                                      "index":  0
+                                                                  }
+                                                              ]
+                                                          ]
+                                             },
+                        "Store Lead in Backend":  {
+                                                      "main":  [
+                                                                   [
+                                                                       {
+                                                                           "node":  "Notify Admin (WhatsApp)",
+                                                                           "type":  "main",
+                                                                           "index":  0
+                                                                       }
+                                                                   ]
+                                                               ]
+                                                  }
+                    },
+    "active":  false,
+    "settings":  {
+
+                 },
+    "versionId":  "1",
+    "id":  "07_facebook_lead_ads",
+    "meta":  {
+                 "instanceId":  "bazztech-n8n"
+             },
+    "tags":  [
+
+             ]
+}

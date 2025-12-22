@@ -1,0 +1,446 @@
+{
+  "name": "03 - Form Submission Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 4
+            }
+          ]
+        }
+      },
+      "id": "dc555ff5-05e1-44df-8958-ce367257f857",
+      "name": "Schedule Trigger (Every 4 Hours)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        1440,
+        1488
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://bazz-ai-agentic-team-production-3203.up.railway.app/api/leads.getByStatus?status=qualified\n\n",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "48b503b7-ea94-4556-98f8-6d4c63c8c92b",
+      "name": "Fetch Qualified Leads",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1648,
+        1488
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "CXPkkHSyHaY4SwL0",
+          "name": "WhatsApp Bearer Token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "0a68e0d4-3ed9-414f-92dc-fdc333f98bb1",
+      "name": "Loop Through Leads",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1840,
+        1488
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Construct Microsoft Forms submission payload\nconst lead = $input.item.json;\n\n// Format date and time\nconst formatDate = (dateStr) => {\n  if (!dateStr) return new Date().toISOString().split('T')[0];\n  return dateStr;\n};\n\nconst formatTime = (timeStr) => {\n  if (!timeStr) return '10:00';\n  return timeStr;\n};\n\n// Get connection type (default to 5G ODU if not specified)\nconst connectionType = lead.connectionType || 'SmartConnect (5G ODU)';\n\n// Get total units (default to 1)\nconst units = lead.units || 1;\n\n// Build form payload with NEW field IDs\nconst payload = {\n  \"responses\": [\n    {\n      \"questionId\": \"r0feee2e2bc7c44fb9af400709e7e6276\",\n      \"answer\": \"Enterprise\"\n    },\n    {\n      \"questionId\": \"r52e9f6e788444e2a96d9e30de5d635d8\",\n      \"answer\": \"BAZZTECH NETWORKS\"\n    },\n    {\n      \"questionId\": \"rcf88d2d33e8c4ed4b33ccc91fec1d771\",\n      \"answer\": \"Reagan Ochola\"\n    },\n    {\n      \"questionId\": \"r2855e7f8fcfb44c98a2c5797e8e9b087\",\n      \"answer\": \"254781751937\"\n    },\n    {\n      \"questionId\": \"rd897bb0eb8344bafaaf8db07a535a049\",\n      \"answer\": \"Confirmed\"\n    },\n    {\n      \"questionId\": \"r4ceb180775c04d5a92a39fd687573090\",\n      \"answer\": connectionType\n    },\n    {\n      \"questionId\": \"r3af4eebb47ff46b78eb4118311884f53\",\n      \"answer\": lead.customerName || \"Unknown\"\n    },\n    {\n      \"questionId\": \"r8b0d2eb8e038433f8ce4888e07bed122\",\n      \"answer\": lead.customerAirtelNumber || \"\"\n    },\n    {\n      \"questionId\": \"r401284e3fee94602a39ed9a0a14890ea\",\n      \"answer\": lead.customerAlternateNumber || lead.customerAirtelNumber || \"\"\n    },\n    {\n      \"questionId\": \"r5dbc62a93dc64f3d84a2442f5ea4a856\",\n      \"answer\": lead.customerEmail || \"\"\n    },\n    {\n      \"questionId\": \"r819c212e954f4367acaba71082424415\",\n      \"answer\": lead.preferredPackage || \"30Mbps\"\n    },\n    {\n      \"questionId\": \"rc89257414e57426dac9a183c60a4b556\",\n      \"answer\": lead.installationTown || \"NAIROBI\"\n    },\n    {\n      \"questionId\": \"r7a69684d43ec4bf1b6971b21a8b4dd18\",\n      \"answer\": lead.deliveryLocation || \"\"\n    },\n    {\n      \"questionId\": \"r68b858271107400189b8d681d1b19c38\",\n      \"answer\": formatDate(lead.installationDate)\n    },\n    {\n      \"questionId\": \"rae98a58cb06949c1a3222443368aa64e\",\n      \"answer\": formatTime(lead.installationTime)\n    },\n    {\n      \"questionId\": \"rb1675e7eca79440e9aade6600fa4d22c\",\n      \"answer\": units.toString()\n    }\n  ]\n};\n\nreturn {\n  leadId: lead.id,\n  payload: payload,\n  customerName: lead.customerName,\n  preferredPackage: lead.preferredPackage,\n  connectionType: connectionType\n};\n"
+      },
+      "id": "a4ceafc0-814d-40c4-b2c6-1e579412b2a4",
+      "name": "Construct Form Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2048,
+        1488
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=JzfHFpyXgk2zp-tqL93-V1fdJne7SIlMnh7yZpkW8f5UQjc4M0wwWU9HRTJPRjMxWlc5QjRLOUhaMC4u&origin=Invitation&channel=0",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.payload) }}",
+        "options": {}
+      },
+      "id": "21cd9f11-ef03-4658-8d5b-2c209c48c6a2",
+      "name": "Submit to Microsoft Forms",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2240,
+        1488
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 1
+          },
+          "conditions": [
+            {
+              "id": "success-condition",
+              "leftValue": "={{ $json.statusCode.toNumber }}",
+              "rightValue": "={{ 200 }}",
+              "operator": {
+                "type": "number",
+                "operation": "gte",
+                "rightType": "number"
+              }
+            },
+            {
+              "id": "success-condition-2",
+              "leftValue": "={{ $json.statusCode.toNumber }}",
+              "rightValue": "={{ 299 }}",
+              "operator": {
+                "type": "number",
+                "operation": "lte",
+                "rightType": "number"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "da8f9aa3-54b6-4a2a-8419-f6b2bb1abf98",
+      "name": "Check Response Status",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        2448,
+        1488
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://bazz-ai-agentic-team-production-3203.up.railway.app/api/submissions",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ \n  leadId: $node['Construct Form Payload'].json.leadId, \n  status: \"success\", \n  responseCode: $json.statusCode || 200, \n  responseBody: String($json.body || \"Form submitted successfully\"), \n  submittedAt: new Date().toISOString() \n}) }}",
+        "options": {}
+      },
+      "id": "943bbdf9-2dbf-486a-9322-66bae4119e8e",
+      "name": "Create Submission Record (Success)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2640,
+        1376
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "CXPkkHSyHaY4SwL0",
+          "name": "WhatsApp Bearer Token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://bazz-ai-agentic-team-production-3203.up.railway.app/api/submissions.create",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"leadId\": 0,\n  \"status\": \"failed\",\n  \"responseCode\": 0,\n  \"responseBody\": \"Form submission failed\",\n  \"errorMessage\": \"Unknown error\",\n  \"submittedAt\": \"2025-12-11T18:09:00Z\"\n}",
+        "options": {}
+      },
+      "id": "311dd144-b5e0-4e83-81d1-fb0e19f317d6",
+      "name": "Create Submission Record (Failed)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2640,
+        1584
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "CXPkkHSyHaY4SwL0",
+          "name": "WhatsApp Bearer Token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://bazz-ai-agentic-team-production-3203.up.railway.app/api/leads/{{ $node['Construct Form Payload'].json.leadId }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ \n  status: \"form_submitted\"\n}) }}",
+        "options": {}
+      },
+      "id": "72fbfbeb-08bf-4103-94b4-d641876fa8e2",
+      "name": "Update Lead Status (Submitted)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2848,
+        1376
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "CXPkkHSyHaY4SwL0",
+          "name": "WhatsApp Bearer Token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "=https://bazz-ai-agentic-team-production-3203.up.railway.app/api/leads/{{ $node['Construct Form Payload'].json.leadId }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ \n  status: \"form_failed\", \n  errorMessage: String($json.error || \"Form submission failed\") \n}) }}",
+        "options": {}
+      },
+      "id": "7ea7c31c-b290-47ce-9857-a0e522b6f88f",
+      "name": "Update Lead Status (Failed)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2848,
+        1584
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "CXPkkHSyHaY4SwL0",
+          "name": "WhatsApp Bearer Token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "height": 784.7942430703599,
+        "width": 389.0838407016758,
+        "color": 6
+      },
+      "id": "60c11b6c-4f1f-440c-bfc2-ddde6944d8dc",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1424,
+        976
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger (Every 4 Hours)": {
+      "main": [
+        [
+          {
+            "node": "Fetch Qualified Leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Qualified Leads": {
+      "main": [
+        [
+          {
+            "node": "Loop Through Leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Through Leads": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Construct Form Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Construct Form Payload": {
+      "main": [
+        [
+          {
+            "node": "Submit to Microsoft Forms",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Submit to Microsoft Forms": {
+      "main": [
+        [
+          {
+            "node": "Check Response Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Response Status": {
+      "main": [
+        [
+          {
+            "node": "Create Submission Record (Success)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create Submission Record (Failed)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Submission Record (Success)": {
+      "main": [
+        [
+          {
+            "node": "Update Lead Status (Submitted)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Submission Record (Failed)": {
+      "main": [
+        [
+          {
+            "node": "Update Lead Status (Failed)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Lead Status (Submitted)": {
+      "main": [
+        [
+          {
+            "node": "Loop Through Leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Lead Status (Failed)": {
+      "main": [
+        [
+          {
+            "node": "Loop Through Leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "timeSavedMode": "fixed",
+    "timezone": "Africa/Nairobi",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false,
+    "executionTimeout": -1
+  },
+  "versionId": "04812d54-82de-49ec-b292-22507fcdcd2d",
+  "meta": {
+    "instanceId": "6e84a5f4749722036b9d697019011efd52eda740a3bee66f632a595f353efc69"
+  },
+  "id": "kHyGMPBHrBjsw3ZM",
+  "tags": []
+}

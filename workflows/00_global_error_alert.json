@@ -1,0 +1,54 @@
+﻿{
+  "name": "00 - Global Error Alert",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "error-trigger-00",
+      "name": "Execute Workflow Trigger",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1,
+      "position": [0, 400]
+    },
+    {
+      "parameters": {
+        "jsCode": "const d = $json; const msg = `n8n Error Alert\\nWorkflow: ${d.workflow?.name || 'Unknown'} (${d.workflow?.id || ''})\\nNode: ${d.node?.name || 'Unknown'}\\nError: ${d.error?.message || JSON.stringify(d)}\\nWhen: ${new Date().toISOString()}\\nExecution: ${d.execution?.id || 'N/A'}`; return { body: msg };"
+      },
+      "id": "compose-alert-00",
+      "name": "Compose Alert",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [220, 400]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v21.0/880774405122197/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Content-Type", "value": "application/json" },
+            { "name": "Authorization", "value": "Bearer EAAblTVbhiH0BQNYm9z5YqiNLTqZBFUxIKGN1yyc4Ibof7WmfFhoh8ZC0FkC8d6uNdcTyZBuA4LMXnLrY5pgcK0aCZAFImk0VZBJP9IVIOuzLNROAmgqAJc41PVo4oFutXsFXKUa5dK81celYZC980nJZCDiWALScXowgDM8EsyB8sNiy6VvBUs4YVvJ6xgE0AZDZD" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ messaging_product: 'whatsapp', to: '254720821051', text: { body: $json.body } }) }}",
+        "options": {}
+      },
+      "id": "send-whatsapp-00",
+      "name": "Send WhatsApp Alert",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [440, 400]
+    }
+  ],
+  "connections": {
+    "Execute Workflow Trigger": { "main": [[{ "node": "Compose Alert", "type": "main", "index": 0 }]] },
+    "Compose Alert": { "main": [[{ "node": "Send WhatsApp Alert", "type": "main", "index": 0 }]] }
+  },
+  "active": false,
+  "settings": { "executionOrder": "v1", "timezone": "Africa/Nairobi" },
+  "versionId": "workflow-00-v3",
+  "id": "workflow-00",
+  "tags": []
+}

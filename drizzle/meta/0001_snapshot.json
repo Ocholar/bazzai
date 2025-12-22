@@ -1,0 +1,589 @@
+{
+    "version":  "5",
+    "dialect":  "mysql",
+    "id":  "a5c00008-ae02-4c04-9afc-51bfba68b090",
+    "prevId":  "5980160e-c15c-4565-978b-403c8b4260cd",
+    "tables":  {
+                   "analytics":  {
+                                     "name":  "analytics",
+                                     "columns":  {
+                                                     "id":  {
+                                                                "name":  "id",
+                                                                "type":  "int",
+                                                                "primaryKey":  false,
+                                                                "notNull":  true,
+                                                                "autoincrement":  true
+                                                            },
+                                                     "date":  {
+                                                                  "name":  "date",
+                                                                  "type":  "timestamp",
+                                                                  "primaryKey":  false,
+                                                                  "notNull":  true,
+                                                                  "autoincrement":  false
+                                                              },
+                                                     "totalLeads":  {
+                                                                        "name":  "totalLeads",
+                                                                        "type":  "int",
+                                                                        "primaryKey":  false,
+                                                                        "notNull":  false,
+                                                                        "autoincrement":  false,
+                                                                        "default":  0
+                                                                    },
+                                                     "contactedLeads":  {
+                                                                            "name":  "contactedLeads",
+                                                                            "type":  "int",
+                                                                            "primaryKey":  false,
+                                                                            "notNull":  false,
+                                                                            "autoincrement":  false,
+                                                                            "default":  0
+                                                                        },
+                                                     "qualifiedLeads":  {
+                                                                            "name":  "qualifiedLeads",
+                                                                            "type":  "int",
+                                                                            "primaryKey":  false,
+                                                                            "notNull":  false,
+                                                                            "autoincrement":  false,
+                                                                            "default":  0
+                                                                        },
+                                                     "submittedLeads":  {
+                                                                            "name":  "submittedLeads",
+                                                                            "type":  "int",
+                                                                            "primaryKey":  false,
+                                                                            "notNull":  false,
+                                                                            "autoincrement":  false,
+                                                                            "default":  0
+                                                                        },
+                                                     "installedLeads":  {
+                                                                            "name":  "installedLeads",
+                                                                            "type":  "int",
+                                                                            "primaryKey":  false,
+                                                                            "notNull":  false,
+                                                                            "autoincrement":  false,
+                                                                            "default":  0
+                                                                        },
+                                                     "failedLeads":  {
+                                                                         "name":  "failedLeads",
+                                                                         "type":  "int",
+                                                                         "primaryKey":  false,
+                                                                         "notNull":  false,
+                                                                         "autoincrement":  false,
+                                                                         "default":  0
+                                                                     },
+                                                     "package15Count":  {
+                                                                            "name":  "package15Count",
+                                                                            "type":  "int",
+                                                                            "primaryKey":  false,
+                                                                            "notNull":  false,
+                                                                            "autoincrement":  false,
+                                                                            "default":  0
+                                                                        },
+                                                     "package30Count":  {
+                                                                            "name":  "package30Count",
+                                                                            "type":  "int",
+                                                                            "primaryKey":  false,
+                                                                            "notNull":  false,
+                                                                            "autoincrement":  false,
+                                                                            "default":  0
+                                                                        },
+                                                     "submissionSuccessRate":  {
+                                                                                   "name":  "submissionSuccessRate",
+                                                                                   "type":  "decimal(5,2)",
+                                                                                   "primaryKey":  false,
+                                                                                   "notNull":  false,
+                                                                                   "autoincrement":  false,
+                                                                                   "default":  "\u00270\u0027"
+                                                                               },
+                                                     "conversionRate":  {
+                                                                            "name":  "conversionRate",
+                                                                            "type":  "decimal(5,2)",
+                                                                            "primaryKey":  false,
+                                                                            "notNull":  false,
+                                                                            "autoincrement":  false,
+                                                                            "default":  "\u00270\u0027"
+                                                                        },
+                                                     "avgCommissionPerGA":  {
+                                                                                "name":  "avgCommissionPerGA",
+                                                                                "type":  "decimal(10,2)",
+                                                                                "primaryKey":  false,
+                                                                                "notNull":  false,
+                                                                                "autoincrement":  false,
+                                                                                "default":  "\u00270\u0027"
+                                                                            },
+                                                     "createdAt":  {
+                                                                       "name":  "createdAt",
+                                                                       "type":  "timestamp",
+                                                                       "primaryKey":  false,
+                                                                       "notNull":  true,
+                                                                       "autoincrement":  false,
+                                                                       "default":  "(now())"
+                                                                   },
+                                                     "updatedAt":  {
+                                                                       "name":  "updatedAt",
+                                                                       "type":  "timestamp",
+                                                                       "primaryKey":  false,
+                                                                       "notNull":  true,
+                                                                       "autoincrement":  false,
+                                                                       "onUpdate":  true,
+                                                                       "default":  "(now())"
+                                                                   }
+                                                 },
+                                     "indexes":  {
+
+                                                 },
+                                     "foreignKeys":  {
+
+                                                     },
+                                     "compositePrimaryKeys":  {
+                                                                  "analytics_id":  {
+                                                                                       "name":  "analytics_id",
+                                                                                       "columns":  [
+                                                                                                       "id"
+                                                                                                   ]
+                                                                                   }
+                                                              },
+                                     "uniqueConstraints":  {
+
+                                                           },
+                                     "checkConstraint":  {
+
+                                                         }
+                                 },
+                   "config":  {
+                                  "name":  "config",
+                                  "columns":  {
+                                                  "id":  {
+                                                             "name":  "id",
+                                                             "type":  "int",
+                                                             "primaryKey":  false,
+                                                             "notNull":  true,
+                                                             "autoincrement":  true
+                                                         },
+                                                  "key":  {
+                                                              "name":  "key",
+                                                              "type":  "varchar(100)",
+                                                              "primaryKey":  false,
+                                                              "notNull":  true,
+                                                              "autoincrement":  false
+                                                          },
+                                                  "value":  {
+                                                                "name":  "value",
+                                                                "type":  "json",
+                                                                "primaryKey":  false,
+                                                                "notNull":  false,
+                                                                "autoincrement":  false
+                                                            },
+                                                  "description":  {
+                                                                      "name":  "description",
+                                                                      "type":  "text",
+                                                                      "primaryKey":  false,
+                                                                      "notNull":  false,
+                                                                      "autoincrement":  false
+                                                                  },
+                                                  "createdAt":  {
+                                                                    "name":  "createdAt",
+                                                                    "type":  "timestamp",
+                                                                    "primaryKey":  false,
+                                                                    "notNull":  true,
+                                                                    "autoincrement":  false,
+                                                                    "default":  "(now())"
+                                                                },
+                                                  "updatedAt":  {
+                                                                    "name":  "updatedAt",
+                                                                    "type":  "timestamp",
+                                                                    "primaryKey":  false,
+                                                                    "notNull":  true,
+                                                                    "autoincrement":  false,
+                                                                    "onUpdate":  true,
+                                                                    "default":  "(now())"
+                                                                }
+                                              },
+                                  "indexes":  {
+
+                                              },
+                                  "foreignKeys":  {
+
+                                                  },
+                                  "compositePrimaryKeys":  {
+                                                               "config_id":  {
+                                                                                 "name":  "config_id",
+                                                                                 "columns":  [
+                                                                                                 "id"
+                                                                                             ]
+                                                                             }
+                                                           },
+                                  "uniqueConstraints":  {
+                                                            "config_key_unique":  {
+                                                                                      "name":  "config_key_unique",
+                                                                                      "columns":  [
+                                                                                                      "key"
+                                                                                                  ]
+                                                                                  }
+                                                        },
+                                  "checkConstraint":  {
+
+                                                      }
+                              },
+                   "leads":  {
+                                 "name":  "leads",
+                                 "columns":  {
+                                                 "id":  {
+                                                            "name":  "id",
+                                                            "type":  "int",
+                                                            "primaryKey":  false,
+                                                            "notNull":  true,
+                                                            "autoincrement":  true
+                                                        },
+                                                 "customerName":  {
+                                                                      "name":  "customerName",
+                                                                      "type":  "text",
+                                                                      "primaryKey":  false,
+                                                                      "notNull":  false,
+                                                                      "autoincrement":  false
+                                                                  },
+                                                 "phone":  {
+                                                               "name":  "phone",
+                                                               "type":  "varchar(20)",
+                                                               "primaryKey":  false,
+                                                               "notNull":  true,
+                                                               "autoincrement":  false
+                                                           },
+                                                 "email":  {
+                                                               "name":  "email",
+                                                               "type":  "varchar(320)",
+                                                               "primaryKey":  false,
+                                                               "notNull":  false,
+                                                               "autoincrement":  false
+                                                           },
+                                                 "source":  {
+                                                                "name":  "source",
+                                                                "type":  "varchar(50)",
+                                                                "primaryKey":  false,
+                                                                "notNull":  true,
+                                                                "autoincrement":  false
+                                                            },
+                                                 "tag":  {
+                                                             "name":  "tag",
+                                                             "type":  "enum(\u0027high_value\u0027,\u0027high_volume\u0027)",
+                                                             "primaryKey":  false,
+                                                             "notNull":  true,
+                                                             "autoincrement":  false
+                                                         },
+                                                 "status":  {
+                                                                "name":  "status",
+                                                                "type":  "enum(\u0027new\u0027,\u0027contacted\u0027,\u0027qualified\u0027,\u0027submitted\u0027,\u0027installed\u0027,\u0027failed\u0027)",
+                                                                "primaryKey":  false,
+                                                                "notNull":  true,
+                                                                "autoincrement":  false,
+                                                                "default":  "\u0027new\u0027"
+                                                            },
+                                                 "preferredPackage":  {
+                                                                          "name":  "preferredPackage",
+                                                                          "type":  "enum(\u002715mbps\u0027,\u002730mbps\u0027,\u0027unspecified\u0027)",
+                                                                          "primaryKey":  false,
+                                                                          "notNull":  false,
+                                                                          "autoincrement":  false,
+                                                                          "default":  "\u0027unspecified\u0027"
+                                                                      },
+                                                 "installationTown":  {
+                                                                          "name":  "installationTown",
+                                                                          "type":  "text",
+                                                                          "primaryKey":  false,
+                                                                          "notNull":  false,
+                                                                          "autoincrement":  false
+                                                                      },
+                                                 "deliveryLocation":  {
+                                                                          "name":  "deliveryLocation",
+                                                                          "type":  "text",
+                                                                          "primaryKey":  false,
+                                                                          "notNull":  false,
+                                                                          "autoincrement":  false
+                                                                      },
+                                                 "preferredDate":  {
+                                                                       "name":  "preferredDate",
+                                                                       "type":  "timestamp",
+                                                                       "primaryKey":  false,
+                                                                       "notNull":  false,
+                                                                       "autoincrement":  false
+                                                                   },
+                                                 "preferredTime":  {
+                                                                       "name":  "preferredTime",
+                                                                       "type":  "varchar(20)",
+                                                                       "primaryKey":  false,
+                                                                       "notNull":  false,
+                                                                       "autoincrement":  false
+                                                                   },
+                                                 "conversationHistory":  {
+                                                                             "name":  "conversationHistory",
+                                                                             "type":  "json",
+                                                                             "primaryKey":  false,
+                                                                             "notNull":  false,
+                                                                             "autoincrement":  false
+                                                                         },
+                                                 "createdAt":  {
+                                                                   "name":  "createdAt",
+                                                                   "type":  "timestamp",
+                                                                   "primaryKey":  false,
+                                                                   "notNull":  true,
+                                                                   "autoincrement":  false,
+                                                                   "default":  "(now())"
+                                                               },
+                                                 "updatedAt":  {
+                                                                   "name":  "updatedAt",
+                                                                   "type":  "timestamp",
+                                                                   "primaryKey":  false,
+                                                                   "notNull":  true,
+                                                                   "autoincrement":  false,
+                                                                   "onUpdate":  true,
+                                                                   "default":  "(now())"
+                                                               }
+                                             },
+                                 "indexes":  {
+
+                                             },
+                                 "foreignKeys":  {
+
+                                                 },
+                                 "compositePrimaryKeys":  {
+                                                              "leads_id":  {
+                                                                               "name":  "leads_id",
+                                                                               "columns":  [
+                                                                                               "id"
+                                                                                           ]
+                                                                           }
+                                                          },
+                                 "uniqueConstraints":  {
+
+                                                       },
+                                 "checkConstraint":  {
+
+                                                     }
+                             },
+                   "submissions":  {
+                                       "name":  "submissions",
+                                       "columns":  {
+                                                       "id":  {
+                                                                  "name":  "id",
+                                                                  "type":  "int",
+                                                                  "primaryKey":  false,
+                                                                  "notNull":  true,
+                                                                  "autoincrement":  true
+                                                              },
+                                                       "leadId":  {
+                                                                      "name":  "leadId",
+                                                                      "type":  "int",
+                                                                      "primaryKey":  false,
+                                                                      "notNull":  true,
+                                                                      "autoincrement":  false
+                                                                  },
+                                                       "status":  {
+                                                                      "name":  "status",
+                                                                      "type":  "enum(\u0027pending\u0027,\u0027success\u0027,\u0027failed\u0027,\u0027retry\u0027)",
+                                                                      "primaryKey":  false,
+                                                                      "notNull":  true,
+                                                                      "autoincrement":  false,
+                                                                      "default":  "\u0027pending\u0027"
+                                                                  },
+                                                       "submissionPayload":  {
+                                                                                 "name":  "submissionPayload",
+                                                                                 "type":  "json",
+                                                                                 "primaryKey":  false,
+                                                                                 "notNull":  false,
+                                                                                 "autoincrement":  false
+                                                                             },
+                                                       "responseCode":  {
+                                                                            "name":  "responseCode",
+                                                                            "type":  "int",
+                                                                            "primaryKey":  false,
+                                                                            "notNull":  false,
+                                                                            "autoincrement":  false
+                                                                        },
+                                                       "responseBody":  {
+                                                                            "name":  "responseBody",
+                                                                            "type":  "text",
+                                                                            "primaryKey":  false,
+                                                                            "notNull":  false,
+                                                                            "autoincrement":  false
+                                                                        },
+                                                       "errorMessage":  {
+                                                                            "name":  "errorMessage",
+                                                                            "type":  "text",
+                                                                            "primaryKey":  false,
+                                                                            "notNull":  false,
+                                                                            "autoincrement":  false
+                                                                        },
+                                                       "retryCount":  {
+                                                                          "name":  "retryCount",
+                                                                          "type":  "int",
+                                                                          "primaryKey":  false,
+                                                                          "notNull":  false,
+                                                                          "autoincrement":  false,
+                                                                          "default":  0
+                                                                      },
+                                                       "lastRetryAt":  {
+                                                                           "name":  "lastRetryAt",
+                                                                           "type":  "timestamp",
+                                                                           "primaryKey":  false,
+                                                                           "notNull":  false,
+                                                                           "autoincrement":  false
+                                                                       },
+                                                       "createdAt":  {
+                                                                         "name":  "createdAt",
+                                                                         "type":  "timestamp",
+                                                                         "primaryKey":  false,
+                                                                         "notNull":  true,
+                                                                         "autoincrement":  false,
+                                                                         "default":  "(now())"
+                                                                     },
+                                                       "updatedAt":  {
+                                                                         "name":  "updatedAt",
+                                                                         "type":  "timestamp",
+                                                                         "primaryKey":  false,
+                                                                         "notNull":  true,
+                                                                         "autoincrement":  false,
+                                                                         "onUpdate":  true,
+                                                                         "default":  "(now())"
+                                                                     }
+                                                   },
+                                       "indexes":  {
+
+                                                   },
+                                       "foreignKeys":  {
+
+                                                       },
+                                       "compositePrimaryKeys":  {
+                                                                    "submissions_id":  {
+                                                                                           "name":  "submissions_id",
+                                                                                           "columns":  [
+                                                                                                           "id"
+                                                                                                       ]
+                                                                                       }
+                                                                },
+                                       "uniqueConstraints":  {
+
+                                                             },
+                                       "checkConstraint":  {
+
+                                                           }
+                                   },
+                   "users":  {
+                                 "name":  "users",
+                                 "columns":  {
+                                                 "id":  {
+                                                            "name":  "id",
+                                                            "type":  "int",
+                                                            "primaryKey":  false,
+                                                            "notNull":  true,
+                                                            "autoincrement":  true
+                                                        },
+                                                 "openId":  {
+                                                                "name":  "openId",
+                                                                "type":  "varchar(64)",
+                                                                "primaryKey":  false,
+                                                                "notNull":  true,
+                                                                "autoincrement":  false
+                                                            },
+                                                 "name":  {
+                                                              "name":  "name",
+                                                              "type":  "text",
+                                                              "primaryKey":  false,
+                                                              "notNull":  false,
+                                                              "autoincrement":  false
+                                                          },
+                                                 "email":  {
+                                                               "name":  "email",
+                                                               "type":  "varchar(320)",
+                                                               "primaryKey":  false,
+                                                               "notNull":  false,
+                                                               "autoincrement":  false
+                                                           },
+                                                 "loginMethod":  {
+                                                                     "name":  "loginMethod",
+                                                                     "type":  "varchar(64)",
+                                                                     "primaryKey":  false,
+                                                                     "notNull":  false,
+                                                                     "autoincrement":  false
+                                                                 },
+                                                 "role":  {
+                                                              "name":  "role",
+                                                              "type":  "enum(\u0027user\u0027,\u0027admin\u0027)",
+                                                              "primaryKey":  false,
+                                                              "notNull":  true,
+                                                              "autoincrement":  false,
+                                                              "default":  "\u0027user\u0027"
+                                                          },
+                                                 "createdAt":  {
+                                                                   "name":  "createdAt",
+                                                                   "type":  "timestamp",
+                                                                   "primaryKey":  false,
+                                                                   "notNull":  true,
+                                                                   "autoincrement":  false,
+                                                                   "default":  "(now())"
+                                                               },
+                                                 "updatedAt":  {
+                                                                   "name":  "updatedAt",
+                                                                   "type":  "timestamp",
+                                                                   "primaryKey":  false,
+                                                                   "notNull":  true,
+                                                                   "autoincrement":  false,
+                                                                   "onUpdate":  true,
+                                                                   "default":  "(now())"
+                                                               },
+                                                 "lastSignedIn":  {
+                                                                      "name":  "lastSignedIn",
+                                                                      "type":  "timestamp",
+                                                                      "primaryKey":  false,
+                                                                      "notNull":  true,
+                                                                      "autoincrement":  false,
+                                                                      "default":  "(now())"
+                                                                  }
+                                             },
+                                 "indexes":  {
+
+                                             },
+                                 "foreignKeys":  {
+
+                                                 },
+                                 "compositePrimaryKeys":  {
+                                                              "users_id":  {
+                                                                               "name":  "users_id",
+                                                                               "columns":  [
+                                                                                               "id"
+                                                                                           ]
+                                                                           }
+                                                          },
+                                 "uniqueConstraints":  {
+                                                           "users_openId_unique":  {
+                                                                                       "name":  "users_openId_unique",
+                                                                                       "columns":  [
+                                                                                                       "openId"
+                                                                                                   ]
+                                                                                   }
+                                                       },
+                                 "checkConstraint":  {
+
+                                                     }
+                             }
+               },
+    "views":  {
+
+              },
+    "_meta":  {
+                  "schemas":  {
+
+                              },
+                  "tables":  {
+
+                             },
+                  "columns":  {
+
+                              }
+              },
+    "internal":  {
+                     "tables":  {
+
+                                },
+                     "indexes":  {
+
+                                 }
+                 }
+}

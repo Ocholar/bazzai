@@ -1,0 +1,252 @@
+{
+    "name": "06_social_media_auto_poster",
+    "nodes": [
+        {
+            "parameters": {
+                "rule": {
+                    "interval": [
+                        {
+                            "field": "hours",
+                            "hoursInterval": 6
+                        }
+                    ]
+                }
+            },
+            "id": "schedule-trigger",
+            "name": "Schedule (Every 6 Hours)",
+            "type": "n8n-nodes-base.scheduleTrigger",
+            "genericAuthType": "httpQueryAuth",
+            "sendBody": true,
+            "specifyBody": "json",
+            "jsonBody": "={\n  \"message\": \"{{$json.content}}\",\n  \"published\": true\n}",
+            "options": {}
+        },
+        "id": "post-to-facebook",
+        "name": "Post to Facebook",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.1,
+        "position": [
+            1050,
+            200
+        ],
+        "credentials": {
+            "httpQueryAuth": {
+                "id": "facebook-page-token",
+                "name": "Facebook Page Access Token"
+            }
+        }
+    },
+    {
+        "parameters": {
+            "conditions": {
+                "string": [
+                    {
+                        "value1": "={{$json.topic}}",
+                        "operation": "notEquals",
+                        "value2": "tech_tip"
+                    }
+                ]
+            }
+        },
+        "id": "check-if-image-post",
+        "name": "Check if Image Post",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 1,
+        "position": [
+            1050,
+            400
+        ]
+    },
+    {
+        "parameters": {
+            "url": "https://graph.facebook.com/v18.0/={{$env.INSTAGRAM_BUSINESS_ACCOUNT_ID}}/media",
+            "authentication": "genericCredentialType",
+            "genericAuthType": "httpQueryAuth",
+            "sendBody": true,
+            "specifyBody": "json",
+            "jsonBody": "={\n  \"image_url\": \"https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?w=1080&h=1080&fit=crop\",\n  \"caption\": \"{{$json.content}}\"\n}",
+            "options": {}
+        },
+        "id": "create-instagram-media",
+        "name": "Create Instagram Media",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.1,
+        "position": [
+            1250,
+            350
+        ],
+        "credentials": {
+            "httpQueryAuth": {
+                "id": "facebook-page-token",
+                "name": "Facebook Page Access Token"
+            }
+        }
+    },
+    {
+        "parameters": {
+            "url": "https://graph.facebook.com/v18.0/={{$env.INSTAGRAM_BUSINESS_ACCOUNT_ID}}/media_publish",
+            "authentication": "genericCredentialType",
+            "genericAuthType": "httpQueryAuth",
+            "sendBody": true,
+            "specifyBody": "json",
+            "jsonBody": "={\n  \"creation_id\": \"{{$json.id}}\"\n}",
+            "options": {}
+        },
+        "id": "publish-instagram-post",
+        "name": "Publish Instagram Post",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.1,
+        "position": [
+            1450,
+            350
+        ],
+        "credentials": {
+            "httpQueryAuth": {
+                "id": "facebook-page-token",
+                "name": "Facebook Page Access Token"
+            }
+        }
+    },
+    {
+        "parameters": {
+            "url": "={{$env.DASHBOARD_API_URL}}/analytics.logSocialPost",
+            "authentication": "genericCredentialType",
+            "genericAuthType": "httpHeaderAuth",
+            "sendBody": true,
+            "specifyBody": "json",
+            "jsonBody": "={\n  \"platform\": \"facebook\",\n  \"content\": \"{{$json.content}}\",\n  \"topic\": \"{{$json.topic}}\",\n  \"postId\": \"{{$json.id}}\",\n  \"timestamp\": \"{{$json.timestamp}}\"\n}",
+            "options": {}
+        },
+        "id": "log-facebook-post",
+        "name": "Log Facebook Post",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.1,
+        "position": [
+            1250,
+            200
+        ]
+    },
+    {
+        "parameters": {
+            "url": "={{$env.DASHBOARD_API_URL}}/analytics.logSocialPost",
+            "authentication": "genericCredentialType",
+            "genericAuthType": "httpHeaderAuth",
+            "sendBody": true,
+            "specifyBody": "json",
+            "jsonBody": "={\n  \"platform\": \"instagram\",\n  \"content\": \"{{$json.content}}\",\n  \"topic\": \"{{$json.topic}}\",\n  \"postId\": \"{{$json.id}}\",\n  \"timestamp\": \"{{$json.timestamp}}\"\n}",
+            "options": {}
+        },
+        "id": "log-instagram-post",
+        "name": "Log Instagram Post",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.1,
+        "position": [
+            1650,
+            350
+        ]
+    }
+],
+"connections": {
+    "Schedule (Every 6 Hours)": {
+        "main": [
+            [
+                {
+                    "node": "Select Random Topic",
+                    "type": "main",
+                    "index": 0
+                }
+            ]
+        ]
+    },
+    "Select Random Topic": {
+        "main": [
+            [
+                {
+                    "node": "Generate Content (AI)",
+                    "type": "main",
+                    "index": 0
+                }
+            ]
+        ]
+    },
+    "Generate Content (AI)": {
+        "main": [
+            [
+                {
+                    "node": "Format Post Content",
+                    "type": "main",
+                    "index": 0
+                }
+            ]
+        ]
+    },
+    "Format Post Content": {
+        "main": [
+            [
+                {
+                    "node": "Post to Facebook",
+                    "type": "main",
+                    "index": 0
+                },
+                {
+                    "node": "Check if Image Post",
+                    "type": "main",
+                    "index": 0
+                }
+            ]
+        ]
+    },
+    "Post to Facebook": {
+        "main": [
+            [
+                {
+                    "node": "Log Facebook Post",
+                    "type": "main",
+                    "index": 0
+                }
+            ]
+        ]
+    },
+    "Check if Image Post": {
+        "main": [
+            [
+                {
+                    "node": "Create Instagram Media",
+                    "type": "main",
+                    "index": 0
+                }
+            ]
+        ]
+    },
+    "Create Instagram Media": {
+        "main": [
+            [
+                {
+                    "node": "Publish Instagram Post",
+                    "type": "main",
+                    "index": 0
+                }
+            ]
+        ]
+    },
+    "Publish Instagram Post": {
+        "main": [
+            [
+                {
+                    "node": "Log Instagram Post",
+                    "type": "main",
+                    "index": 0
+                }
+            ]
+        ]
+    }
+},
+"active": false,
+"settings": {},
+"versionId": "1",
+"id": "06_social_media_auto_poster",
+"meta": {
+    "instanceId": "bazztech-n8n"
+},
+"tags": []
+}

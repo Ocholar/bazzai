@@ -1,0 +1,3 @@
+[submodule "bazz-ai-backend"]
+	path = bazz-ai-backend
+	url = https://github.com/Ocholar/bazz-ai-agentic-team.git

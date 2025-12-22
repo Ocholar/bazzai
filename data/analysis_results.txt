@@ -1,0 +1,700 @@
+================================================================================
+EXCEL FILE ANALYSIS
+================================================================================
+
+Total sheets: 8
+
+SHEET NAMES:
+1. PARTNERS SUMMARY
+2. PARTNERS REJECTED LEADS
+3. ACTIVATED LEADS 
+4. NOV DUMP
+5. OCT DUMP
+6. SEPT DUMP 
+7. Sheet2
+8. DSE SUMMARY
+
+================================================================================
+SHEET: PARTNERS SUMMARY
+================================================================================
+
+Dimensions: 157 rows × 155 columns
+
+COLUMNS:
+  - Unnamed: 0
+  - Unnamed: 1
+  - Unnamed: 2
+  - Unnamed: 3
+  - Unnamed: 4
+  - Unnamed: 5
+  - SEPT  5G Router (ODU) Leads
+  - Unnamed: 7
+  - Unnamed: 8
+  - Unnamed: 9
+  - Unnamed: 10
+  - Unnamed: 11
+  - Unnamed: 12
+  - Unnamed: 13
+  - OCT 5G Router (ODU) Leads
+  - Unnamed: 15
+  - Unnamed: 16
+  - Unnamed: 17
+  - Unnamed: 18
+  - Unnamed: 19
+  - Unnamed: 20
+  - Unnamed: 21
+  - Unnamed: 22
+  - NOV 5G Router (ODU) Leads
+  - Unnamed: 24
+  - Unnamed: 25
+  - Unnamed: 26
+  - Unnamed: 27
+  - Unnamed: 28
+  - Unnamed: 29
+  - Unnamed: 30
+  - Unnamed: 31
+  - Unnamed: 32
+  - Unnamed: 33
+  - Unnamed: 34
+  - ENTERPRISE PARTNERS CONVERTED  LEADS DOD 
+  - Unnamed: 36
+  - Unnamed: 37
+  - Unnamed: 38
+  - Unnamed: 39
+  - Unnamed: 40
+  - Unnamed: 41
+  - Unnamed: 42
+  - Unnamed: 43
+  - Unnamed: 44
+  - Unnamed: 45
+  - Unnamed: 46
+  - Unnamed: 47
+  - Unnamed: 48
+  - Unnamed: 49
+  - Unnamed: 50
+  - Unnamed: 51
+  - Unnamed: 52
+  - Unnamed: 53
+  - Unnamed: 54
+  - Unnamed: 55
+  - Unnamed: 56
+  - Unnamed: 57
+  - Unnamed: 58
+  - Unnamed: 59
+  - Unnamed: 60
+  - Unnamed: 61
+  - Unnamed: 62
+  - Unnamed: 63
+  - Unnamed: 64
+  - Unnamed: 65
+  - Unnamed: 66
+  - Unnamed: 67
+  - Unnamed: 68
+  - Unnamed: 69
+  - Unnamed: 70
+  - Unnamed: 71
+  - Unnamed: 72
+  - Unnamed: 73
+  - Unnamed: 74
+  - Unnamed: 75
+  - Unnamed: 76
+  - Unnamed: 77
+  - Unnamed: 78
+  - Unnamed: 79
+  - Unnamed: 80
+  - Unnamed: 81
+  - Unnamed: 82
+  - Unnamed: 83
+  - Unnamed: 84
+  - Unnamed: 85
+  - Unnamed: 86
+  - Unnamed: 87
+  - Unnamed: 88
+  - Unnamed: 89
+  - Unnamed: 90
+  - Unnamed: 91
+  - Unnamed: 92
+  - Unnamed: 93
+  - Unnamed: 94
+  - Unnamed: 95
+  - Unnamed: 96
+  - Unnamed: 97
+  - Unnamed: 98
+  - Unnamed: 99
+  - Unnamed: 100
+  - Unnamed: 101
+  - Unnamed: 102
+  - Unnamed: 103
+  - Unnamed: 104
+  - Unnamed: 105
+  - Unnamed: 106
+  - Unnamed: 107
+  - Unnamed: 108
+  - Unnamed: 109
+  - Unnamed: 110
+  - Unnamed: 111
+  - Unnamed: 112
+  - Unnamed: 113
+  - Unnamed: 114
+  - Unnamed: 115
+  - Unnamed: 116
+  - Unnamed: 117
+  - Unnamed: 118
+  - Unnamed: 119
+  - Unnamed: 120
+  - Unnamed: 121
+  - Unnamed: 122
+  - Unnamed: 123
+  - Unnamed: 124
+  - Unnamed: 125
+  - Unnamed: 126
+  - Unnamed: 127
+  - Unnamed: 128
+  - Unnamed: 129
+  - Unnamed: 130
+  - Unnamed: 131
+  - Unnamed: 132
+  - Unnamed: 133
+  - Unnamed: 134
+  - Unnamed: 135
+  - Unnamed: 136
+  - Unnamed: 137
+  - Unnamed: 138
+  - Unnamed: 139
+  - Unnamed: 140
+  - Unnamed: 141
+  - Unnamed: 142
+  - Unnamed: 143
+  - Unnamed: 144
+  - Unnamed: 145
+  - Unnamed: 146
+  - Unnamed: 147
+  - Unnamed: 148
+  - Unnamed: 149
+  - Unnamed: 150
+  - Unnamed: 151
+  - Unnamed: 152
+  - Unnamed: 153
+  - Unnamed: 154
+
+SAMPLE DATA (first 5 rows):
+                        Unnamed: 0                  Unnamed: 1 Unnamed: 2                 Unnamed: 3  Unnamed: 4 Unnamed: 5 SEPT  5G Router (ODU) Leads Unnamed: 7 Unnamed: 8   Unnamed: 9          Unnamed: 10                    Unnamed: 11     Unnamed: 12  Unnamed: 13 OCT 5G Router (ODU) Leads Unnamed: 15 Unnamed: 16 Unnamed: 17  Unnamed: 18          Unnamed: 19                    Unnamed: 20     Unnamed: 21  Unnamed: 22 NOV 5G Router (ODU) Leads Unnamed: 24 Unnamed: 25 Unnamed: 26  Unnamed: 27          Unnamed: 28                    Unnamed: 29        Unnamed: 30     Unnamed: 31  Unnamed: 32          Unnamed: 33          Unnamed: 34 ENTERPRISE PARTNERS CONVERTED  LEADS DOD           Unnamed: 36          Unnamed: 37          Unnamed: 38          Unnamed: 39          Unnamed: 40          Unnamed: 41          Unnamed: 42          Unnamed: 43          Unnamed: 44          Unnamed: 45          Unnamed: 46          Unnamed: 47          Unnamed: 48          Unnamed: 49          Unnamed: 50          Unnamed: 51          Unnamed: 52          Unnamed: 53          Unnamed: 54          Unnamed: 55          Unnamed: 56          Unnamed: 57          Unnamed: 58          Unnamed: 59          Unnamed: 60          Unnamed: 61          Unnamed: 62          Unnamed: 63          Unnamed: 64          Unnamed: 65          Unnamed: 66          Unnamed: 67          Unnamed: 68          Unnamed: 69          Unnamed: 70          Unnamed: 71          Unnamed: 72          Unnamed: 73          Unnamed: 74          Unnamed: 75          Unnamed: 76          Unnamed: 77          Unnamed: 78          Unnamed: 79          Unnamed: 80          Unnamed: 81          Unnamed: 82          Unnamed: 83          Unnamed: 84          Unnamed: 85          Unnamed: 86          Unnamed: 87          Unnamed: 88          Unnamed: 89          Unnamed: 90          Unnamed: 91          Unnamed: 92          Unnamed: 93          Unnamed: 94          Unnamed: 95          Unnamed: 96          Unnamed: 97          Unnamed: 98          Unnamed: 99         Unnamed: 100         Unnamed: 101         Unnamed: 102         Unnamed: 103         Unnamed: 104         Unnamed: 105         Unnamed: 106         Unnamed: 107         Unnamed: 108         Unnamed: 109         Unnamed: 110         Unnamed: 111         Unnamed: 112         Unnamed: 113         Unnamed: 114         Unnamed: 115         Unnamed: 116         Unnamed: 117         Unnamed: 118         Unnamed: 119         Unnamed: 120         Unnamed: 121         Unnamed: 122         Unnamed: 123         Unnamed: 124         Unnamed: 125         Unnamed: 126         Unnamed: 127         Unnamed: 128         Unnamed: 129         Unnamed: 130         Unnamed: 131         Unnamed: 132         Unnamed: 133         Unnamed: 134         Unnamed: 135         Unnamed: 136         Unnamed: 137         Unnamed: 138         Unnamed: 139         Unnamed: 140         Unnamed: 141         Unnamed: 142         Unnamed: 143         Unnamed: 144         Unnamed: 145         Unnamed: 146         Unnamed: 147         Unnamed: 148         Unnamed: 149         Unnamed: 150         Unnamed: 151         Unnamed: 152         Unnamed: 153         Unnamed: 154
+0  EBB PARTNERS  FWA LEADS SUMMARY                         NaN        NaN                        NaN         NaN        NaN                          42         25         12            2                    3                             16        0.380952          NaN                       808           7         513         184           98                    6                            335        0.414604          NaN                      1269           2         285         107           11                    0                            613                Nov        0.483058          NaN                    0                    0                                         0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    1                    2                    2                    2                    3                    0                    2                    3                    8                    3                    6                    5                    5                   14                    4                    9                    4                   17                   11                    7                    8                   11                   11                    7                   10                    3                    6                   14                   13                   13                   12                   18                   18                   10                   10                   14                   21                   27                   16                   18                   28                   27                   30                   23                   21                   17                   29                   12                   26                   24                   27                   27                   31                   22                   12                   29                   24                   23                   34                   21                   31                   24                   23                   30                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0
+1                              PAE               Partners Name     KYC_ID                   EMAIL ID        Zone     REGION                       Leads  Confirmed   Rejected  Unreachable  Postponed(Update W)  Converted/waiting conversion   Conv. Rate (%)          NaN                     Leads    Prospect   Confirmed    Rejected  Unreachable  Postponed(Update W)  Converted/waiting conversion   Conv. Rate (%)          NaN                     Leads    Prospect   Confirmed    Rejected  Unreachable  Postponed(Update W)  Converted/waiting conversion   Wrongly Leads MTD  Conv. Rate (%)          NaN  2025-09-01 00:00:00  2025-09-02 00:00:00                       2025-09-03 00:00:00  2025-09-04 00:00:00  2025-09-05 00:00:00  2025-09-06 00:00:00  2025-09-07 00:00:00  2025-09-08 00:00:00  2025-09-09 00:00:00  2025-09-10 00:00:00  2025-09-11 00:00:00  2025-09-12 00:00:00  2025-09-13 00:00:00  2025-09-14 00:00:00  2025-09-15 00:00:00  2025-09-16 00:00:00  2025-09-17 00:00:00  2025-09-18 00:00:00  2025-09-19 00:00:00  2025-09-20 00:00:00  2025-09-21 00:00:00  2025-09-22 00:00:00  2025-09-23 00:00:00  2025-09-24 00:00:00  2025-09-25 00:00:00  2025-09-26 00:00:00  2025-09-27 00:00:00  2025-09-28 00:00:00  2025-09-29 00:00:00  2025-09-30 00:00:00  2025-10-01 00:00:00  2025-10-02 00:00:00  2025-10-03 00:00:00  2025-10-04 00:00:00  2025-10-05 00:00:00  2025-10-06 00:00:00  2025-10-07 00:00:00  2025-10-08 00:00:00  2025-10-09 00:00:00  2025-10-10 00:00:00  2025-10-11 00:00:00  2025-10-12 00:00:00  2025-10-13 00:00:00  2025-10-14 00:00:00  2025-10-15 00:00:00  2025-10-16 00:00:00  2025-10-17 00:00:00  2025-10-18 00:00:00  2025-10-19 00:00:00  2025-10-20 00:00:00  2025-10-21 00:00:00  2025-10-22 00:00:00  2025-10-23 00:00:00  2025-10-24 00:00:00  2025-10-25 00:00:00  2025-10-26 00:00:00  2025-10-27 00:00:00  2025-10-28 00:00:00  2025-10-29 00:00:00  2025-10-30 00:00:00  2025-10-31 00:00:00  2025-11-01 00:00:00  2025-11-02 00:00:00  2025-11-03 00:00:00  2025-11-04 00:00:00  2025-11-05 00:00:00  2025-11-06 00:00:00  2025-11-07 00:00:00  2025-11-08 00:00:00  2025-11-09 00:00:00  2025-11-10 00:00:00  2025-11-11 00:00:00  2025-11-12 00:00:00  2025-11-13 00:00:00  2025-11-14 00:00:00  2025-11-15 00:00:00  2025-11-16 00:00:00  2025-11-17 00:00:00  2025-11-18 00:00:00  2025-11-19 00:00:00  2025-11-20 00:00:00  2025-11-21 00:00:00  2025-11-22 00:00:00  2025-11-23 00:00:00  2025-11-24 00:00:00  2025-11-25 00:00:00  2025-11-26 00:00:00  2025-11-27 00:00:00  2025-11-28 00:00:00  2025-11-29 00:00:00  2025-11-30 00:00:00  2025-12-01 00:00:00  2025-12-02 00:00:00  2025-12-03 00:00:00  2025-12-04 00:00:00  2025-12-05 00:00:00  2025-12-06 00:00:00  2025-12-07 00:00:00  2025-12-08 00:00:00  2025-12-09 00:00:00  2025-12-10 00:00:00  2025-12-11 00:00:00  2025-12-12 00:00:00  2025-12-13 00:00:00  2025-12-14 00:00:00  2025-12-15 00:00:00  2025-12-16 00:00:00  2025-12-17 00:00:00  2025-12-18 00:00:00  2025-12-19 00:00:00  2025-12-20 00:00:00  2025-12-21 00:00:00  2025-12-22 00:00:00  2025-12-23 00:00:00  2025-12-24 00:00:00  2025-12-25 00:00:00  2025-12-26 00:00:00  2025-12-27 00:00:00  2025-12-28 00:00:00  2025-12-29 00:00:00  2025-12-30 00:00:00  2025-12-31 00:00:00
+2                    Mariana Hongo  STRATON AND CRAPHT LIMITED  751785175  Warierowycliffe@gmail.com      Kisumu    Western                          12          9          3            0                    0                              3            0.25          NaN                       306           0         184          83           39                    0                            159        0.519608          NaN                       199           0          50          16            0                    0                            164                 99        0.824121          NaN                    0                    0                                         0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    2                    0                    0                    1                    0                    0                    0                    4                    1                    5                    3                    0                   12                    2                    5                    1                   13                    9                    2                    4                    9                    5                    5                    5                    0                    2                    6                    6                    7                    7                    5                    8                    5                    3                    6                    3                    9                    7                    8                    8                   10                    9                    8                   13                    5                    7                    5                   10                    6                    7                   10                   17                    5                    4                    5                    2                    5                    6                    2                    6                    0                    4                    2                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN
+3                      Brian Odero     SYLVERENE COMMUNICATION  735820631  Wanderaclinton2@gmail.com  two rivers    Nairobi                           6          2          3            1                    0                              2        0.333333          NaN                       172           1         108          43           19                    1                             44        0.255814          NaN                       275           0          58          34            2                    0                            113                 81        0.410909          NaN                    0                    0                                         0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    1                    0                    0                    0                    0                    0                    0                    1                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    1                    1                    0                    0                    1                    0                    0                    1                    1                    6                    5                    4                    1                    7                    4                    0                    1                    2                    2                    3                    4                    2                   13                    9                    7                    3                    1                    6                    6                    3                    1                    7                    5                    7                    6                    2                    0                    3                    7                    2                    5                    2                   10                    2                    1                    3                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN
+4                    Mariana Hongo         DAVIJO DISTRIBUTORS  781446693  beatriceokinyi9@gmail.com      Kisumu    Western                          13          6          4            1                    2                              5        0.384615          NaN                        26           0          14           8            3                    1                              9        0.346154          NaN                        35           0           9           1            0                    0                             20                  6        0.571429          NaN                    0                    0                                         0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    0                    2                    2                    0                    0                    0                    1                    1                    0                    0                    1                    0                    0                    0                    0                    1                    0                    0                    1                    0                    0                    0                    0                    0                    0                    0                    1                    0                    1                    0                    0                    0                    0                    2                    0                    1                    0                    0                    0                    0                    0                    0                    0                    0                    1                    2                    0                    2                    3                    1                    1                    0                    0                    0                    1                    0                    1                    2                    1                    0                    2                    1                    2                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN                  NaN
+
+NUMERIC COLUMN STATISTICS:
+       Unnamed: 13  Unnamed: 22  Unnamed: 32
+count          0.0          0.0          0.0
+mean           NaN          NaN          NaN
+std            NaN          NaN          NaN
+min            NaN          NaN          NaN
+25%            NaN          NaN          NaN
+50%            NaN          NaN          NaN
+75%            NaN          NaN          NaN
+max            NaN          NaN          NaN
+
+================================================================================
+SHEET: PARTNERS REJECTED LEADS
+================================================================================
+
+Dimensions: 178 rows × 15 columns
+
+COLUMNS:
+  - Date
+  - Enterprise CP
+  - sni
+  - Customer Name
+  - Customer Phone No. (Airtel Number)
+  - Customer Alternative Number
+  - Customer Email Address
+  - Specific Delivery Location (Nearest Landmark)
+  - Preferred Date of Visit/Installation.
+  - Preferred Time of Visit
+  - Customer Call Status 1
+  - Date of Calling (dd/mm/yy)
+  - Time of Calling(24hrs)
+  - Customer Call Status 2
+  - Reason for Rejecting The Lead
+
+SAMPLE DATA (first 5 rows):
+                  Date            Enterprise CP        sni        Customer Name  Customer Phone No. (Airtel Number)  Customer Alternative Number         Customer Email Address Specific Delivery Location (Nearest Landmark) Preferred Date of Visit/Installation. Preferred Time of Visit Customer Call Status 1 Date of Calling (dd/mm/yy) Time of Calling(24hrs) Customer Call Status 2 Reason for Rejecting The Lead
+0  2025-11-01 00:00:00  SYLVERENE COMMUNICATION  780225502     teresiah njuguna                         707928701.0                    707928701    njugunanatasha210@gmail.com                                      kirigiti                   2025-11-01 00:00:00                11:00:00            Unreachable        2025-11-01 00:00:00               12:27:00            Unreachable                           NaN
+1  2025-11-02 00:00:00  AIRTIME TRADERS LIMITED  788595265          Doris kendi                         789582324.0                    727226253           Doriskendi@gmail.com                                   Meru godown                   2025-11-02 00:00:00                10:00:00               Rejected        2025-11-03 00:00:00               09:12:00               Rejected          No Longer Interested
+2  2025-11-02 00:00:00  SYLVERENE COMMUNICATION  762627764  Novestus Kipchumba                          725907492.0                    725907492  novestuskipchumba66@gmail.com                             Kapseret - lemook                   2025-11-03 00:00:00                09:00:00               Rejected        2025-11-02 00:00:00                    NaN               Rejected                     Duplicate
+3  2025-11-02 00:00:00  SYLVERENE COMMUNICATION  780225502          MASAI KELLY                         107113164.0                    107113164         masaikelly66@gmail.com                                   IMARA DAIMA                   2025-11-03 00:00:00                10:00:00               Rejected        2025-11-02 00:00:00               18:14:00               Rejected                     Duplicate
+4  2025-11-02 00:00:00  SYLVERENE COMMUNICATION  780225502      Bashir Mohammed                         705877309.0                    705877309    Bashirabdulaziz93@gmail.com                                       mavueni                   2025-11-03 00:00:00                09:00:00               Rejected        2025-11-02 00:00:00               17:40:00               Rejected                     Duplicate
+
+NUMERIC COLUMN STATISTICS:
+                sni  Customer Phone No. (Airtel Number)  Customer Alternative Number
+count  1.780000e+02                        1.670000e+02                 1.780000e+02
+mean   1.343119e+10                        2.658205e+10                 3.009958e+10
+std    5.580024e+10                        7.698581e+10                 8.048582e+10
+min    7.350026e+07                        7.851888e+07                 1.042032e+08
+25%    2.634797e+08                        7.205552e+08                 7.153740e+08
+50%    7.589706e+08                        7.387947e+08                 7.304530e+08
+75%    7.802255e+08                        7.884456e+08                 7.890923e+08
+max    2.547895e+11                        2.547895e+11                 2.547958e+11
+
+VALUE COUNTS FOR 'Customer Call Status 1':
+Customer Call Status 1
+Rejected       127
+Unreachable     46
+Postponed        3
+unreachable      1
+Prospect         1
+
+VALUE COUNTS FOR 'Customer Call Status 2':
+Customer Call Status 2
+Rejected       110
+Unreachable     11
+Postponed        3
+Prospect         1
+
+================================================================================
+SHEET: ACTIVATED LEADS 
+================================================================================
+
+Dimensions: 2933 rows × 11 columns
+
+COLUMNS:
+  - servedmsisdn
+  - MSIDN
+  - serviceclassid
+  - DATE
+  - CUSTOMER NAME
+  - REGION
+  - Agent Name
+  - CP/DSE
+  - AMOUNT
+  - INSTALLER 
+  - Unnamed: 10
+
+SAMPLE DATA (first 5 rows):
+   servedmsisdn      MSIDN  serviceclassid       DATE      CUSTOMER NAME   REGION                 Agent Name CP/DSE       AMOUNT                 INSTALLER  Unnamed: 10
+0  2.547856e+11  785599446              16 2025-09-15       CHARLES MURU  Nairobi  Florence Mwongeli Mutinda  5GDSE  2248.125937   CAMUSAT-BENSON AKHASAMBA        Sept
+1  2.541010e+11  100950518              16 2025-09-20      BRENDA INZALA  Nairobi             Winny Nambwaya  5GDSE  1498.500750      CAMUSAT-ANTONY KASUKU        Sept
+2  2.547866e+11  786585092              16 2025-09-28      AMBROSE ITHAU  Nairobi     Sofia Nyambura Kariuki  5GDSE  1498.500750  CAMUSAT-WILLIAMS LEMAYIAN        Sept
+3  2.541080e+11  108004068              16 2025-09-30     Beatrice Obala   Kisumu       Onono Bryton Ochieng  5GDSE  2248.125937         PAVICON -Shem Juma        Sept
+4  2.547859e+11  785918313              16 2025-10-04  Julius Leparpiris   Nakuru    Catherine Nduta Kigotho  5GDSE  1498.500750    PAVICON -Jared Kipkurui         Oct
+
+NUMERIC COLUMN STATISTICS:
+       servedmsisdn         MSIDN  serviceclassid       AMOUNT
+count  2.836000e+03  2.933000e+03     2933.000000  2836.000000
+mean   2.545499e+11  5.500441e+08       16.269008  1535.772135
+std    3.087805e+08  3.088149e+08        0.443520   183.547140
+min    2.541000e+11  1.000018e+08       16.000000     0.000000
+25%    2.541073e+11  1.072900e+08       16.000000  1498.500750
+50%    2.547450e+11  7.501592e+08       16.000000  1498.500750
+75%    2.547820e+11  7.819642e+08       17.000000  1498.500750
+max    2.547900e+11  7.899986e+08       17.000000  2248.125937
+
+================================================================================
+SHEET: NOV DUMP
+================================================================================
+
+Dimensions: 5451 rows × 24 columns
+
+COLUMNS:
+  - Date
+  - Agent Name
+  - Enterprise CP
+  - sni
+  - Agent Type
+  - Type of Lead
+  - Customer Name
+  - Customer Phone No. (Airtel Number)
+  - Customer Alternative Number
+  - Customer Email Address
+  - Customer Preferred Package
+  - Customer Installation Town
+  - Specific Delivery Location (Nearest Landmark)
+  - Preferred Date of Visit/Installation.
+  - Preferred Time of Visit
+  - Customer Call Status 1
+  - Date of Calling (dd/mm/yy)
+  - Time of Calling(24hrs)
+  - Customer Call Status 2
+  - Service Request Number from Single Screen
+  - Reason for Rejecting The Lead
+  - Unnamed: 21
+  - Unnamed: 22
+  - Unnamed: 23
+
+SAMPLE DATA (first 5 rows):
+                  Date         Agent Name            Enterprise CP          sni  Agent Type Type of Lead     Customer Name Customer Phone No. (Airtel Number) Customer Alternative Number       Customer Email Address     Customer Preferred Package Customer Installation Town Specific Delivery Location (Nearest Landmark) Preferred Date of Visit/Installation. Preferred Time of Visit Customer Call Status 1 Date of Calling (dd/mm/yy) Time of Calling(24hrs) Customer Call Status 2 Service Request Number from Single Screen Reason for Rejecting The Lead Unnamed: 21 Unnamed: 22 Unnamed: 23
+0  2025-11-01 00:00:00    Violet Kemunto                   ENT DSE  789026673.0  Enterprise     Prospect            Mbugua                          722879977                   722879977          mbugua078@gmail.com  5G _15Mbps_30days at Ksh.2999                    MOMBASA                                         Nyali                   2025-11-01 00:00:00                15:00:00               Prospect        2025-01-11 00:00:00               12:16:00               Prospect                                       NaN                           NaN         NaN         NaN         NaN
+1  2025-11-01 00:00:00   sylvester mutuku  SYLVERENE COMMUNICATION  780225502.0  Enterprise    Confirmed    collins limo                            705280494                   705280494   c0llinskibetlimo@gmail.com  5G _15Mbps_30days at Ksh.2999                    NAIROBI                                      khamakis                   2025-11-01 00:00:00                11:00:00              Confirmed        2025-11-01 00:00:00               12:19:00              Confirmed                             9111251706837                           NaN         NaN         NaN         NaN
+2  2025-11-01 00:00:00   sylvester mutuku  SYLVERENE COMMUNICATION  780225502.0  Enterprise    Confirmed  teresiah njuguna                          707928701                   707928701  njugunanatasha210@gmail.com  5G _15Mbps_30days at Ksh.2999                    kiambuu                                      kirigiti                   2025-11-01 00:00:00                11:00:00            Unreachable        2025-11-01 00:00:00               12:27:00            Unreachable                             9111251706860                           NaN         NaN         NaN         NaN
+3  2025-11-01 00:00:00   sylvester mutuku  SYLVERENE COMMUNICATION  780225502.0  Enterprise    Confirmed     rajab kiprono                          100400172                   115285771      rajabkiprono5@gmail.com  5G _15Mbps_30days at Ksh.2999                     NAKURU             kabarak university[rafiki center]                   2025-06-11 00:00:00                09:00:00              Confirmed        2025-01-11 00:00:00               12:29:00              Confirmed                             3110251705329                           NaN         NaN         NaN         NaN
+4  2025-11-01 00:00:00  sylvester  mutuku  SYLVERENE COMMUNICATION  780225502.0  Enterprise    Confirmed     george njenga                          756439560                   716936768    njengageorge328@gmail.com  5G _15Mbps_30days at Ksh.2999                    NAIROBI                                 ruiru kamakis                   2025-03-11 00:00:00                11:00:00              Confirmed        2025-01-11 00:00:00               13:03:00              Confirmed                             9111251706922                           NaN         NaN         NaN         NaN
+
+NUMERIC COLUMN STATISTICS:
+                sni
+count  5.391000e+03
+mean   2.255486e+10
+std    8.509669e+10
+min    7.384868e+06
+25%    7.356338e+08
+50%    7.626278e+08
+75%    7.844153e+08
+max    2.547105e+12
+
+VALUE COUNTS FOR 'Agent Type':
+Agent Type
+Enterprise            4807
+HBB_DSE                361
+Airtel Shop            189
+Call Center             28
+S&D Team                 5
+Airtel KE HQ Staff       1
+
+VALUE COUNTS FOR 'Type of Lead':
+Type of Lead
+Confirmed    4604
+Prospect      787
+
+VALUE COUNTS FOR 'Customer Call Status 1':
+Customer Call Status 1
+Confirmed              2501
+Prospect                712
+Unreachable             592
+Rejected                572
+Postponed                67
+unreachable               2
+Postponed(Update Y)       1
+confirmed                 1
+
+VALUE COUNTS FOR 'Customer Call Status 2':
+Customer Call Status 2
+Confirmed              957
+Rejected               271
+Prospect               161
+0                      128
+Postponed               23
+Unreachable             21
+confirmed                2
+45971                    1
+Postponed(Update Y)      1
+
+================================================================================
+SHEET: OCT DUMP
+================================================================================
+
+Dimensions: 2313 rows × 41 columns
+
+COLUMNS:
+  - Date
+  - Completion time
+  - Agent Name
+  - Enterprise CP
+  - Agent Mobile Number
+  - Agent Type
+  - Customer Name
+  - Customer Phone No. (Airtel Number)
+  - Customer Alternative Number
+  - Customer Email Address
+  - Customer Preferred Package
+  - Customer Installation Town
+  - Specific Delivery Location (Nearest Landmark)
+  - Preferred Date of Visit/Installation.
+  - Preferred Time of Visit
+  - BO Agent
+  - Customer Call Status 1
+  - Date of Calling (dd/mm/yy)
+  - Time of Calling(24hrs)
+  - Rescheduled Date(dd/mm/yy)
+  - Customer Call Status 2
+  - Service Request Number from Single Screen
+  - Installation Company
+  - Form Sent to Partner date
+  - Form Sent to Partner Time
+  - Partner response date
+  - Partner response time
+  - Installer Names
+  - Installer Mobile Number
+  - Installer ID Number
+  - Date of Calling (dd/mm/yy).1
+  - Time of Calling(24hrs).1
+  - Rescheduled Date(dd/mm/yy).1
+  - Installation status
+  - Remarks
+  - Lead Closure Date
+  - Lead Closure Time
+  - DSE Town Classification
+  - Unnamed: 38
+  - Unnamed: 39
+  - Unnamed: 40
+
+SAMPLE DATA (first 5 rows):
+                  Date Completion time           Agent Name            Enterprise CP  Agent Mobile Number  Agent Type              Customer Name Customer Phone No. (Airtel Number)  Customer Alternative Number         Customer Email Address     Customer Preferred Package Customer Installation Town Specific Delivery Location (Nearest Landmark) Preferred Date of Visit/Installation.  Preferred Time of Visit  BO Agent Customer Call Status 1 Date of Calling (dd/mm/yy) Time of Calling(24hrs) Rescheduled Date(dd/mm/yy) Customer Call Status 2 Service Request Number from Single Screen Installation Company Form Sent to Partner date  Form Sent to Partner Time  Partner response date Partner response time         Installer Names  Installer Mobile Number Installer ID Number Date of Calling (dd/mm/yy).1 Time of Calling(24hrs).1  Rescheduled Date(dd/mm/yy).1 Installation status  Remarks Lead Closure Date  Lead Closure Time DSE Town Classification  Unnamed: 38  Unnamed: 39 Unnamed: 40
+0  2025-10-01 00:00:00      2025-10-01    Sylvester mutuku   SYLVERENE COMMUNICATION            780225502  Enterprise  Caroline muthoni waihenya                          759315059                  795977017.0    carolinewaiheya@85gmail.com  5G _15Mbps_30days at Ksh.2999                    Nairobi                               Ngong Kiserian                                  45931                 0.375000    Juliet               Rejected                        NaN                    NaN                        NaN               Rejected                                 Duplicate                  NaN                       NaN                        NaN                    NaN                   NaN                     NaN                      NaN                 NaN                          NaN                      NaN                           NaN                 NaN      NaN               NaN                NaN                     NaN          NaN          NaN         NaN
+1  2025-10-01 00:00:00      2025-10-01      Abdeneco Mutuku                  ENT DSE            782300518  Enterprise         Josephat Mwandikwa                                NaN                  790997152.0  Josphatmwandikwa734@gmail.com  5G _15Mbps_30days at Ksh.2999                    Nairobi                                     Parklands                                 45932                 0.416667    Juliet              Confirmed        2025-10-01 00:00:00                  11:34                        NaN              Confirmed                             9110251653651              Pavicon                     45931                   0.533333                    NaN                   NaN                     NaN                      NaN                 NaN                          NaN                      NaN                           NaN      Ronald Kiplimo      NaN          33937751                NaN                     NaN          NaN          NaN         NaN
+2  2025-10-01 00:00:00      2025-10-01  Doreen Kendi Kubai                   ENT DSE            735633807  Enterprise               Edwin esekia                          735512004                  727487239.0       edwinesekia615@gmail.com  5G _15Mbps_30days at Ksh.2999                        NaN                        Miti mingi police post                                 45931                 0.458333  Beatrice              Confirmed        2025-10-01 00:00:00                  15:37                        NaN              Confirmed                             9110251654275              Camusat                     45931                   0.759028                45932.0              0.189583  Victor Maundu Muthiani              100010004.0            38317977                        45933                  0800HRS                           NaN            REASSIGN      NaN                 0                NaN                     NaN          NaN          NaN         NaN
+3  2025-10-01 00:00:00      2025-10-01  Doreen Kendi Kubai                   ENT DSE            735633807  Enterprise                 Teddy papa                          735291752                  768383017.0      papateddyetyang@gmail.com  5G _15Mbps_30days at Ksh.2999                        NaN             Ngong vet (Olepollos police post)                                 45931                 0.458333  Beatrice              Confirmed        2025-10-01 00:00:00                  15:38                      45933              Confirmed                             9210251655162              Pavicon                     45932                   0.500000                45932.0              0.716667          Ronald Kiplimo              100010007.0            33937751                          NaN                      NaN                           NaN      Ronald Kiplimo      NaN          33937751                NaN                     NaN          NaN          NaN         NaN
+4  2025-10-01 00:00:00      2025-10-01  Doreen Kendi Kubai                   ENT DSE            735633807  Enterprise                   Derrick                           783065534                  751167751.0         khalifaa3560@gmail.com  5G _15Mbps_30days at Ksh.2999                     Nakuru                         Turimart supermarket                                  45931                 0.458333     Bilha               Rejected                        NaN                    NaN                        NaN               Rejected                  Claims Already Installed                  NaN                       NaN                        NaN                    NaN                   NaN                     NaN                      NaN                 NaN                          NaN                      NaN                           NaN                 NaN      NaN               NaN                NaN                     NaN          NaN          NaN         NaN
+
+NUMERIC COLUMN STATISTICS:
+       Agent Mobile Number  Customer Alternative Number  Preferred Time of Visit  Form Sent to Partner Time  Partner response date  Installer Mobile Number  Rescheduled Date(dd/mm/yy).1  Remarks  Lead Closure Time   Unnamed: 38  Unnamed: 39
+count         2.313000e+03                 2.309000e+03              2313.000000                1301.000000             672.000000             5.720000e+02                           0.0      0.0                0.0  7.000000e+00          1.0
+mean          4.266372e+10                 3.087983e+15                 0.481193                   0.579976           45944.291667             2.158132e+08                           NaN      NaN                NaN  2.139412e+08         15.0
+std           1.180050e+11                 1.483813e+17                 0.112634                   0.110558               7.816528             2.449003e+08                           NaN      NaN                NaN  3.654639e+08          NaN
+min           1.008222e+08                 0.000000e+00                 0.000000                   0.393056           45931.000000             0.000000e+00                           NaN      NaN                NaN  4.409722e-01         15.0
+25%           7.356338e+08                 7.160269e+08                 0.375000                   0.472917           45937.750000             1.000100e+08                           NaN      NaN                NaN  4.489583e-01         15.0
+50%           7.558773e+08                 7.367773e+08                 0.458333                   0.555556           45944.000000             1.000100e+08                           NaN      NaN                NaN  4.493056e-01         15.0
+75%           7.842926e+08                 7.953185e+08                 0.583333                   0.684722           45952.000000             1.000101e+08                           NaN      NaN                NaN  3.673846e+08         15.0
+max           2.547104e+12                 7.130028e+18                 0.750000                   0.910417           45958.000000             7.426517e+08                           NaN      NaN                NaN  7.628194e+08         15.0
+
+VALUE COUNTS FOR 'Agent Type':
+Agent Type
+Enterprise    2313
+
+VALUE COUNTS FOR 'Customer Call Status 1':
+Customer Call Status 1
+Confirmed              1410
+Rejected                467
+Unreachable             242
+Prospect                174
+Postponed(Update Y)      18
+Unreachable               1
+unreachable               1
+
+VALUE COUNTS FOR 'Customer Call Status 2':
+Customer Call Status 2
+Confirmed              1406
+Rejected                461
+Prospect                 76
+Unreachable              59
+Cold Lead                25
+Postponed(Update Y)       2
+
+VALUE COUNTS FOR 'Installation status':
+Installation status
+CLOSED                  298
+Cancelled the ticket     71
+Juma Shem                70
+Kennedy Odhiambo         54
+Pherose Atsiambo         49
+Collins Kamau            33
+Ndolo Fredericks         24
+Walter Omondi            23
+NOT READY                22
+George Mutonya           21
+
+================================================================================
+SHEET: SEPT DUMP 
+================================================================================
+
+Dimensions: 236 rows × 20 columns
+
+COLUMNS:
+  - Date
+  - Agent Name
+  - Enterprise CP
+  - Agent Mobile Number
+  - Agent Type
+  - Customer Name
+  - Customer Phone No. (Airtel Number)
+  - Customer Alternative Number
+  - Customer Email Address
+  - Customer Preferred Package
+  - Customer Installation Town
+  - Specific Delivery Location (Nearest Landmark)
+  - Preferred Date of Visit/Installation.
+  - Preferred Time of Visit
+  - Customer call Status
+  - Date of Calling (dd/mm/yy)
+  - Time of Calling(24hrs)
+  - Rescheduled Date(dd/mm/yy)
+  - Customer Call Status 2
+  - Service Request Number from Single Screen
+
+SAMPLE DATA (first 5 rows):
+        Date         Agent Name Enterprise CP  Agent Mobile Number  Agent Type        Customer Name  Customer Phone No. (Airtel Number)  Customer Alternative Number       Customer Email Address     Customer Preferred Package Customer Installation Town                      Specific Delivery Location (Nearest Landmark) Preferred Date of Visit/Installation. Preferred Time of Visit Customer call Status Date of Calling (dd/mm/yy) Time of Calling(24hrs) Rescheduled Date(dd/mm/yy) Customer Call Status 2 Service Request Number from Single Screen
+0 2025-09-04  Florence Mutinda        ENT DSE            753014499  Enterprise       Victor Masheti                         736070030.0                    736070030   victoramukumbi12@gmail.con  5G _30Mbps_30days at Ksh.2999                    Nairobi                                   Saradi hardware, syokimau katani                            15/09/2025                09:00:00            Confirmed                        NaN                    NaN                        NaN              Confirmed                             1509251629558
+1 2025-09-06   Florence Mutinda       ENT DSE            753014499  Enterprise         Daniel Kuria                         104068530.0                    795068530    danielkurianjau@gmail.com  5G _30Mbps_30days at Ksh.2999                    Nairobi                                          Dagoreti road, Musa gitau                            30/09/2025                09:00:00          Unreachable                        NaN                    NaN                        NaN            Unreachable                                 Cold lead
+2 2025-09-06  Florence Mutinda        ENT DSE            753014499  Enterprise  Alfred Kinyua Mbogo                         784688433.0                    720373869  alfredkinyuambogo@gmail.com  5G _30Mbps_30days at Ksh.2999                    Nairobi       Diamond home, othaya road, near quickmart gitanga, lavington                   2025-08-09 00:00:00                09:00:00            Confirmed                        NaN                    NaN                        NaN              Confirmed                             9709251617458
+3 2025-09-06      Doreen Kendi        ENT DSE            100100222  Enterprise   Fred okenye Ratemo                         731471582.0                    701836977            okenyef@gmail.com  5G _30Mbps_30days at Ksh.2999                    Nairobi                                                 Benedicta Academy                    2025-09-09 00:00:00                12:00:00            Confirmed                        NaN                    NaN                        NaN              Confirmed                             9809251619053
+4 2025-09-07    Jemima anekeya        ENT DSE            784172048  Enterprise       Timothy Echesa                         769460823.0                    787479869         havinggift@gmail.com  5G _30Mbps_30days at Ksh.2999                    Nairobi  Maina Wanjigi primary school  in Eastleigh 4th Street,3rd Avenue                    2025-08-09 00:00:00                09:00:00            Confirmed                        NaN                    NaN                        NaN              Confirmed                             9709251617427
+
+NUMERIC COLUMN STATISTICS:
+       Agent Mobile Number  Customer Phone No. (Airtel Number)  Customer Alternative Number
+count         2.360000e+02                        2.090000e+02                 2.360000e+02
+mean          6.797515e+08                        6.296193e+08                 6.728561e+08
+std           2.057672e+08                        2.606710e+08                 2.008947e+08
+min           7.399999e+06                        0.000000e+00                 0.000000e+00
+25%           7.352738e+08                        7.213750e+08                 7.136114e+08
+50%           7.384734e+08                        7.354410e+08                 7.242208e+08
+75%           7.556695e+08                        7.550354e+08                 7.481234e+08
+max           7.891934e+08                        1.106042e+09                 7.981591e+08
+
+VALUE COUNTS FOR 'Agent Type':
+Agent Type
+Enterprise        230
+Enterprise_DSE      6
+
+VALUE COUNTS FOR 'Customer call Status':
+Customer call Status
+Confirmed              151
+Rejected                53
+Unreachable             22
+Postponed(Update Y)     10
+
+VALUE COUNTS FOR 'Customer Call Status 2':
+Customer Call Status 2
+Confirmed              151
+Rejected                53
+Unreachable             22
+Postponed(Update W)     10
+
+================================================================================
+SHEET: Sheet2
+================================================================================
+
+Dimensions: 16 rows × 2 columns
+
+COLUMNS:
+  - GRANDWORLD MOTORS
+  - GRANDWORLD MOTORS.1
+
+SAMPLE DATA (first 5 rows):
+            GRANDWORLD MOTORS         GRANDWORLD MOTORS.1
+0         EVENT CREST LIMITED         EVENT CREST LIMITED
+1         AITESAF INVESTMENTS         AITESAF INVESTMENTS
+2                  ESP DAVIJO                         NaN
+3  STRATON AND CRAPHT LIMITED  STRATON AND CRAPHT LIMITED
+4         DENTECH INNOVATIONS         DENTECH INNOVATIONS
+
+================================================================================
+SHEET: DSE SUMMARY
+================================================================================
+
+Dimensions: 87 rows × 105 columns
+
+COLUMNS:
+  - Unnamed: 0
+  - Unnamed: 1
+  - Unnamed: 2
+  - Unnamed: 3
+  - Unnamed: 4
+  - Unnamed: 5
+  - Unnamed: 6
+  - Unnamed: 7
+  - Unnamed: 8
+  - Unnamed: 9
+  - Unnamed: 10
+  - Unnamed: 11
+  - Unnamed: 12
+  - Unnamed: 13
+  - Unnamed: 14
+  - Unnamed: 15
+  - Unnamed: 16
+  - Unnamed: 17
+  - Unnamed: 18
+  - Unnamed: 19
+  - Unnamed: 20
+  - Unnamed: 21
+  - Unnamed: 22
+  - Unnamed: 23
+  - Unnamed: 24
+  - Unnamed: 25
+  - Unnamed: 26
+  - Unnamed: 27
+  - Unnamed: 28
+  - Unnamed: 29
+  - Unnamed: 30
+  - Unnamed: 31
+  - Unnamed: 32
+  - Unnamed: 33
+  - Unnamed: 34
+  - Unnamed: 35
+  - Unnamed: 36
+  - Unnamed: 37
+  - Unnamed: 38
+  - Unnamed: 39
+  - Unnamed: 40
+  - Unnamed: 41
+  - Unnamed: 42
+  - Unnamed: 43
+  - Unnamed: 44
+  - Unnamed: 45
+  - Unnamed: 46
+  - Unnamed: 47
+  - Unnamed: 48
+  - Unnamed: 49
+  - Unnamed: 50
+  - Unnamed: 51
+  - Unnamed: 52
+  - Unnamed: 53
+  - Unnamed: 54
+  - Unnamed: 55
+  - Unnamed: 56
+  - Unnamed: 57
+  - Unnamed: 58
+  - Unnamed: 59
+  - Unnamed: 60
+  - Unnamed: 61
+  - Unnamed: 62
+  - Unnamed: 63
+  - Unnamed: 64
+  - Unnamed: 65
+  - Unnamed: 66
+  - Unnamed: 67
+  - Unnamed: 68
+  - Unnamed: 69
+  - Unnamed: 70
+  - Unnamed: 71
+  - Unnamed: 72
+  - Unnamed: 73
+  - Unnamed: 74
+  - Unnamed: 75
+  - Unnamed: 76
+  - Unnamed: 77
+  - Unnamed: 78
+  - Unnamed: 79
+  - Unnamed: 80
+  - Unnamed: 81
+  - Unnamed: 82
+  - Unnamed: 83
+  - Unnamed: 84
+  - Unnamed: 85
+  - Unnamed: 86
+  - Unnamed: 87
+  - Unnamed: 88
+  - Unnamed: 89
+  - Unnamed: 90
+  - Unnamed: 91
+  - Unnamed: 92
+  - Unnamed: 93
+  - Unnamed: 94
+  - Unnamed: 95
+  - Unnamed: 96
+  - Unnamed: 97
+  - Unnamed: 98
+  - Unnamed: 99
+  - Unnamed: 100
+  - Unnamed: 101
+  - Unnamed: 102
+  - Unnamed: 103
+  - Unnamed: 104
+
+SAMPLE DATA (first 5 rows):
+            Unnamed: 0       Unnamed: 1 Unnamed: 2       Unnamed: 3                Unnamed: 4    Unnamed: 5    Unnamed: 6 Unnamed: 7                 Unnamed: 8 Unnamed: 9 Unnamed: 10  Unnamed: 11          Unnamed: 12                    Unnamed: 13     Unnamed: 14  Unnamed: 15                Unnamed: 16 Unnamed: 17 Unnamed: 18  Unnamed: 19          Unnamed: 20                    Unnamed: 21     Unnamed: 22  Unnamed: 23 Unnamed: 24 Unnamed: 25 Unnamed: 26 Unnamed: 27                             Unnamed: 28 Unnamed: 29 Unnamed: 30 Unnamed: 31 Unnamed: 32 Unnamed: 33 Unnamed: 34 Unnamed: 35 Unnamed: 36 Unnamed: 37 Unnamed: 38 Unnamed: 39 Unnamed: 40 Unnamed: 41 Unnamed: 42 Unnamed: 43 Unnamed: 44 Unnamed: 45 Unnamed: 46 Unnamed: 47 Unnamed: 48 Unnamed: 49 Unnamed: 50 Unnamed: 51 Unnamed: 52 Unnamed: 53 Unnamed: 54 Unnamed: 55 Unnamed: 56 Unnamed: 57 Unnamed: 58 Unnamed: 59 Unnamed: 60 Unnamed: 61 Unnamed: 62 Unnamed: 63 Unnamed: 64 Unnamed: 65 Unnamed: 66 Unnamed: 67 Unnamed: 68 Unnamed: 69 Unnamed: 70 Unnamed: 71 Unnamed: 72 Unnamed: 73 Unnamed: 74 Unnamed: 75 Unnamed: 76 Unnamed: 77 Unnamed: 78 Unnamed: 79 Unnamed: 80 Unnamed: 81 Unnamed: 82 Unnamed: 83 Unnamed: 84 Unnamed: 85 Unnamed: 86 Unnamed: 87 Unnamed: 88 Unnamed: 89 Unnamed: 90 Unnamed: 91 Unnamed: 92 Unnamed: 93 Unnamed: 94 Unnamed: 95 Unnamed: 96 Unnamed: 97 Unnamed: 98 Unnamed: 99 Unnamed: 100 Unnamed: 101 Unnamed: 102 Unnamed: 103 Unnamed: 104
+0                  NaN              NaN        NaN              NaN                       NaN           NaN           NaN        NaN  OCT 5G Router (ODU) Leads        NaN         NaN          NaN                  NaN                            NaN             NaN          NaN  NOV 5G Router (ODU) Leads         NaN         NaN          NaN                  NaN                            NaN             NaN          NaN         NaT         NaT         NaT         NaT                                     NaN         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT          NaT          NaT          NaT          NaT          NaT
+1  EBB DSE FWA SUMMARY              NaN        NaN              NaN                       NaN           NaN           NaN        NaN                        156        107          27           17                    5                            107        0.685897          NaN                        156         107          27           17                    5                            107        0.685897          NaN         NaT         NaT         NaT         NaT  ENTERPRISE DSE'S CONVERTED  LEADS DOD          NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT          NaT          NaT          NaT          NaT          NaT
+2        TL/SUPERVISOR         DSE Name     KYC_ID  Personal Number                  EMAIL ID  Base Station          Zone       ZONE                      Leads  Confirmed    Rejected  Unreachable  Postponed(Update W)  Converted/waiting conversion   Conv. Rate (%)          NaN                      Leads   Confirmed    Rejected  Unreachable  Postponed(Update W)  Converted/waiting conversion   Conv. Rate (%)          NaN  2025-09-01  2025-09-02  2025-09-03  2025-09-04                     2025-09-05 00:00:00  2025-09-06  2025-09-07  2025-09-08  2025-09-09  2025-09-10  2025-09-11  2025-09-12  2025-09-13  2025-09-14  2025-09-15  2025-09-16  2025-09-17  2025-09-18  2025-09-19  2025-09-20  2025-09-21  2025-09-22  2025-09-23  2025-09-24  2025-09-25  2025-09-26  2025-09-27  2025-09-28  2025-09-29  2025-09-30  2025-10-01  2025-10-02  2025-10-03  2025-10-04  2025-10-05  2025-10-06  2025-10-07  2025-10-08  2025-10-09  2025-10-10  2025-10-11  2025-10-12  2025-10-13  2025-10-14  2025-10-15  2025-10-16  2025-10-17  2025-10-18  2025-10-19  2025-10-20  2025-10-21  2025-10-22  2025-10-23  2025-10-24  2025-10-25  2025-10-26  2025-10-27  2025-10-28  2025-10-29  2025-10-30  2025-10-31  2025-11-01  2025-11-02  2025-11-03  2025-11-04  2025-11-05  2025-11-06  2025-11-07  2025-11-08  2025-11-09  2025-11-10  2025-11-11  2025-11-12  2025-11-13  2025-11-14  2025-11-15   2025-11-16   2025-11-17   2025-11-18   2025-11-19   2025-11-20
+3         AMOS KISINGU  Catherine Kyalo  781808148        787732465                       NaN      Machakos       Eastern    NAIROBI                          0          0           0            0                    0                              0               0          NaN                          0           0           0            0                    0                              0               0          NaN         NaT         NaT         NaT         NaT                                     NaN         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT          NaT          NaT          NaT          NaT          NaT
+4         AMOS KISINGU   Rachael Kaburu  787323937        105228339  rachaelkaburu2@gmail.com         Thika  Nairobi East    NAIROBI                          1          1           0            0                    0                              1               0          NaN                          1           1           0            0                    0                              1               0          NaN         NaT         NaT         NaT         NaT                                     NaN         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT         NaT          NaT          NaT          NaT          NaT          NaT
+
+NUMERIC COLUMN STATISTICS:
+       Unnamed: 15  Unnamed: 23
+count          0.0          0.0
+mean           NaN          NaN
+std            NaN          NaN
+min            NaN          NaN
+25%            NaN          NaN
+50%            NaN          NaN
+75%            NaN          NaN
+max            NaN          NaN

@@ -1,0 +1,442 @@
+{
+  "name": "03 - Form Submission Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 4
+            }
+          ]
+        }
+      },
+      "id": "dc555ff5-05e1-44df-8958-ce367257f857",
+      "name": "Schedule Trigger (Every 4 Hours)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        1440,
+        1488
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://bazz-ai-agentic-team-production-3203.up.railway.app/api/leads?status=qualified",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "48b503b7-ea94-4556-98f8-6d4c63c8c92b",
+      "name": "Fetch Qualified Leads",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1648,
+        1488
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "CXPkkHSyHaY4SwL0",
+          "name": "WhatsApp Bearer Token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "0a68e0d4-3ed9-414f-92dc-fdc333f98bb1",
+      "name": "Loop Through Leads",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1840,
+        1488
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Construct Airtel Form submission payload\nconst lead = $input.item.json;\n\n// Format date and time\nconst formatDate = (dateStr) => {\n  if (!dateStr) return new Date().toISOString().split('T')[0];\n  return dateStr;\n};\n\nconst formatTime = (timeStr) => {\n  if (!timeStr) return '10:00';\n  return timeStr;\n};\n\n// Build flat payload for browser automation\nconst payload = {\n  customerName: lead.customerName || \"Unknown\",\n  customerAirtelNumber: lead.customerAirtelNumber || lead.phone || \"\",\n  customerAlternateNumber: lead.customerAlternateNumber || lead.phone || \"\",\n  customerEmail: lead.customerEmail || lead.email || \"\",\n  preferredPackage: lead.preferredPackage || \"30Mbps\",\n  installationTown: lead.installationTown || \"NAIROBI\",\n  deliveryLocation: lead.deliveryLocation || \"\",\n  installationDate: formatDate(lead.installationDate),\n  installationTime: formatTime(lead.installationTime),\n  connectionType: lead.connectionType || 'SmartConnect (5G ODU)',\n  units: (lead.units || 1).toString()\n};\n\nreturn {\n  leadId: lead.id,\n  payload: payload,\n  customerName: lead.customerName,\n  preferredPackage: lead.preferredPackage,\n  connectionType: payload.connectionType\n};\n"
+      },
+      "id": "a4ceafc0-814d-40c4-b2c6-1e579412b2a4",
+      "name": "Construct Form Payload",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2048,
+        1488
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://bazz-ai-agentic-team-production-3203.up.railway.app/api/submit-to-airtel-form",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            },
+            {
+              "name": "Accept",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify($json.payload) }}",
+        "options": {}
+      },
+      "id": "21cd9f11-ef03-4658-8d5b-2c209c48c6a2",
+      "name": "Submit to Microsoft Forms",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2240,
+        1488
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose"
+          },
+          "conditions": [
+            {
+              "id": "success-condition",
+              "leftValue": "={{ $json.statusCode || 0 }}",
+              "rightValue": 200,
+              "operator": {
+                "type": "number",
+                "operation": "gte",
+                "rightType": "number"
+              }
+            },
+            {
+              "id": "success-condition-2",
+              "leftValue": "={{ $json.statusCode || 0 }}",
+              "rightValue": 299,
+              "operator": {
+                "type": "number",
+                "operation": "lte",
+                "rightType": "number"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "da8f9aa3-54b6-4a2a-8419-f6b2bb1abf98",
+      "name": "Check Response Status",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        2448,
+        1488
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://bazz-ai-agentic-team-production-3203.up.railway.app/api/submissions/create",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({\n  \"leadId\": $node['Construct Form Payload'].json.leadId,\n  \"status\": \"success\",\n  \"responseCode\": $json.statusCode,\n  \"responseBody\": JSON.stringify($json.body),\n  \"submittedAt\": new Date().toISOString()\n}) }}",
+        "options": {}
+      },
+      "id": "943bbdf9-2dbf-486a-9322-66bae4119e8e",
+      "name": "Create Submission Record (Success)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2640,
+        1376
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "CXPkkHSyHaY4SwL0",
+          "name": "WhatsApp Bearer Token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://bazz-ai-agentic-team-production-3203.up.railway.app/api/submissions/create",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({\n  \"leadId\": $node['Construct Form Payload'].json.leadId,\n  \"status\": \"failed\",\n  \"responseCode\": $json.statusCode || 0,\n  \"responseBody\": JSON.stringify($json.body || $json.error),\n  \"errorMessage\": $json.error || 'Unknown error',\n  \"submittedAt\": new Date().toISOString()\n}) }}",
+        "options": {}
+      },
+      "id": "311dd144-b5e0-4e83-81d1-fb0e19f317d6",
+      "name": "Create Submission Record (Failed)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2640,
+        1584
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "CXPkkHSyHaY4SwL0",
+          "name": "WhatsApp Bearer Token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://bazz-ai-agentic-team-production-3203.up.railway.app/api/leads/update",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"id\": {{ $node['Construct Form Payload'].json.leadId }},\n  \"status\": \"submitted\"\n}",
+        "options": {}
+      },
+      "id": "72fbfbeb-08bf-4103-94b4-d641876fa8e2",
+      "name": "Update Lead Status (Submitted)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2848,
+        1376
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "CXPkkHSyHaY4SwL0",
+          "name": "WhatsApp Bearer Token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://bazz-ai-agentic-team-production-3203.up.railway.app/api/leads/update",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"id\": {{ $node['Construct Form Payload'].json.leadId }},\n  \"status\": \"failed\"\n}",
+        "options": {}
+      },
+      "id": "7ea7c31c-b290-47ce-9857-a0e522b6f88f",
+      "name": "Update Lead Status (Failed)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        2848,
+        1584
+      ],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "CXPkkHSyHaY4SwL0",
+          "name": "WhatsApp Bearer Token"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "height": 784.7942430703599,
+        "width": 389.0838407016758,
+        "color": 6
+      },
+      "id": "60c11b6c-4f1f-440c-bfc2-ddde6944d8dc",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1424,
+        976
+      ]
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger (Every 4 Hours)": {
+      "main": [
+        [
+          {
+            "node": "Fetch Qualified Leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Qualified Leads": {
+      "main": [
+        [
+          {
+            "node": "Loop Through Leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Through Leads": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Construct Form Payload",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Construct Form Payload": {
+      "main": [
+        [
+          {
+            "node": "Submit to Microsoft Forms",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Submit to Microsoft Forms": {
+      "main": [
+        [
+          {
+            "node": "Check Response Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Response Status": {
+      "main": [
+        [
+          {
+            "node": "Create Submission Record (Success)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create Submission Record (Failed)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Submission Record (Success)": {
+      "main": [
+        [
+          {
+            "node": "Update Lead Status (Submitted)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Submission Record (Failed)": {
+      "main": [
+        [
+          {
+            "node": "Update Lead Status (Failed)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Lead Status (Submitted)": {
+      "main": [
+        [
+          {
+            "node": "Loop Through Leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Lead Status (Failed)": {
+      "main": [
+        [
+          {
+            "node": "Loop Through Leads",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "timeSavedMode": "fixed",
+    "timezone": "Africa/Nairobi",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "versionId": "9bfb3ccf-2172-43f5-a1e5-5c3fbf493deb",
+  "meta": {
+    "instanceId": "6e84a5f4749722036b9d697019011efd52eda740a3bee66f632a595f353efc69"
+  },
+  "id": "kHyGMPBHrBjsw3ZM",
+  "tags": []
+}

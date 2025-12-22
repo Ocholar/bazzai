@@ -1,0 +1,195 @@
+{
+    "name":  "06_social_media_auto_poster",
+    "nodes":  [
+                  {
+                      "parameters":  {
+                                         "rule":  {
+                                                      "interval":  [
+                                                                       {
+                                                                           "field":  "hours",
+                                                                           "hoursInterval":  6
+                                                                       }
+                                                                   ]
+                                                  }
+                                     },
+                      "id":  "schedule-trigger",
+                      "name":  "Schedule (Every 6 Hours)",
+                      "type":  "n8n-nodes-base.scheduleTrigger",
+                      "typeVersion":  1,
+                      "position":  [
+                                       250,
+                                       300
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "jsCode":  "// Pre-written engaging posts for Bazztech Networks\nconst posts = [\n  {\n    type: \u0027speed_promo\u0027,\n    content: \u0027🚀 Experience lightning-fast 5G speeds with Bazztech Networks!\\n\\n5G: Up to 100Mbps 📶\\n4G: Up to 40Mbps\\n\\nUpgrade today and feel the difference! FREE installation for new customers.\\n\\nCall: +254 103 339197\u0027\n  },\n  {\n    type: \u0027testimonial\u0027,\n    content: \u0027⭐ \"Best internet service in Kenya! The 5G speeds are incredible and support is always there when I need them.\" - Sarah K., Nairobi\\n\\nJoin 10,000+ happy customers! 🎉\\n\\nGet connected: +254 103 339197\u0027\n  },\n  {\n    type: \u0027coverage\u0027,\n    content: \u0027📍 Expanding across Kenya!\\n\\nNow available in:\\n✅ Nairobi\\n✅ Mombasa\\n✅ Kisumu\\n✅ Nakuru\\n✅ Eldoret\\n\\nCheck if we cover your area! Call: +254 103 339197\u0027\n  },\n  {\n    type: \u0027offer\u0027,\n    content: \u0027🎁 LIMITED TIME OFFER!\\n\\nFREE Installation + First Month 50% OFF\\n\\n5G ODU: KES 2,250 (was 4,500)\\nFiber 100Mbps: KES 3,250 (was 6,500)\\n\\nDon\\\u0027t miss out! Call NOW: +254 103 339197\u0027\n  },\n  {\n    type: \u0027tech_tip\u0027,\n    content: \u0027💡 Tech Tip Tuesday!\\n\\nBoost your WiFi signal:\\n1. Place router in central location\\n2. Keep away from walls\\n3. Update firmware regularly\\n4. Use 5GHz band for faster speeds\\n\\nNeed better internet? We can help! +254 103 339197\u0027\n  },\n  {\n    type: \u0027reliability\u0027,\n    content: \u0027🛡️ 99.9% Uptime Guarantee\\n\\nWith Bazztech Networks, you get:\\n✅ Reliable connection\\n✅ 24/7 local support\\n✅ No hidden fees\\n✅ Unlimited data\\n\\nSwitch to reliability today! +254 103 339197\u0027\n  },\n  {\n    type: \u0027business\u0027,\n    content: \u0027💼 Power your business with enterprise-grade internet!\\n\\nPerfect for:\\n📊 Video conferencing\\n☁️ Cloud applications\\n🎮 Online services\\n📹 Streaming\\n\\nGet a quote: +254 103 339197\u0027\n  },\n  {\n    type: \u0027weekend\u0027,\n    content: \u0027🎮 Weekend plans? Stream, game, and browse without limits!\\n\\nOur 5G and Fiber plans offer:\\n⚡ Ultra-fast speeds\\n📺 4K streaming\\n🎯 Low latency gaming\\n\\nUpgrade your weekend: +254 103 339197\u0027\n  },\n  {\n    type: \u0027comparison\u0027,\n    content: \u0027📊 Why Choose Bazztech?\\n\\nOther ISPs: Slow, unreliable, poor support\\nBazztech: Fast, stable, 24/7 local support\\n\\nThe choice is clear! 🌟\\n\\nSwitch today: +254 103 339197\u0027\n  },\n  {\n    type: \u0027fiber_promo\u0027,\n    content: \u0027🌐 FTTX Fiber Internet - The Future is Here!\\n\\nUp to 1Gbps speeds\\nSymmetric upload/download\\nPerfect for 4K streaming \u0026 gaming\\n\\nStarting at KES 6,500/month\\n\\nCall: +254 103 339197\u0027\n  },\n  {\n    type: \u0027customer_love\u0027,\n    content: \u0027❤️ Our customers love us!\\n\\n\"Switched from [competitor] and never looked back. Bazztech is the real deal!\" - David M.\\n\\nExperience the difference yourself!\\n\\nCall: +254 103 339197\u0027\n  },\n  {\n    type: \u0027installation\u0027,\n    content: \u0027⚡ Quick Installation Process:\\n\\n1️⃣ Call us: +254 103 339197\\n2️⃣ We check coverage\\n3️⃣ Schedule installation\\n4️⃣ Get connected in 24-48 hours!\\n\\nIt\\\u0027s that simple! FREE installation included.\u0027\n  },\n  {\n    type: \u0027support\u0027,\n    content: \u0027🤝 24/7 Local Support That Actually Cares\\n\\nNo automated responses\\nNo long wait times\\nReal people, real solutions\\n\\nTry us and see the difference!\\n\\nCall: +254 103 339197\u0027\n  },\n  {\n    type: \u0027speed_test\u0027,\n    content: \u0027📶 Test Your Current Speed vs. Bazztech\\n\\nYour current ISP: 😴\\nBazztech 5G: 🚀\\n\\nReady for an upgrade?\\n\\nCall: +254 103 339197\u0027\n  },\n  {\n    type: \u0027work_from_home\u0027,\n    content: \u0027🏠 Working from home?\\n\\nYou need:\\n✅ Stable connection\\n✅ Fast upload speeds\\n✅ Reliable support\\n\\nBazztech delivers all three!\\n\\nCall: +254 103 339197\u0027\n  },\n  {\n    type: \u0027streaming\u0027,\n    content: \u0027📺 Tired of buffering?\\n\\nWith Bazztech:\\n✅ 4K streaming\\n✅ No lag\\n✅ Multiple devices\\n✅ Unlimited data\\n\\nStream without limits!\\n\\nCall: +254 103 339197\u0027\n  },\n  {\n    type: \u0027gaming\u0027,\n    content: \u0027🎮 Gamers, this is for you!\\n\\nLow latency\\nHigh speeds\\nStable connection\\nNo throttling\\n\\nLevel up your gaming experience!\\n\\nCall: +254 103 339197\u0027\n  },\n  {\n    type: \u0027family\u0027,\n    content: \u0027👨‍👩‍👧‍👦 Perfect for the whole family!\\n\\nKids streaming\\nParents working\\nEveryone gaming\\n\\nOne connection, unlimited possibilities!\\n\\nCall: +254 103 339197\u0027\n  },\n  {\n    type: \u0027no_contract\u0027,\n    content: \u0027📝 No Long-Term Contracts!\\n\\nPay monthly\\nCancel anytime\\nNo hidden fees\\nNo surprises\\n\\nFlexibility you deserve!\\n\\nCall: +254 103 339197\u0027\n  },\n  {\n    type: \u0027local_company\u0027,\n    content: \u0027🇰🇪 Proudly Kenyan!\\n\\nLocal company\\nLocal support\\nWe understand your needs\\n\\nSupport local, get better service!\\n\\nCall: +254 103 339197\u0027\n  }\n];\n\n// Select random post\nconst randomPost = posts[Math.floor(Math.random() * posts.length)];\n\nreturn {\n  content: randomPost.content,\n  topic: randomPost.type,\n  timestamp: new Date().toISOString()\n};"
+                                     },
+                      "id":  "select-post",
+                      "name":  "Select Random Post",
+                      "type":  "n8n-nodes-base.code",
+                      "typeVersion":  2,
+                      "position":  [
+                                       450,
+                                       300
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "jsCode":  "// Add hashtags and website link\nconst baseContent = $input.item.json.content;\n\n// Add hashtags and link\nconst postContent = `${baseContent}\\n\\n🌐 Learn more: https://bazztech.co.ke\\n\\n#BazztechNetworks #5GKenya #FiberInternet #FastInternet #KenyanTech #InternetKenya`;\n\nreturn {\n  content: postContent,\n  topic: $input.item.json.topic,\n  timestamp: $input.item.json.timestamp\n};"
+                                     },
+                      "id":  "format-post",
+                      "name":  "Format Post Content",
+                      "type":  "n8n-nodes-base.code",
+                      "typeVersion":  2,
+                      "position":  [
+                                       650,
+                                       300
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "url":  "https://graph.facebook.com/v18.0/={{$env.FACEBOOK_PAGE_ID}}/feed",
+                                         "authentication":  "genericCredentialType",
+                                         "genericAuthType":  "httpQueryAuth",
+                                         "sendBody":  true,
+                                         "specifyBody":  "json",
+                                         "jsonBody":  "={\n  \"message\": \"{{$json.content}}\",\n  \"published\": true\n}",
+                                         "options":  {
+
+                                                     }
+                                     },
+                      "id":  "post-to-facebook",
+                      "name":  "Post to Facebook",
+                      "type":  "n8n-nodes-base.httpRequest",
+                      "typeVersion":  4.1,
+                      "position":  [
+                                       850,
+                                       200
+                                   ],
+                      "credentials":  {
+                                          "httpQueryAuth":  {
+                                                                "id":  "facebook-page-token",
+                                                                "name":  "Facebook Page Access Token"
+                                                            }
+                                      }
+                  },
+                  {
+                      "parameters":  {
+                                         "url":  "https://graph.facebook.com/v18.0/={{$env.INSTAGRAM_BUSINESS_ACCOUNT_ID}}/media",
+                                         "authentication":  "genericCredentialType",
+                                         "genericAuthType":  "httpQueryAuth",
+                                         "sendBody":  true,
+                                         "specifyBody":  "json",
+                                         "jsonBody":  "={\n  \"image_url\": \"https://images.unsplash.com/photo-1558346490-a72e53ae2d4f?w=1080\u0026h=1080\u0026fit=crop\",\n  \"caption\": \"{{$json.content}}\"\n}",
+                                         "options":  {
+
+                                                     }
+                                     },
+                      "id":  "create-instagram-media",
+                      "name":  "Create Instagram Media",
+                      "type":  "n8n-nodes-base.httpRequest",
+                      "typeVersion":  4.1,
+                      "position":  [
+                                       850,
+                                       400
+                                   ],
+                      "credentials":  {
+                                          "httpQueryAuth":  {
+                                                                "id":  "facebook-page-token",
+                                                                "name":  "Facebook Page Access Token"
+                                                            }
+                                      }
+                  },
+                  {
+                      "parameters":  {
+                                         "url":  "https://graph.facebook.com/v18.0/={{$env.INSTAGRAM_BUSINESS_ACCOUNT_ID}}/media_publish",
+                                         "authentication":  "genericCredentialType",
+                                         "genericAuthType":  "httpQueryAuth",
+                                         "sendBody":  true,
+                                         "specifyBody":  "json",
+                                         "jsonBody":  "={\n  \"creation_id\": \"{{$json.id}}\"\n}",
+                                         "options":  {
+
+                                                     }
+                                     },
+                      "id":  "publish-instagram-post",
+                      "name":  "Publish Instagram Post",
+                      "type":  "n8n-nodes-base.httpRequest",
+                      "typeVersion":  4.1,
+                      "position":  [
+                                       1050,
+                                       400
+                                   ],
+                      "credentials":  {
+                                          "httpQueryAuth":  {
+                                                                "id":  "facebook-page-token",
+                                                                "name":  "Facebook Page Access Token"
+                                                            }
+                                      }
+                  }
+              ],
+    "connections":  {
+                        "Schedule (Every 6 Hours)":  {
+                                                         "main":  [
+                                                                      [
+                                                                          {
+                                                                              "node":  "Select Random Post",
+                                                                              "type":  "main",
+                                                                              "index":  0
+                                                                          }
+                                                                      ]
+                                                                  ]
+                                                     },
+                        "Select Random Post":  {
+                                                   "main":  [
+                                                                [
+                                                                    {
+                                                                        "node":  "Format Post Content",
+                                                                        "type":  "main",
+                                                                        "index":  0
+                                                                    }
+                                                                ]
+                                                            ]
+                                               },
+                        "Format Post Content":  {
+                                                    "main":  [
+                                                                 [
+                                                                     {
+                                                                         "node":  "Post to Facebook",
+                                                                         "type":  "main",
+                                                                         "index":  0
+                                                                     },
+                                                                     {
+                                                                         "node":  "Create Instagram Media",
+                                                                         "type":  "main",
+                                                                         "index":  0
+                                                                     }
+                                                                 ]
+                                                             ]
+                                                },
+                        "Create Instagram Media":  {
+                                                       "main":  [
+                                                                    [
+                                                                        {
+                                                                            "node":  "Publish Instagram Post",
+                                                                            "type":  "main",
+                                                                            "index":  0
+                                                                        }
+                                                                    ]
+                                                                ]
+                                                   }
+                    },
+    "active":  false,
+    "settings":  {
+
+                 },
+    "versionId":  "1",
+    "id":  "06_social_media_auto_poster",
+    "meta":  {
+                 "instanceId":  "bazztech-n8n"
+             },
+    "tags":  [
+
+             ]
+}

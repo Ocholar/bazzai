@@ -1,0 +1,700 @@
+{
+    "name": "02 - Lead Qualification Agent (Conversational)",
+    "nodes": [
+        {
+            "parameters": {
+                "operation": "executeQuery",
+                "query": "=UPDATE leads SET lastTemplateSent = '{{ $node[\"Build Template Payload\"].json.selectedTemplate }}', lastTemplateSentAt = NOW() WHERE id = {{ $node[\"Build Template Payload\"].json.leadId }};",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.mySql",
+            "typeVersion": 2.5,
+            "position": [
+                2768,
+                1408
+            ],
+            "id": "130b94b1-8725-4778-8b0e-eaca33a3c39e",
+            "name": "Update Template Sent",
+            "credentials": {
+                "mySql": {
+                    "id": "GcNvBvfzsVMT8qBB",
+                    "name": "Railway MySQL (Real Leads)"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "rule": {
+                    "interval": [
+                        {
+                            "field": "minutes",
+                            "minutesInterval": 30
+                        }
+                    ]
+                }
+            },
+            "id": "7f46e7c1-2d8e-45a0-8096-a71315e79834",
+            "name": "Schedule - Send Templates",
+            "type": "n8n-nodes-base.scheduleTrigger",
+            "typeVersion": 1.2,
+            "position": [
+                1584,
+                1408
+            ]
+        },
+        {
+            "parameters": {
+                "conditions": {
+                    "number": [
+                        {
+                            "value1": "={{ $now.hour }}",
+                            "operation": "largerEqual",
+                            "value2": 7
+                        },
+                        {
+                            "value1": "={{ $now.hour }}",
+                            "value2": 19
+                        }
+                    ]
+                }
+            },
+            "id": "2cc9eb8d-7ad1-44ff-93ea-4b62548d94d4",
+            "name": "Check Time Window",
+            "type": "n8n-nodes-base.if",
+            "typeVersion": 1,
+            "position": [
+                1760,
+                1408
+            ]
+        },
+        {
+            "parameters": {
+                "operation": "executeQuery",
+                "query": "SELECT id, customerName, phone, email, tag, source, createdAt\nFROM leads\nWHERE phone IS NOT NULL \n  AND phone != ''\n  AND status = 'new'\nORDER BY createdAt DESC\nLIMIT 50;",
+                "options": {}
+            },
+            "id": "c86346be-2939-4a4b-93e1-8ebdab21c8bc",
+            "name": "Fetch New Leads",
+            "type": "n8n-nodes-base.mySql",
+            "typeVersion": 2.5,
+            "position": [
+                1968,
+                1408
+            ],
+            "alwaysOutputData": false,
+            "credentials": {
+                "mySql": {
+                    "id": "GcNvBvfzsVMT8qBB",
+                    "name": "Railway MySQL (Real Leads)"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "jsCode": "// Build WhatsApp template message with random template selection\nconst leadData = $input.item.json;\nlet phone = leadData.phone.toString().replace(/[^0-9]/g, '');\n\n// Format phone number\nif (phone.startsWith('254')) phone = phone;\nelse if (phone.startsWith('0')) phone = '254' + phone.substring(1);\nelse if (phone.startsWith('7') && phone.length === 9) phone = '254' + phone;\n\n// Validate Kenyan phone number\nif (!/^2547\\d{8}$/.test(phone)) {\n  throw new Error(`Invalid phone: ${phone}`);\n}\n\nconst customerName = leadData.customerName || 'Customer';\n\n// Available template names (only customer name required as {{1}})\nconst templateNames = [\n  \"lead_qualification_intro\",\n  \"5g\",\n  \"fttx_business_fiber_coming_soon\",\n  \"network_expansion_announcement\",\n  \"limitedtime_offer_fomo\"\n];\n\n// Randomly select a template\nconst selectedTemplateName = templateNames[Math.floor(Math.random() * templateNames.length)];\n\n// Build payload with selected template\nconst payload = {\n  messaging_product: \"whatsapp\",\n  to: phone,\n  type: \"template\",\n  template: {\n    name: selectedTemplateName,\n    language: {\n      code: \"en\"\n    },\n    components: [\n      {\n        type: \"body\",\n        parameters: [\n          {\n            type: \"text\",\n            text: customerName  // This fills the {{1}} placeholder\n          }\n        ]\n      }\n    ]\n  }\n};\n\nreturn {\n  whatsapp_payload: payload,\n  phoneNumberId: '880774405122197',\n  leadId: leadData.id,\n  cleanPhone: phone,\n  selectedTemplate: selectedTemplateName\n};"
+            },
+            "id": "6337b891-6688-40ff-a6f1-bda4194897d8",
+            "name": "Build Template Payload",
+            "type": "n8n-nodes-base.code",
+            "typeVersion": 2,
+            "position": [
+                2368,
+                1408
+            ]
+        },
+        {
+            "parameters": {
+                "batchSize": 5,
+                "options": {}
+            },
+            "id": "9b45461a-6684-4c68-924e-6f035d75d098",
+            "name": "Loop Through Leads",
+            "type": "n8n-nodes-base.splitInBatches",
+            "typeVersion": 3,
+            "position": [
+                2160,
+                1408
+            ]
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "=https://graph.facebook.com/v21.0/880774405122197/messages",
+                "authentication": "genericCredentialType",
+                "genericAuthType": "httpHeaderAuth",
+                "sendHeaders": true,
+                "headerParameters": {
+                    "parameters": [
+                        {
+                            "name": "Content-Type",
+                            "value": "application/json"
+                        }
+                    ]
+                },
+                "sendBody": true,
+                "specifyBody": "json",
+                "jsonBody": "={{ JSON.stringify($json.whatsapp_payload) }}",
+                "options": {}
+            },
+            "id": "51168c7f-e380-41ba-9c76-2a1a5bd49398",
+            "name": "Send WhatsApp Template",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.2,
+            "position": [
+                2560,
+                1408
+            ],
+            "credentials": {
+                "httpHeaderAuth": {
+                    "id": "CXPkkHSyHaY4SwL0",
+                    "name": "WhatsApp Bearer Token"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "operation": "executeQuery",
+                "query": "=UPDATE leads SET status = 'contacted' WHERE id = {{ $item(0).$node[\"Loop Through Leads\"].json.id }};",
+                "options": {}
+            },
+            "type": "n8n-nodes-base.mySql",
+            "typeVersion": 2.5,
+            "position": [
+                2960,
+                1408
+            ],
+            "id": "194691b3-383a-4997-a071-caf1a23b25a1",
+            "name": "Update Lead Status (Contacted)",
+            "credentials": {
+                "mySql": {
+                    "id": "GcNvBvfzsVMT8qBB",
+                    "name": "Railway MySQL (Real Leads)"
+                }
+            }
+        },
+        {
+            "parameters": {},
+            "id": "38791d54-65cb-4a3e-802c-e387b05fe247",
+            "name": "Wait (Rate Limit)",
+            "type": "n8n-nodes-base.wait",
+            "typeVersion": 1.1,
+            "position": [
+                3152,
+                1408
+            ],
+            "webhookId": "rate-limit"
+        },
+        {
+            "parameters": {
+                "httpMethod": "POST",
+                "path": "whatsapp-response",
+                "options": {}
+            },
+            "id": "3bf002dd-cd10-4560-b71f-d36ee0653921",
+            "name": "Webhook - WhatsApp Response",
+            "type": "n8n-nodes-base.webhook",
+            "typeVersion": 2,
+            "position": [
+                1584,
+                1808
+            ],
+            "webhookId": "whatsapp-response"
+        },
+        {
+            "parameters": {
+                "operation": "executeQuery",
+                "query": "=SELECT * FROM leads WHERE phone = '{{ $json.body.from }}' LIMIT 1;",
+                "options": {}
+            },
+            "id": "bc44b31f-9172-4f70-98c1-b2bf4f3255cd",
+            "name": "Find Lead by Phone",
+            "type": "n8n-nodes-base.mySql",
+            "typeVersion": 2.5,
+            "position": [
+                1760,
+                1808
+            ],
+            "credentials": {
+                "mySql": {
+                    "id": "GcNvBvfzsVMT8qBB",
+                    "name": "Railway MySQL (Real Leads)"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "jsCode": "// Prepare context for Gemini AI\nconst webhookData = $node['Webhook - WhatsApp Response'].json.body;\n\n// Handle MySQL output (array of rows)\nlet leadData = $input.item.json;\n\n// Check if leadData is an array (MySQL result)\nif (Array.isArray(leadData) && leadData.length > 0) {\n  leadData = leadData[0];\n}\n\nif (!leadData || (typeof leadData === 'object' && Object.keys(leadData).length === 0)) {\n   leadData = { \n     customerName: 'Customer', \n     phone: webhookData.from,\n     lastTemplateSent: 'lead_qualification_intro'\n   };\n}\n\nconst templateSent = leadData.lastTemplateSent || 'lead_qualification_intro';\n\n// Parse conversation history\nlet conversationHistory = leadData.conversationHistory;\nif (typeof conversationHistory === 'string') {\n  try {\n    conversationHistory = JSON.parse(conversationHistory);\n  } catch (e) {\n    conversationHistory = [];\n  }\n}\nif (!Array.isArray(conversationHistory)) {\n  conversationHistory = [];\n}\n\n// If history is empty, inject the template-specific intro (more naturally)\nif (conversationHistory.length === 0) {\n  let introMessage = '';\n  \n  switch(templateSent) {\n    case '5g':\n      introMessage = `Hey ${leadData.customerName || 'there'}! 👋 Just saw our 5G is now live in your area. Speeds are insane - like 50+ Mbps. You interested?`;\n      break;\n    case 'fttx_business_fiber_coming_soon':\n      introMessage = `Hi ${leadData.customerName || 'there'}! Good news 🎉 - our fiber network is rolling out to your neighborhood. Early bird pricing ends soon. Want in?`;\n      break;\n    case 'network_expansion_announcement':\n      introMessage = `Yo ${leadData.customerName || 'there'}! 🚀 Airtel 5G just hit 690+ sites and your area is covered. Ready for a speed upgrade?`;\n      break;\n    case 'limitedtime_offer_fomo':\n      introMessage = `${leadData.customerName || 'Hey'}! ⏰ Quick heads up - we've got 70% off routers but only for a few more days. Which speed works for you?`;\n      break;\n    default: // lead_qualification_intro\n      introMessage = `Hi ${leadData.customerName || 'there'} 👋 It's Reagan from Bazztech. Got a sec? I think we've got something perfect for your internet needs.`;\n  }\n  \n  conversationHistory.push({\n    role: 'assistant',\n    message: introMessage,\n    timestamp: new Date(Date.now() - 60000).toISOString()\n  });\n}\n\nconversationHistory.push({\n  role: 'user',\n  message: webhookData.text,\n  timestamp: new Date().toISOString()\n});\n\n// Determine which packages to offer based on template context\nlet packageContext = `📦 FIBER PACKAGES:\n• 15Mbps: KES 1,999/month\n• 30Mbps: KES 2,999/month\nBoth include FREE router\nFirst month: +KES 1,000 one-time activation`;\n\nif (templateSent === '5g' || templateSent === 'network_expansion_announcement') {\n  packageContext = `📱 5G PACKAGES:\n• 10 Mbps - KES 3,500/month\n• 30 Mbps - KES 5,500/month  \n• 50 Mbps - KES 7,500/month\nAll include FREE 5G router with battery backup`;\n}\n\nconst systemPrompt = `You are Reagan, a chill but professional sales rep for Bazztech Networks. You're texting a potential customer on WhatsApp.\n\n⚡ CONTEXT:\nCustomer: ${leadData.customerName || 'Customer'}\nTemplate That Was Sent: ${templateSent}\nPackage Interest: ${leadData.preferredPackage || 'not mentioned yet'}\nLocation: ${leadData.deliveryLocation || 'not mentioned yet'}\nWanted Install Date: ${leadData.preferredDate ? leadData.preferredDate.toString().split('T')[0] : 'not mentioned yet'}\nPreferred Time: ${leadData.preferredTime || 'not mentioned yet'}\nEmail: ${leadData.email || 'not provided'}\n\n📱 CONVERSATION SO FAR:\n${conversationHistory.map(m => `${m.role === 'user' ? '👤' : '🤖'} ${m.message}`).join('\\n')}\n\n🎯 YOUR APPROACH:\n- Keep it natural and human - like texting a friend, not a robot\n- Reference the package/offer that was sent to them (${templateSent})\n- Ask one thing at a time, max 2 sentences per message\n- Use casual language, emojis are cool but don't overdo it\n- If they engage positively, ask about: package → location → install date → preferred time\n- If they hesitate, understand why and adapt\n- Be genuinely helpful, not pushy\n- ONLY offer email proposal if customer explicitly asks for it (like \"email me\", \"send proposal\", \"details via email\")\n- Do NOT ask for their email or offer to email - wait for them to ask\n\n📦 AVAILABLE PACKAGES:\n${packageContext}\n\nRESPOND WITH VALID JSON ONLY:\n{\n  \"message\": \"your response here (keep it under 160 chars for WhatsApp)\",\n  \"extractedData\": {\n    \"preferredPackage\": \"15mbps\" or \"30mbps\" or \"5g_10mbps\" or \"5g_30mbps\" or \"5g_50mbps\" or null,\n    \"deliveryLocation\": \"location/address\" or null,\n    \"preferredDate\": \"YYYY-MM-DD\" or null,\n    \"preferredTime\": \"morning\" or \"afternoon\" or \"evening\" or null,\n    \"email\": \"customer@email.com\" or null\n  },\n  \"nextAction\": \"continue\" or \"qualified\" or \"rejected\" or \"send_proposal\",\n  \"needsEmailProposal\": true or false\n}`;\n\nreturn {\n  systemPrompt: systemPrompt,\n  leadData: leadData,\n  conversationHistory: conversationHistory,\n  latestMessage: webhookData.text,\n  from: webhookData.from,\n  templateSent: templateSent\n};"
+            },
+            "id": "58bad00b-346a-469a-9da5-cb64bf164556",
+            "name": "Prepare AI Context",
+            "type": "n8n-nodes-base.code",
+            "typeVersion": 2,
+            "position": [
+                1936,
+                1808
+            ]
+        },
+        {
+            "parameters": {
+                "promptType": "define",
+                "text": "={{ $json.systemPrompt }}",
+                "messages": {
+                    "messageValues": [
+                        {
+                            "message": "You are a helpful sales assistant for an internet service provider. You are having a conversation with a potential customer via WhatsApp. Your goal is to qualify leads by asking about their internet needs, location, and preferred installation date. Be friendly, concise (WhatsApp messages should be short), and professional."
+                        }
+                    ]
+                },
+                "batching": {}
+            },
+            "type": "@n8n/n8n-nodes-langchain.chainLlm",
+            "typeVersion": 1.7,
+            "position": [
+                2128,
+                1808
+            ],
+            "id": "857a22a1-71ec-4d96-afdc-290cab263f31",
+            "name": "Basic LLM Chain"
+        },
+        {
+            "parameters": {
+                "model": {
+                    "__rl": true,
+                    "value": "gpt-4o-mini",
+                    "mode": "list",
+                    "cachedResultName": "gpt-4o-mini"
+                },
+                "builtInTools": {},
+                "options": {}
+            },
+            "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+            "typeVersion": 1.3,
+            "position": [
+                2208,
+                2000
+            ],
+            "id": "3ce387a6-1202-40be-9558-fd4df9e6741e",
+            "name": "OpenAI Chat Model",
+            "credentials": {
+                "openAiApi": {
+                    "id": "NZ0bspx7pAXSLCpy",
+                    "name": "OpenAi account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "jsCode": "// Extract and parse AI response\nconst response = $input.item.json;\n// Handle both Gemini (candidates array) and standard n8n LLM Chain (text property) outputs\nconst aiText = response.text || response.candidates?.[0]?.content?.parts?.[0]?.text;\n\nif (!aiText) {\n  throw new Error('No response from AI');\n}\n\n// Clean up potential markdown code blocks if present\nconst cleanJson = aiText.replace(/```json\\n|\\n```/g, '');\n\nlet aiResponse;\ntry {\n  aiResponse = JSON.parse(cleanJson);\n} catch (e) {\n  throw new Error('Invalid JSON from AI: ' + cleanJson);\n}\n\nconst contextData = $node['Prepare AI Context'].json;\n\n// Update conversation history\ncontextData.conversationHistory.push({\n  role: 'assistant',\n  message: aiResponse.message,\n  timestamp: new Date().toISOString()\n});\n\nreturn {\n  message: aiResponse.message,\n  extractedData: aiResponse.extractedData,\n  nextAction: aiResponse.nextAction,\n  leadId: contextData.leadData.id,\n  conversationHistory: contextData.conversationHistory,\n  from: contextData.from,\n  leadData: contextData.leadData\n};"
+            },
+            "id": "a20c65e4-bada-47a5-bb4b-d4ec101b4276",
+            "name": "Extract AI Response",
+            "type": "n8n-nodes-base.code",
+            "typeVersion": 2,
+            "position": [
+                2448,
+                1808
+            ]
+        },
+        {
+            "parameters": {
+                "jsCode": "// Get data from previous nodes\nconst leadData = $node[\"Prepare AI Context\"].json.leadData;\n\n// AI output\nconst aiNodeName = \"Extract AI Response\";\nconst aiResponse = $node[aiNodeName].json.extractedData || {};\nconst nextAction = $node[aiNodeName].json.nextAction;\nconst aiMessage = $node[aiNodeName].json.message;\n\n// Current history\nconst conversationHistory = $node[\"Prepare AI Context\"].json.conversationHistory;\n\n// Add the new AI message to history\nif (aiMessage) {\n  conversationHistory.push({\n    role: \"assistant\",\n    message: aiMessage,\n    timestamp: new Date().toISOString(),\n  });\n}\n\n// Sanitize to ASCII and remove problematic characters\nfunction sanitizeText(val) {\n  if (!val) return \"\";\n  return val.toString()\n    .replace(/[^\\x20-\\x7E]/g, \"\") // Remove non-ASCII\n    .replace(/\\\\/g, \"/\")          // Replace backslashes with forward slashes\n    .replace(/\"/g, \"'\")           // Replace double quotes with single quotes\n    .trim();\n}\n\n// Escape SQL values (for regular fields, NOT for JSON)\nfunction escapeSql(val) {\n  if (val === null || val === undefined) return \"NULL\";\n  if (typeof val === \"number\") return val;\n  return \"'\" + sanitizeText(val).replace(/'/g, \"''\") + \"'\";\n}\n\n// Build safe conversation history - aggressively sanitize\nconst safeHistory = conversationHistory.map((h) => ({\n  role: sanitizeText(h.role || \"assistant\"),\n  message: sanitizeText(h.message || \"\"),\n  timestamp: sanitizeText(h.timestamp || new Date().toISOString()),\n}));\n\n// Create clean JSON string for MySQL\nconst jsonString = JSON.stringify(safeHistory);\n\n// Build the update query - use JSON column type properly\nconst updates = [];\nupdates.push(`conversationHistory = '${jsonString.replace(/'/g, \"''\")}'`);\n\nif (aiResponse.preferredPackage) {\n  updates.push(`preferredPackage = ${escapeSql(aiResponse.preferredPackage)}`);\n}\nif (aiResponse.deliveryLocation) {\n  updates.push(`deliveryLocation = ${escapeSql(aiResponse.deliveryLocation)}`);\n}\nif (aiResponse.preferredDate) {\n  updates.push(`preferredDate = ${escapeSql(aiResponse.preferredDate)}`);\n}\nif (aiResponse.preferredTime) {\n  updates.push(`preferredTime = ${escapeSql(aiResponse.preferredTime)}`);\n}\n\nif (nextAction === \"qualified\" || nextAction === \"rejected\") {\n  const status = nextAction === \"qualified\" ? \"qualified\" : \"failed\";\n  updates.push(`status = ${escapeSql(status)}`);\n}\n\nconst query = `UPDATE leads SET ${updates.join(\", \")} WHERE id = ${escapeSql(leadData.id)};`;\n\nreturn { query };"
+            },
+            "type": "n8n-nodes-base.code",
+            "typeVersion": 2,
+            "position": [
+                2624,
+                1808
+            ],
+            "id": "23a1608b-e35f-4386-8ac7-12403a973bb0",
+            "name": "Prepare Update Query"
+        },
+        {
+            "parameters": {
+                "operation": "executeQuery",
+                "query": "={{ $json.query }}",
+                "options": {}
+            },
+            "id": "8de1db59-d83e-423b-865b-2e4fa257c279",
+            "name": "Update Lead Data",
+            "type": "n8n-nodes-base.mySql",
+            "typeVersion": 2.5,
+            "position": [
+                2800,
+                1808
+            ],
+            "credentials": {
+                "mySql": {
+                    "id": "GcNvBvfzsVMT8qBB",
+                    "name": "Railway MySQL (Real Leads)"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "method": "POST",
+                "url": "=https://graph.facebook.com/v21.0/880774405122197/messages",
+                "authentication": "genericCredentialType",
+                "genericAuthType": "httpHeaderAuth",
+                "sendHeaders": true,
+                "headerParameters": {
+                    "parameters": [
+                        {
+                            "name": "Content-Type",
+                            "value": "application/json"
+                        }
+                    ]
+                },
+                "sendBody": true,
+                "specifyBody": "json",
+                "jsonBody": "={\n  \"messaging_product\": \"whatsapp\",\n  \"to\": \"{{ $node['Extract AI Response'].json.from }}\",\n  \"type\": \"text\",\n  \"text\": { \"body\": {{ $node['Extract AI Response'].json.message.toJsonString() }} }\n}",
+                "options": {}
+            },
+            "id": "50aa4b28-4c63-4755-b40c-81e0e91ae39c",
+            "name": "Send WhatsApp Reply",
+            "type": "n8n-nodes-base.httpRequest",
+            "typeVersion": 4.2,
+            "position": [
+                3008,
+                1808
+            ],
+            "credentials": {
+                "httpHeaderAuth": {
+                    "id": "CXPkkHSyHaY4SwL0",
+                    "name": "WhatsApp Bearer Token"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "jsCode": "const leadData = $node['Prepare AI Context'].json.leadData;\nconst aiResponse = $node['Extract AI Response'].json;\nconst contextData = $node['Prepare AI Context'].json;\n\nconst packageMap = {\n  '15mbps': { speed: '15 Mbps', price: 1999, type: 'Fiber' },\n  '30mbps': { speed: '30 Mbps', price: 2999, type: 'Fiber' },\n  '5g_10mbps': { speed: '10 Mbps', price: 3500, type: '5G' },\n  '5g_30mbps': { speed: '30 Mbps', price: 5500, type: '5G' },\n  '5g_50mbps': { speed: '50 Mbps', price: 7500, type: '5G' }\n};\n\nconst pkg = packageMap[aiResponse.extractedData?.preferredPackage] || {};\nconst installDate = aiResponse.extractedData?.preferredDate || 'TBD';\nconst location = aiResponse.extractedData?.deliveryLocation || 'To be confirmed';\nconst customerEmail = aiResponse.extractedData?.email || leadData.email;\n\nif (!customerEmail) {\n  return { error: 'No email address available' };\n}\n\nconst proposal = `BAZZTECH NETWORKS - SERVICE PROPOSAL\\n\\n${'='.repeat(50)}\\n\\nProposal Date: ${new Date().toLocaleDateString()}\\nCustomer Name: ${leadData.customerName}\\nCustomer Phone: ${leadData.phone}\\n\\n${'='.repeat(50)}\\n\\nSERVICE DETAILS:\\n\\nPackage: ${pkg.type || 'Internet'} - ${pkg.speed || 'Custom Speed'}\\nMonthly Rate: KES ${pkg.price?.toLocaleString() || 'Quote'}\\nInstallation Location: ${location}\\nPreferred Install Date: ${installDate}\\nPreferred Time: ${aiResponse.extractedData?.preferredTime || 'Flexible'}\\n\\n${'='.repeat(50)}\\n\\nWHAT'S INCLUDED:\\n\\n✓ Professional installation\\n✓ FREE router (5G with battery backup)\\n✓ 24/7 customer support\\n✓ Network uptime guarantee\\n✓ Free first month diagnostics\\n\\n${'='.repeat(50)}\\n\\nPRICING BREAKDOWN:\\n\\nMonthly Service: KES ${pkg.price?.toLocaleString() || 'Custom Quote'}\\nOne-time Installation: KES 1,000\\n━━━━━━━━━━━━━━━━━━━━━\\nTotal First Month: KES ${(pkg.price + 1000)?.toLocaleString() || 'Custom Quote'}\\n\\nSubsequent Months: KES ${pkg.price?.toLocaleString() || 'Custom Quote'}/month\\n\\n${'='.repeat(50)}\\n\\nNEXT STEPS:\\n\\n1. Reply YES to confirm this proposal\\n2. We'll arrange installation at your preferred date/time\\n3. Setup & activation (same day)\\n4. Welcome call after 24 hours to ensure satisfaction\\n\\n${'='.repeat(50)}\\n\\nQUESTIONS?\\n\\nReply to this email or WhatsApp +254 700 000 000\\n\\nBest regards,\\nReagan Kipchoge\\nSales Representative\\nBazztech Networks\\nreagan@bazztech.co.ke\\n+254 700 000 000\\n\\n${'='.repeat(50)}`;\n\nreturn {\n  proposalText: proposal,\n  customerEmail: customerEmail,\n  customerName: leadData.customerName,\n  leadId: leadData.id\n};"
+            },
+            "id": "generate-proposal-node",
+            "name": "Generate Text Proposal",
+            "type": "n8n-nodes-base.code",
+            "typeVersion": 2,
+            "position": [
+                3200,
+                1808
+            ]
+        },
+        {
+            "parameters": {
+                "conditions": {
+                    "boolean": [
+                        {
+                            "value1": "={{ $node['Extract AI Response'].json.needsEmailProposal }}",
+                            "operation": "true"
+                        }
+                    ]
+                }
+            },
+            "id": "check-email-needed",
+            "name": "Need Email Proposal?",
+            "type": "n8n-nodes-base.if",
+            "typeVersion": 1,
+            "position": [
+                3100,
+                1808
+            ]
+        },
+        {
+            "parameters": {
+                "operation": "executeQuery",
+                "query": "=UPDATE leads SET emailProposalSentAt = NOW(), proposalEmail = '{{ $node['Generate Text Proposal'].json.customerEmail }}' WHERE id = {{ $node['Generate Text Proposal'].json.leadId }};",
+                "options": {}
+            },
+            "id": "log-email-sent",
+            "name": "Log Email Sent",
+            "type": "n8n-nodes-base.mySql",
+            "typeVersion": 2.5,
+            "position": [
+                3400,
+                1680
+            ],
+            "credentials": {
+                "mySql": {
+                    "id": "GcNvBvfzsVMT8qBB",
+                    "name": "Railway MySQL (Real Leads)"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "fromEmail": "reagan@bazztech.co.ke",
+                "toEmail": "={{ $node['Generate Text Proposal'].json.customerEmail }}",
+                "subject": "Your Internet Service Proposal - Bazztech Networks",
+                "textOnly": true,
+                "text": "={{ $node['Generate Text Proposal'].json.proposalText }}"
+            },
+            "id": "send-email-proposal",
+            "name": "Send Email Proposal",
+            "type": "n8n-nodes-base.emailSendSmtp",
+            "typeVersion": 2,
+            "position": [
+                3300,
+                1920
+            ],
+            "credentials": {
+                "smtp": {
+                    "id": "1234567890abcdef",
+                    "name": "SMTP Email Account"
+                }
+            }
+        }
+    ],
+    "pinData": {},
+    "connections": {
+        "Update Template Sent": {
+            "main": [
+                [
+                    {
+                        "node": "Update Lead Status (Contacted)",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Schedule - Send Templates": {
+            "main": [
+                [
+                    {
+                        "node": "Check Time Window",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Check Time Window": {
+            "main": [
+                [
+                    {
+                        "node": "Fetch New Leads",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Fetch New Leads": {
+            "main": [
+                [
+                    {
+                        "node": "Loop Through Leads",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Build Template Payload": {
+            "main": [
+                [
+                    {
+                        "node": "Send WhatsApp Template",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Loop Through Leads": {
+            "main": [
+                [],
+                [
+                    {
+                        "node": "Build Template Payload",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Send WhatsApp Template": {
+            "main": [
+                [
+                    {
+                        "node": "Update Template Sent",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Update Lead Status (Contacted)": {
+            "main": [
+                [
+                    {
+                        "node": "Wait (Rate Limit)",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Wait (Rate Limit)": {
+            "main": [
+                [
+                    {
+                        "node": "Loop Through Leads",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Webhook - WhatsApp Response": {
+            "main": [
+                [
+                    {
+                        "node": "Find Lead by Phone",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Find Lead by Phone": {
+            "main": [
+                [
+                    {
+                        "node": "Prepare AI Context",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Prepare AI Context": {
+            "main": [
+                [
+                    {
+                        "node": "Basic LLM Chain",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Basic LLM Chain": {
+            "main": [
+                [
+                    {
+                        "node": "Extract AI Response",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "OpenAI Chat Model": {
+            "ai_languageModel": [
+                [
+                    {
+                        "node": "Basic LLM Chain",
+                        "type": "ai_languageModel",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Extract AI Response": {
+            "main": [
+                [
+                    {
+                        "node": "Prepare Update Query",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Prepare Update Query": {
+            "main": [
+                [
+                    {
+                        "node": "Update Lead Data",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Update Lead Data": {
+            "main": [
+                [
+                    {
+                        "node": "Send WhatsApp Reply",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Send WhatsApp Reply": {
+            "main": [
+                [
+                    {
+                        "node": "Generate Text Proposal",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Generate Text Proposal": {
+            "main": [
+                [
+                    {
+                        "node": "Need Email Proposal?",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Need Email Proposal?": {
+            "main": [
+                [
+                    {
+                        "node": "Send Email Proposal",
+                        "type": "main",
+                        "index": 0
+                    },
+                    {
+                        "node": "Log Email Sent",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Log Email Sent": {
+            "main": [
+                []
+            ]
+        },
+        "Send Email Proposal": {
+            "main": [
+                []
+            ]
+        }
+    },
+    "active": true,
+    "settings": {
+        "executionOrder": "v1",
+        "timeSavedMode": "fixed",
+        "timezone": "Africa/Nairobi",
+        "callerPolicy": "workflowsFromSameOwner",
+        "availableInMCP": false,
+        "errorWorkflow": "ZwO0InOyetOc6WCN"
+    },
+    "versionId": "8bb14340-7361-4106-8d4c-78040d6e6be4",
+    "meta": {
+        "templateCredsSetupCompleted": true,
+        "instanceId": "6e84a5f4749722036b9d697019011efd52eda740a3bee66f632a595f353efc69"
+    },
+    "id": "rylizolIo3Ex0gkW",
+    "tags": []
+}

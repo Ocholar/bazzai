@@ -1,0 +1,60 @@
+﻿{
+  "name": "05 - Token Rotation Reminder",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            { "field": "cronExpression", "expression": "0 9 5 2 *" }
+          ]
+        }
+      },
+      "id": "schedule-05",
+      "name": "Schedule Trigger (Feb 5, 9 AM)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [0, 400]
+    },
+    {
+      "parameters": {
+        "jsCode": "const msg = 'Reminder: Rotate WhatsApp 60-day token today. Update Authorization bearer in error alert + any WhatsApp nodes. Phone ID: 880774405122197.'; return { body: msg };"
+      },
+      "id": "compose-reminder-05",
+      "name": "Compose Reminder",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [220, 400]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.facebook.com/v21.0/880774405122197/messages",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            { "name": "Content-Type", "value": "application/json" },
+            { "name": "Authorization", "value": "Bearer EAAblTVbhiH0BQNYm9z5YqiNLTqZBFUxIKGN1yyc4Ibof7WmfFhoh8ZC0FkC8d6uNdcTyZBuA4LMXnLrY5pgcK0aCZAFImk0VZBJP9IVIOuzLNROAmgqAJc41PVo4oFutXsFXKUa5dK81celYZC980nJZCDiWALScXowgDM8EsyB8sNiy6VvBUs4YVvJ6xgE0AZDZD" }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ messaging_product: 'whatsapp', to: '254720821051', text: { body: $json.body } }) }}",
+        "options": {}
+      },
+      "id": "send-reminder-05",
+      "name": "Send WhatsApp Reminder",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [440, 400]
+    }
+  ],
+  "connections": {
+    "Schedule Trigger (Feb 5, 9 AM)": { "main": [[{ "node": "Compose Reminder", "type": "main", "index": 0 }]] },
+    "Compose Reminder": { "main": [[{ "node": "Send WhatsApp Reminder", "type": "main", "index": 0 }]] }
+  },
+  "active": true,
+  "settings": { "executionOrder": "v1", "timezone": "Africa/Nairobi" },
+  "versionId": "workflow-05-v1",
+  "id": "workflow-05",
+  "tags": []
+}

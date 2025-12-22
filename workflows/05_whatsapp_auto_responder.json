@@ -1,0 +1,434 @@
+{
+    "name":  "05_whatsapp_auto_responder",
+    "nodes":  [
+                  {
+                      "parameters":  {
+                                         "httpMethod":  "POST",
+                                         "path":  "whatsapp",
+                                         "responseMode":  "responseNode",
+                                         "options":  {
+
+                                                     }
+                                     },
+                      "id":  "webhook-whatsapp",
+                      "name":  "WhatsApp Webhook (Messages)",
+                      "type":  "n8n-nodes-base.webhook",
+                      "typeVersion":  1,
+                      "position":  [
+                                       250,
+                                       400
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "httpMethod":  "GET",
+                                         "path":  "whatsapp",
+                                         "responseMode":  "responseNode",
+                                         "options":  {
+
+                                                     }
+                                     },
+                      "id":  "webhook-verification",
+                      "name":  "WhatsApp Webhook (Verification)",
+                      "type":  "n8n-nodes-base.webhook",
+                      "typeVersion":  1,
+                      "position":  [
+                                       250,
+                                       100
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "conditions":  {
+                                                            "string":  [
+                                                                           {
+                                                                               "value1":  "={{$json.query[\u0027hub.verify_token\u0027]}}",
+                                                                               "operation":  "equal",
+                                                                               "value2":  "={{$env.WHATSAPP_VERIFY_TOKEN}}"
+                                                                           }
+                                                                       ]
+                                                        }
+                                     },
+                      "id":  "check-verify-token",
+                      "name":  "Check Verify Token",
+                      "type":  "n8n-nodes-base.if",
+                      "typeVersion":  1,
+                      "position":  [
+                                       450,
+                                       100
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "respondWith":  "text",
+                                         "responseBody":  "={{$json.query[\u0027hub.challenge\u0027]}}",
+                                         "options":  {
+
+                                                     }
+                                     },
+                      "id":  "respond-challenge",
+                      "name":  "Respond Challenge",
+                      "type":  "n8n-nodes-base.respondToWebhook",
+                      "typeVersion":  1,
+                      "position":  [
+                                       650,
+                                       100
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "respondWith":  "text",
+                                         "responseBody":  "Forbidden",
+                                         "options":  {
+                                                         "responseCode":  403
+                                                     }
+                                     },
+                      "id":  "respond-forbidden",
+                      "name":  "Respond Forbidden",
+                      "type":  "n8n-nodes-base.respondToWebhook",
+                      "typeVersion":  1,
+                      "position":  [
+                                       650,
+                                       250
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "conditions":  {
+                                                            "string":  [
+                                                                           {
+                                                                               "value1":  "={{$json.entry[0].changes[0].value.messages}}",
+                                                                               "operation":  "isNotEmpty"
+                                                                           }
+                                                                       ]
+                                                        }
+                                     },
+                      "id":  "check-message-exists",
+                      "name":  "Check Message Exists",
+                      "type":  "n8n-nodes-base.if",
+                      "typeVersion":  1,
+                      "position":  [
+                                       450,
+                                       400
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "jsCode":  "// Extract message details including interactive replies\nconst entry = $input.item.json.entry[0];\nconst change = entry.changes[0];\nconst message = change.value.messages[0];\nconst contact = change.value.contacts[0];\n\nlet text = \u0027\u0027;\nif (message.type === \u0027text\u0027) {\n    text = message.text.body;\n} else if (message.type === \u0027interactive\u0027) {\n    if (message.interactive.type === \u0027list_reply\u0027) {\n        text = message.interactive.list_reply.id;\n    } else if (message.interactive.type === \u0027button_reply\u0027) {\n        text = message.interactive.button_reply.id;\n    }\n}\n\nreturn {\n  from: message.from,\n  messageId: message.id,\n  messageType: message.type,\n  messageText: text || \u0027\u0027,\n  timestamp: message.timestamp,\n  contactName: contact.profile.name,\n  phoneNumberId: change.value.metadata.phone_number_id\n};"
+                                     },
+                      "id":  "extract-message-data",
+                      "name":  "Extract Message Data",
+                      "type":  "n8n-nodes-base.code",
+                      "typeVersion":  2,
+                      "position":  [
+                                       650,
+                                       400
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "url":  "={{$env.DASHBOARD_API_URL}}/customers.findByPhone",
+                                         "authentication":  "genericCredentialType",
+                                         "genericAuthType":  "httpHeaderAuth",
+                                         "sendQuery":  true,
+                                         "queryParameters":  {
+                                                                 "parameters":  [
+                                                                                    {
+                                                                                        "name":  "phone",
+                                                                                        "value":  "={{$json.from}}"
+                                                                                    }
+                                                                                ]
+                                                             },
+                                         "options":  {
+
+                                                     }
+                                     },
+                      "id":  "check-customer-exists",
+                      "name":  "Check Customer Exists",
+                      "type":  "n8n-nodes-base.httpRequest",
+                      "typeVersion":  4.1,
+                      "position":  [
+                                       850,
+                                       400
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "conditions":  {
+                                                            "string":  [
+                                                                           {
+                                                                               "value1":  "={{$json.result}}",
+                                                                               "operation":  "isNotEmpty"
+                                                                           }
+                                                                       ]
+                                                        }
+                                     },
+                      "id":  "is-existing-customer",
+                      "name":  "Is Existing Customer?",
+                      "type":  "n8n-nodes-base.if",
+                      "typeVersion":  1,
+                      "position":  [
+                                       1050,
+                                       400
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "jsCode":  "// Analyze message intent and construct WhatsApp payload\nconst messageText = $input.item.json.messageText.toLowerCase();\nconst from = $input.item.json.from;\n\nlet payload = {};\n\n// Helper to create text payload\nconst createTextPayload = (text) =\u003e ({\n  messaging_product: \"whatsapp\",\n  to: from,\n  type: \"text\",\n  text: { body: text }\n});\n\n// Check for common intents and Interactive List IDs\nif (messageText === \u0027packages\u0027 || messageText.includes(\u0027price\u0027) || messageText.includes(\u0027cost\u0027) || messageText.includes(\u0027package\u0027)) {\n  payload = createTextPayload(`Hi! 👋 Our packages start from KES 2,500/month for 10Mbps.\\n\\n📦 Popular Plans:\\n• 5G ODU: 50Mbps - KES 4,500\\n• FTTX Fiber: 100Mbps - KES 6,500\\n\\nCheck all plans: https://bazztech.co.ke/#products\\n\\nWant to speak to an agent? Reply YES`);\n} else if (messageText === \u0027coverage\u0027 || messageText.includes(\u0027coverage\u0027) || messageText.includes(\u0027area\u0027) || messageText.includes(\u0027location\u0027)) {\n  payload = createTextPayload(`We cover most areas in Kenya! 🗺️\\n\\nTo check if we\u0027re in your area, please share your location or town name.\\n\\nOr visit: https://bazztech.co.ke/#contact-form`);\n} else if (messageText === \u0027install\u0027 || messageText.includes(\u0027install\u0027) || messageText.includes(\u0027setup\u0027)) {\n  payload = createTextPayload(`Installation is FREE! 🎉\\n\\n⏱️ Timeline:\\n• 5G: 24-48 hours\\n• Fiber: 3-5 business days\\n\\nReady to get started? Share your location and we\u0027ll check availability!`);\n} else if (messageText === \u0027agent\u0027 || messageText.includes(\u0027support\u0027) || messageText.includes(\u0027problem\u0027) || messageText.includes(\u0027issue\u0027)) {\n  payload = createTextPayload(`Sorry to hear you\u0027re having issues! 😔\\n\\nOur support team is here 24/7.\\n\\nCall: +254 103 339197\\nOr describe your issue and we\u0027ll help!`);\n} else {\n  // Default Welcome / Menu (Interactive List)\n  payload = {\n    messaging_product: \"whatsapp\",\n    to: from,\n    type: \"interactive\",\n    interactive: {\n      type: \"list\",\n      header: {\n        type: \"text\",\n        text: \"Welcome to Bazztech Networks 🚀\"\n      },\n      body: {\n        text: \"We provide ultra-fast 5G and Fiber internet. How can we help you today?\"\n      },\n      footer: {\n        text: \"Select an option below\"\n      },\n      action: {\n        button: \"Main Menu\",\n        sections: [\n          {\n            title: \"Our Services\",\n            rows: [\n              { id: \"packages\", title: \"View Packages\", description: \"Check internet plans \u0026 pricing\" },\n              { id: \"coverage\", title: \"Check Coverage\", description: \"See if we are in your area\" },\n              { id: \"install\", title: \"Installation Info\", description: \"Timelines and costs\" }\n            ]\n          },\n          {\n            title: \"Support\",\n            rows: [\n              { id: \"agent\", title: \"Speak to Agent\", description: \"Talk to a human support agent\" }\n            ]\n          }\n        ]\n      }\n    }\n  };\n}\n\nreturn {\n  whatsapp_payload: payload,\n  intent: \u0027processed\u0027,\n  from: from,\n  phoneNumberId: $input.item.json.phoneNumberId\n};"
+                                     },
+                      "id":  "analyze-intent-existing",
+                      "name":  "Analyze Intent (Existing)",
+                      "type":  "n8n-nodes-base.code",
+                      "typeVersion":  2,
+                      "position":  [
+                                       1250,
+                                       300
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "jsCode":  "// New customer welcome message (Interactive)\nconst contactName = $input.item.json.contactName;\nconst from = $input.item.json.from;\n\nconst payload = {\n  messaging_product: \"whatsapp\",\n  to: from,\n  type: \"interactive\",\n  interactive: {\n    type: \"list\",\n    header: {\n      type: \"text\",\n      text: `Hi ${contactName}! 👋 Welcome!`\n    },\n    body: {\n      text: \"We provide ultra-fast 5G and Fiber internet across Kenya.\\n\\n🚀 Why choose us?\\n✅ 99.9% Uptime\\n✅ 24/7 Local Support\\n✅ FREE Installation\\n\\nWhat would you like to know?\"\n    },\n    footer: {\n      text: \"Select an option below\"\n    },\n    action: {\n      button: \"Get Started\",\n      sections: [\n        {\n          title: \"Information\",\n          rows: [\n            { id: \"packages\", title: \"Packages \u0026 Pricing\", description: \"View our internet plans\" },\n            { id: \"coverage\", title: \"Check Coverage\", description: \"See if we cover your area\" }\n          ]\n        },\n        {\n          title: \"Contact\",\n          rows: [\n            { id: \"agent\", title: \"Speak to Agent\", description: \"Talk to our team\" }\n          ]\n        }\n      ]\n    }\n  }\n};\n\nreturn {\n  whatsapp_payload: payload,\n  intent: \u0027new_customer\u0027,\n  from: from,\n  phoneNumberId: $input.item.json.phoneNumberId,\n  contactName: contactName\n};"
+                                     },
+                      "id":  "welcome-new-customer",
+                      "name":  "Welcome New Customer",
+                      "type":  "n8n-nodes-base.code",
+                      "typeVersion":  2,
+                      "position":  [
+                                       1250,
+                                       500
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "url":  "https://graph.facebook.com/v18.0/={{$json.phoneNumberId}}/messages",
+                                         "authentication":  "genericCredentialType",
+                                         "genericAuthType":  "httpHeaderAuth",
+                                         "sendBody":  true,
+                                         "specifyBody":  "json",
+                                         "jsonBody":  "={{$json.whatsapp_payload}}",
+                                         "options":  {
+
+                                                     }
+                                     },
+                      "id":  "send-whatsapp-message",
+                      "name":  "Send WhatsApp Message",
+                      "type":  "n8n-nodes-base.httpRequest",
+                      "typeVersion":  4.1,
+                      "position":  [
+                                       1450,
+                                       300
+                                   ],
+                      "credentials":  {
+                                          "httpHeaderAuth":  {
+                                                                 "id":  "whatsapp-auth",
+                                                                 "name":  "WhatsApp Bearer Token"
+                                                             }
+                                      }
+                  },
+                  {
+                      "parameters":  {
+                                         "url":  "={{$env.DASHBOARD_API_URL}}/leads.create",
+                                         "authentication":  "genericCredentialType",
+                                         "genericAuthType":  "httpHeaderAuth",
+                                         "sendBody":  true,
+                                         "specifyBody":  "json",
+                                         "jsonBody":  "={\n  \"customerName\": \"{{$json.contactName}}\",\n  \"phone\": \"{{$json.from}}\",\n  \"source\": \"whatsapp\",\n  \"tag\": \"whatsapp_inquiry\",\n  \"status\": \"new\",\n  \"deliveryLocation\": \"WhatsApp conversation: {{$json.intent}}\"\n}",
+                                         "options":  {
+
+                                                     }
+                                     },
+                      "id":  "create-lead",
+                      "name":  "Create Lead in Dashboard",
+                      "type":  "n8n-nodes-base.httpRequest",
+                      "typeVersion":  4.1,
+                      "position":  [
+                                       1450,
+                                       500
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "respondWith":  "json",
+                                         "responseBody":  "={\"status\": \"success\"}",
+                                         "options":  {
+
+                                                     }
+                                     },
+                      "id":  "respond-success",
+                      "name":  "Respond Success",
+                      "type":  "n8n-nodes-base.respondToWebhook",
+                      "typeVersion":  1,
+                      "position":  [
+                                       1650,
+                                       300
+                                   ]
+                  },
+                  {
+                      "parameters":  {
+                                         "respondWith":  "json",
+                                         "responseBody":  "={\"status\": \"ignored\"}",
+                                         "options":  {
+
+                                                     }
+                                     },
+                      "id":  "respond-ignored",
+                      "name":  "Respond Ignored",
+                      "type":  "n8n-nodes-base.respondToWebhook",
+                      "typeVersion":  1,
+                      "position":  [
+                                       650,
+                                       600
+                                   ]
+                  }
+              ],
+    "connections":  {
+                        "WhatsApp Webhook (Verification)":  {
+                                                                "main":  [
+                                                                             [
+                                                                                 {
+                                                                                     "node":  "Check Verify Token",
+                                                                                     "type":  "main",
+                                                                                     "index":  0
+                                                                                 }
+                                                                             ]
+                                                                         ]
+                                                            },
+                        "Check Verify Token":  {
+                                                   "main":  [
+                                                                [
+                                                                    {
+                                                                        "node":  "Respond Challenge",
+                                                                        "type":  "main",
+                                                                        "index":  0
+                                                                    }
+                                                                ],
+                                                                [
+                                                                    {
+                                                                        "node":  "Respond Forbidden",
+                                                                        "type":  "main",
+                                                                        "index":  0
+                                                                    }
+                                                                ]
+                                                            ]
+                                               },
+                        "WhatsApp Webhook (Messages)":  {
+                                                            "main":  [
+                                                                         [
+                                                                             {
+                                                                                 "node":  "Check Message Exists",
+                                                                                 "type":  "main",
+                                                                                 "index":  0
+                                                                             }
+                                                                         ]
+                                                                     ]
+                                                        },
+                        "Check Message Exists":  {
+                                                     "main":  [
+                                                                  [
+                                                                      {
+                                                                          "node":  "Extract Message Data",
+                                                                          "type":  "main",
+                                                                          "index":  0
+                                                                      }
+                                                                  ],
+                                                                  [
+                                                                      {
+                                                                          "node":  "Respond Ignored",
+                                                                          "type":  "main",
+                                                                          "index":  0
+                                                                      }
+                                                                  ]
+                                                              ]
+                                                 },
+                        "Extract Message Data":  {
+                                                     "main":  [
+                                                                  [
+                                                                      {
+                                                                          "node":  "Check Customer Exists",
+                                                                          "type":  "main",
+                                                                          "index":  0
+                                                                      }
+                                                                  ]
+                                                              ]
+                                                 },
+                        "Check Customer Exists":  {
+                                                      "main":  [
+                                                                   [
+                                                                       {
+                                                                           "node":  "Is Existing Customer?",
+                                                                           "type":  "main",
+                                                                           "index":  0
+                                                                       }
+                                                                   ]
+                                                               ]
+                                                  },
+                        "Is Existing Customer?":  {
+                                                      "main":  [
+                                                                   [
+                                                                       {
+                                                                           "node":  "Analyze Intent (Existing)",
+                                                                           "type":  "main",
+                                                                           "index":  0
+                                                                       }
+                                                                   ],
+                                                                   [
+                                                                       {
+                                                                           "node":  "Welcome New Customer",
+                                                                           "type":  "main",
+                                                                           "index":  0
+                                                                       }
+                                                                   ]
+                                                               ]
+                                                  },
+                        "Analyze Intent (Existing)":  {
+                                                          "main":  [
+                                                                       [
+                                                                           {
+                                                                               "node":  "Send WhatsApp Message",
+                                                                               "type":  "main",
+                                                                               "index":  0
+                                                                           }
+                                                                       ]
+                                                                   ]
+                                                      },
+                        "Welcome New Customer":  {
+                                                     "main":  [
+                                                                  [
+                                                                      {
+                                                                          "node":  "Send WhatsApp Message",
+                                                                          "type":  "main",
+                                                                          "index":  0
+                                                                      },
+                                                                      {
+                                                                          "node":  "Create Lead in Dashboard",
+                                                                          "type":  "main",
+                                                                          "index":  0
+                                                                      }
+                                                                  ]
+                                                              ]
+                                                 },
+                        "Send WhatsApp Message":  {
+                                                      "main":  [
+                                                                   [
+                                                                       {
+                                                                           "node":  "Respond Success",
+                                                                           "type":  "main",
+                                                                           "index":  0
+                                                                       }
+                                                                   ]
+                                                               ]
+                                                  }
+                    },
+    "active":  false,
+    "settings":  {
+
+                 },
+    "versionId":  "1",
+    "id":  "05_whatsapp_auto_responder",
+    "meta":  {
+                 "instanceId":  "bazztech-n8n"
+             },
+    "tags":  [
+
+             ]
+}

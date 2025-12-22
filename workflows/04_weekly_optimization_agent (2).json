@@ -1,0 +1,301 @@
+{
+  "name": "04 - Weekly Optimization Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "cronExpression",
+              "expression": "0 9 * * 1"
+            }
+          ]
+        }
+      },
+      "id": "ea087a00-3187-49d2-af27-c10afdf2ae5a",
+      "name": "Schedule Trigger (Every Monday 9 AM)",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://bazz-ai-agentic-team-production.up.railway.app/trpc/analytics.getLatest",
+        "options": {}
+      },
+      "id": "d3c9f637-f6d1-4594-8605-f04b325143c5",
+      "name": "Fetch Latest Analytics",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        220,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://bazz-ai-agentic-team-production.up.railway.app/trpc/config.get",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "{\"key\": \"qualification_system_prompt\"}",
+        "options": {}
+      },
+      "id": "5aac9ff6-c814-4fa0-b859-9bf1d74e61e2",\n      "credentials": {\n        "httpHeaderAuth": {\n          "id": "CXPkkHSyHaY4SwL0",\n          "name": "WhatsApp Bearer Token"\n        }\n      }
+      "name": "Fetch Current Prompt",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        440,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Analyze performance and decide on action\nconst analytics = $node['Fetch Latest Analytics'].json.result?.data?.json || {};\nconst currentPrompt = $node['Fetch Current Prompt'].json.result?.data?.json?.value || \"Default Prompt\";\n\n// Thresholds\nconst MIN_CONVERSION_RATE = 20; // 20%\nconst conversionRate = parseFloat(analytics.conversionRate || 0);\n\nif (conversionRate < MIN_CONVERSION_RATE) {\n  return {\n    json: {\n      action: \"rewrite_prompt\",\n      reason: `Low conversion rate (${conversionRate}%)`,\n      currentPrompt: currentPrompt,\n      analytics: analytics\n    }\n  };\n} else {\n  return {\n    json: {\n      action: \"none\",\n      reason: \"Performance is good\",\n      analytics: analytics\n    }\n  };\n}"
+      },
+      "id": "2a769e98-4804-4818-933c-211266c95365",
+      "name": "Analyze & Decide",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        660,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "rewrite-condition",
+              "leftValue": "={{ $json.action }}",
+              "rightValue": "rewrite_prompt",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "394ecfb0-ddec-47fc-af0d-99385d97c623",
+      "name": "Check Action",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        880,
+        400
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-001:generateContent?key={{ $env.GOOGLE_GEMINI_API_KEY }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contents\": [{\n    \"parts\": [{\n      \"text\": \"You are an AI sales optimization expert. Analyze these metrics and rewrite the sales qualification prompt to improve conversion rates.\\n\\nCURRENT PROMPT:\\n\" + $node['Analyze & Decide'].json.currentPrompt + \"\\n\\nPERFORMANCE METRICS:\\n- Conversion Rate: \" + $node['Analyze & Decide'].json.analytics.conversionRate + \"%\\n- Total Leads: \" + $node['Analyze & Decide'].json.analytics.totalLeads + \"\\n- Qualified Leads: \" + $node['Analyze & Decide'].json.analytics.qualifiedLeads + \"\\n- Submitted Leads: \" + $node['Analyze & Decide'].json.analytics.submittedLeads + \"\\n\\nGOAL: Increase conversion rate above 20%.\\n\\nProvide ONLY the new optimized prompt (no explanations). Keep it under 200 words. Focus on:\\n1. More personalization\\n2. Urgency creation\\n3. Value proposition clarity\\n4. Clear call-to-action\"\n    }]\n  }],\n  \"generationConfig\": {\n    \"temperature\": 0.8,\n    \"maxOutputTokens\": 500\n  }\n}",
+        "options": {}
+      },
+      "id": "gemini-optimize",
+      "name": "Generate Optimized Prompt",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1100,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extract the optimized prompt from Gemini\nconst response = $input.item.json;\nlet newPrompt = \"\";\n\nif (response.candidates && response.candidates[0] && response.candidates[0].content && response.candidates[0].content.parts) {\n  newPrompt = response.candidates[0].content.parts[0].text;\n}\n\nreturn {\n  newPrompt: newPrompt,\n  analytics: $node['Analyze & Decide'].json.analytics,\n  oldPrompt: $node['Analyze & Decide'].json.currentPrompt\n};"
+      },
+      "id": "extract-prompt",
+      "name": "Extract New Prompt",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1320,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://bazz-ai-agentic-team-production.up.railway.app/trpc/config.set",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"key\": \"qualification_system_prompt\",\n  \"value\": {{ JSON.stringify($json.newPrompt) }},\n  \"description\": \"Auto-optimized on \" + new Date().toISOString() + \" - Previous conversion: \" + $node['Analyze & Decide'].json.analytics.conversionRate + \"%\"\n}",
+        "options": {}
+      },
+      "id": "update-config",\n      "credentials": {\n        "httpHeaderAuth": {\n          "id": "CXPkkHSyHaY4SwL0",\n          "name": "WhatsApp Bearer Token"\n        }\n      }
+      "name": "Update Config with New Prompt",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1540,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.item.json;\n\nconsole.log('=== WEEKLY OPTIMIZATION EXECUTED ===');\nconsole.log('Date:', new Date().toISOString());\nconsole.log('Reason:', $node['Analyze & Decide'].json.reason);\nconsole.log('Old Conversion Rate:', $node['Analyze & Decide'].json.analytics.conversionRate + '%');\nconsole.log('\\n--- OLD PROMPT ---');\nconsole.log(data.oldPrompt);\nconsole.log('\\n--- NEW PROMPT ---');\nconsole.log(data.newPrompt);\nconsole.log('\\n=== END REPORT ===');\n\nreturn {\n  success: true,\n  message: 'Prompt optimized successfully',\n  oldConversionRate: $node['Analyze & Decide'].json.analytics.conversionRate,\n  timestamp: new Date().toISOString()\n};"
+      },
+      "id": "notify-success",
+      "name": "Notify Optimization Done",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1760,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "console.log('=== WEEKLY CHECK: NO ACTION NEEDED ===');\nconsole.log('Date:', new Date().toISOString());\nconsole.log('Conversion Rate:', $node['Analyze & Decide'].json.analytics.conversionRate + '%');\n\nreturn {\n  success: true,\n  message: 'No optimization needed',\n  conversionRate: $node['Analyze & Decide'].json.analytics.conversionRate\n};"
+      },
+      "id": "notify-no-action",
+      "name": "Notify No Action",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1100,
+        500
+      ]
+    }
+  ],
+  "connections": {
+    "Schedule Trigger (Every Monday 9 AM)": {
+      "main": [
+        [
+          {
+            "node": "Fetch Latest Analytics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Latest Analytics": {
+      "main": [
+        [
+          {
+            "node": "Fetch Current Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch Current Prompt": {
+      "main": [
+        [
+          {
+            "node": "Analyze & Decide",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Analyze & Decide": {
+      "main": [
+        [
+          {
+            "node": "Check Action",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Action": {
+      "main": [
+        [
+          {
+            "node": "Generate Optimized Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Notify No Action",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate Optimized Prompt": {
+      "main": [
+        [
+          {
+            "node": "Extract New Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract New Prompt": {
+      "main": [
+        [
+          {
+            "node": "Update Config with New Prompt",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Config with New Prompt": {
+      "main": [
+        [
+          {
+            "node": "Notify Optimization Done",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  }
+}

@@ -1,0 +1,6 @@
+export interface Conversation {
+  // ...existing code...
+  lastTemplateSent?: string;
+  lastTemplateSentAt?: Date;
+  // ...existing code...
+}
