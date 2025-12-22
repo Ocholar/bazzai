@@ -7,7 +7,7 @@
     "scripts": {
         "dev": "vite",
         "build": "vite build",
-        "start": "node --import tsx server/test.ts",
+        "start": "node server/test.js",
         "check": "tsc --noEmit",
         "format": "prettier --write ."
     },
