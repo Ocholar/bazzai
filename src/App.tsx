@@ -84,7 +84,7 @@ export default function App() {
           <Toaster />
           <Switch>
             <Route path="/" component={Home} />
-            <Route path="/portfolio" component={Portfolio} />
+            {/* <Route path="/portfolio" component={Portfolio} /> */}
             <Route path="/login" component={Login} />
 
             {/* Protected Routes */}

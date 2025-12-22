@@ -20,22 +20,24 @@ export default function Analytics() {
   }, [leads]);
 
   // Calculate package mix data
-  const package15 = leads.filter((l: any) => l.preferredPackage === "15mbps").length;
-  const package30 = leads.filter((l: any) => l.preferredPackage === "30mbps").length;
-  const package5g10 = leads.filter((l: any) => l.preferredPackage === "5g_10mbps").length;
-  const package5g30 = leads.filter((l: any) => l.preferredPackage === "5g_30mbps").length;
-  const package5g50 = leads.filter((l: any) => l.preferredPackage === "5g_50mbps").length;
-  const unspecified = leads.filter((l: any) => !l.preferredPackage || l.preferredPackage === "unspecified").length;
+  const packageMixData = useMemo(() => {
+    if (!leads) return [];
+    const package15 = leads.filter((l: any) => l.preferredPackage === "15mbps").length;
+    const package30 = leads.filter((l: any) => l.preferredPackage === "30mbps").length;
+    const package5g10 = leads.filter((l: any) => l.preferredPackage === "5g_10mbps").length;
+    const package5g30 = leads.filter((l: any) => l.preferredPackage === "5g_30mbps").length;
+    const package5g50 = leads.filter((l: any) => l.preferredPackage === "5g_50mbps").length;
+    const unspecified = leads.filter((l: any) => !l.preferredPackage || l.preferredPackage === "unspecified").length;
 
-  return [
-    { name: "15Mbps", value: package15 },
-    { name: "30Mbps", value: package30 },
-    { name: "5G 10Mbps", value: package5g10 },
-    { name: "5G 30Mbps", value: package5g30 },
-    { name: "5G 50Mbps", value: package5g50 },
-    { name: "Unspecified", value: unspecified },
-  ].filter(item => item.value > 0);
-}, [leads]);
+    return [
+      { name: "15Mbps", value: package15 },
+      { name: "30Mbps", value: package30 },
+      { name: "5G 10Mbps", value: package5g10 },
+      { name: "5G 30Mbps", value: package5g30 },
+      { name: "5G 50Mbps", value: package5g50 },
+      { name: "Unspecified", value: unspecified },
+    ].filter(item => item.value > 0);
+  }, [leads]);
 
 // Calculate source performance
 const sourcePerformanceData = useMemo(() => {
