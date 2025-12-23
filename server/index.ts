@@ -145,7 +145,8 @@ app.get('/api/oauth/callback', (req, res) => {
 })();
 
 const port = process.env.PORT || 3000;
-app.listen(Number(port), "0.0.0.0", () => {
+console.log(`[server] Attempting to listen on port ${port}...`);
+app.listen(port, () => {
   console.log(`[server] Listening on port ${port}`);
   console.log(`[server] Environment: ${process.env.NODE_ENV || 'development'}`);
 });
