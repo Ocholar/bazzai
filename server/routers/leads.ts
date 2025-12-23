@@ -24,14 +24,11 @@ export const leadsRouter = router({
             try {
                 await db.insert(leads).values({
                     customerName: input.customerName,
-                    phone: input.phone,
-                    email: input.email,
+                    phoneNumber: input.phone,
                     status: input.status,
                     preferredPackage: input.connectionType,
                     source: input.source,
                     tag: input.tag,
-                    installationTown: input.installationTown,
-                    deliveryLocation: input.deliveryLocation,
                     conversationHistory: JSON.stringify([
                         {
                             type: "submission",
@@ -45,7 +42,7 @@ export const leadsRouter = router({
                 });
                 return { success: true };
             } catch (err) {
-                console.error("tRPC leads.create error:", err);
+                console.error("Lead creation error:", err);
                 throw new Error("Failed to save lead");
             }
         }),

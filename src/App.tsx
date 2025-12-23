@@ -84,8 +84,6 @@ export default function App() {
           <Switch>
             <Route path="/" component={Home} />
             <Route path="/login" component={Login} />
-
-            {/* Protected Routes */}
             <Route path="/dashboard">
               <ProtectedRoute component={Dashboard} />
             </Route>

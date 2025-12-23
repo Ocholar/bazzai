@@ -27,7 +27,7 @@ app.get('/', (req, res) => {
 // Health check with DB ping
 app.get("/health", async (req, res) => {
   try {
-    await db.execute(sql`SELECT 1`);
+    await db.execute("SELECT 1");
     res.status(200).send("OK");
   } catch (err) {
     console.error("Health check failed:", err);
@@ -134,7 +134,7 @@ app.get('/api/oauth/callback', (req, res) => {
   res.redirect(`${frontendUrl}/dashboard`);
 });
 
-const port = process.env.PORT ? Number(process.env.PORT) : 3000;
+const port = process.env.PORT || 3000;
 app.listen(port, "0.0.0.0", () => {
   console.log(`[server] Listening on http://0.0.0.0:${port}`);
 });

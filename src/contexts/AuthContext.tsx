@@ -1,6 +1,12 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import * as React from 'react';
 import { parse } from 'cookie';
 import { COOKIE_NAME } from '@/const';
+
+interface User {
+    id: string;
+    name: string;
+    email: string;
+}
 
 interface AuthContextType {
     isAuthenticated: boolean;
@@ -8,10 +14,10 @@ interface AuthContextType {
     logout: () => void;
 }
 
-const AuthContext = createContext<AuthContextType | null>(null);
+const AuthContext = React.createContext<AuthContextType | null>(null);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-    const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    const [isAuthenticated, setIsAuthenticated] = React.useState(() => {
         // Initialize state synchronously to avoid redirect loops
         if (typeof window !== 'undefined') {
             const localAuth = localStorage.getItem('auth');
@@ -23,13 +29,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return false;
     });
 
-    const [user, setUser] = useState<User | null>(() => {
-        // Try to restore user from localStorage/sessionStorage
+    const [user, setUser] = React.useState<User | null>(() => {
         const stored = localStorage.getItem("bazztech_user");
         return stored ? JSON.parse(stored) : null;
     });
 
-    useEffect(() => {
+    React.useEffect(() => {
         const checkAuth = () => {
             const localAuth = localStorage.getItem('auth');
             const cookies = parse(document.cookie || '');
@@ -44,7 +49,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return () => window.removeEventListener('focus', checkAuth);
     }, [isAuthenticated]);
 
-    useEffect(() => {
+    React.useEffect(() => {
         if (user) {
             localStorage.setItem("bazztech_user", JSON.stringify(user));
         } else {
@@ -75,7 +80,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 }
 
 export function useAuth() {
-    const context = useContext(AuthContext);
+    const context = React.useContext(AuthContext);
     if (!context) {
         throw new Error('useAuth must be used within an AuthProvider');
     }
