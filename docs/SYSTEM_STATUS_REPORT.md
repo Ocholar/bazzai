@@ -1,54 +1,38 @@
-# 📊 Bazztech AI System - Final Status Report
+# 📊 Bazztech AI System - Status Report
 
-**Date:** 2025-11-30
-**Time:** 16:45 EAT
-**Status:** 🟢 **OPERATIONAL**
+**Date:** 2025-12-23
+**Time:** 13:45 EAT
+**Status:** 🟡 **MAINTENANCE / REDEPLOYING**
 
 ---
 
 ## 1. 🌐 Website Integration
-*   **Status:** ✅ **UPDATED & LIVE**
-*   **URL:** `http://localhost:5173` (Dev Server Running)
-*   **Contact Number:** Updated to `+254 103 339197` in Footer.
-*   **WhatsApp Button:** Updated to link to `https://wa.me/254103339197`.
-*   **Lead Form:** Connected to backend API (`leads.create`).
+*   **Status:** ✅ **REST API ADDED**
+*   **URL:** `https://bazztech.co.ke`
+*   **New Endpoints**:
+    *   `GET /api/leads`: Fetch leads for n8n.
+    *   `POST /api/leads/update`: Update lead status from n8n.
+    *   `POST /api/submissions/create`: Record submission results.
+    *   `POST /api/submit-to-airtel-form`: Trigger automated form submission.
 
 ## 2. 🤖 AI Agents & Workflows (n8n)
-All workflows are deployed and configured.
+Workflows are being updated to use the new REST endpoints.
 
 | Workflow ID | Name | Status | Notes |
 | :--- | :--- | :--- | :--- |
-| `01` | **Lead Generation** | ✅ **Active** | Scrapes leads from Google Maps/LinkedIn. |
-| `02` | **Lead Qualification** | ✅ **Active** | Uses "Dynamic" version for AI scoring. |
-| `03` | **Form Submission** | ✅ **Active** | Automates Airtel form submission via Puppeteer. |
-| `04` | **Weekly Optimization** | ✅ **Active** | Runs Sundays to optimize prompts autonomously. |
-| `05` | **WhatsApp Auto-Responder** | ✅ **Active** | **NEW!** Handles inquiries, pricing, & support. |
-| `06` | **Social Media Auto-Poster** | ✅ **Active** | **NEW!** Posts content to FB/Insta every 6 hours. |
+| `01` | **Lead Generation** | ✅ **Active** | Now uses `/api/leads/create`. |
+| `02` | **Lead Qualification** | ✅ **Active** | Updated to handle new schema. |
+| `03` | **Form Submission** | 🟡 **Updating** | Switching to new REST endpoints for reliability. |
 
-## 3. 📱 Social Media Integration (Meta)
-*   **WhatsApp Business API:**
-    *   **Number:** `+254 103 339197` (Connected)
-    *   **Webhook:** Verified & Subscribed to `messages`.
-    *   **Token:** Permanent System User Token generated.
-*   **Facebook Page:**
-    *   **Page:** Bazztech Networks
-    *   **ID:** `103070799066553` (Connected)
-*   **Instagram Business:**
-    *   **Account:** Connected via Facebook Page.
-    *   **ID:** `17841452746111550` (Connected)
+## 3. 🔐 Security & Credentials
+*   **GitHub OAuth**: Updated to use dynamic redirect URIs, fixing login issues on custom domains.
+*   **Database**: Schema updated to match actual MySQL columns (`phone` instead of `phoneNumber`).
 
-## 4. 🔐 Security & Credentials
-*   **Environment Variables:** Updated in `credentials.env`.
-*   **API Keys:**
-    *   `WHATSAPP_ACCESS_TOKEN`: Set (Permanent)
-    *   `FACEBOOK_PAGE_ACCESS_TOKEN`: Set (Permanent)
-    *   `WHATSAPP_VERIFY_TOKEN`: Set (`bazztech_webhook_2025`)
-
-## 5. ⚠️ Action Items / Next Steps
-1.  **n8n Workflow Update:** You MUST re-import `05_whatsapp_auto_responder.json` into n8n to apply the latest phone number change for the "Support" message.
-2.  **Monitor:** Keep an eye on the first few automated social posts and WhatsApp replies to ensure tone and accuracy.
-3.  **Domain:** Ensure `bazztech.co.ke` DNS propagation completes for the live site.
+## 4. ⚠️ Action Items / Next Steps
+1.  **Railway Deployment**: Resolving 502 Bad Gateway error on the backend.
+2.  **Verification**: Manual "Submit to Airtel" button added to Leads page for testing.
+3.  **Documentation**: API Reference and n8n Setup Guide updated.
 
 ---
 
-**System is ready for autonomous operation!** 🚀
+**System is being optimized for full n8n integration!** 🚀

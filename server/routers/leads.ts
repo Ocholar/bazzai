@@ -24,7 +24,7 @@ export const leadsRouter = router({
             try {
                 await db.insert(leads).values({
                     customerName: input.customerName,
-                    phoneNumber: input.phone,
+                    phone: input.phone,
                     status: input.status,
                     preferredPackage: input.connectionType,
                     source: input.source,

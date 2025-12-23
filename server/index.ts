@@ -134,9 +134,20 @@ app.get('/api/oauth/callback', (req, res) => {
   res.redirect(`${frontendUrl}/dashboard`);
 });
 
+// Database connection check on startup
+(async () => {
+  try {
+    await db.execute(sql`SELECT 1`);
+    console.log('[server] Database connection successful');
+  } catch (err) {
+    console.error('[server] Database connection failed on startup:', err);
+  }
+})();
+
 const port = process.env.PORT || 3000;
-app.listen(port, "0.0.0.0", () => {
-  console.log(`[server] Listening on http://0.0.0.0:${port}`);
+app.listen(Number(port), "0.0.0.0", () => {
+  console.log(`[server] Listening on port ${port}`);
+  console.log(`[server] Environment: ${process.env.NODE_ENV || 'development'}`);
 });
 
 // Error handlers
