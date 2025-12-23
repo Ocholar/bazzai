@@ -28,4 +28,8 @@ export function getDb() {
     return dbInstance;
 }
 
-export const db = getDb();
+export const db = new Proxy({}, {
+    get(target, prop) {
+        return getDb()[prop];
+    }
+}) as any;
