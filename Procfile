@@ -1,1 +1,1 @@
-web: tsx server/index.ts
+web: pnpm start
