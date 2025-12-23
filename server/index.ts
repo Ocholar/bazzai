@@ -4,7 +4,7 @@ import cors from 'cors';
 import { createExpressMiddleware } from '@trpc/server/adapters/express';
 import { appRouter } from './routers/index.js';
 import { db } from './db.js';
-import { sql } from 'drizzle-orm';
+import { sql, eq, desc } from 'drizzle-orm';
 
 console.log('--- BAZZTECH BACKEND STARTUP ---');
 console.log('Time:', new Date().toISOString());
@@ -45,17 +45,36 @@ app.use(
 );
 
 // REST endpoint for n8n/leads
+app.get("/api/leads", async (req, res) => {
+  try {
+    const { status } = req.query;
+    const { leads } = await import('./schema.js');
+    let query = db.select().from(leads);
+    if (status) {
+      query = query.where(eq(leads.status, status as any));
+    }
+    const result = await query.orderBy(desc(leads.createdAt));
+    res.json(result);
+  } catch (err) {
+    console.error("GET /api/leads error:", err);
+    res.status(500).json({ error: "Failed to fetch leads" });
+  }
+});
+
 app.post("/api/leads/create", async (req, res) => {
   try {
     const { customerName, phone, email, source, tag, connectionType, installationTown, deliveryLocation, status } = req.body;
     const { leads } = await import('./schema.js');
     await db.insert(leads).values({
       customerName,
-      phoneNumber: phone,
+      phone,
+      email,
       status: status || 'new',
       preferredPackage: connectionType,
       source: source || 'direct',
       tag: tag || 'lead',
+      installationTown,
+      deliveryLocation,
       conversationHistory: JSON.stringify([
         {
           type: "submission",
@@ -67,6 +86,40 @@ app.post("/api/leads/create", async (req, res) => {
   } catch (err) {
     console.error("POST /api/leads/create error:", err);
     res.status(500).json({ error: "Failed to save lead" });
+  }
+});
+
+app.post("/api/leads/update", async (req, res) => {
+  try {
+    const { id, ...data } = req.body;
+    const { leads } = await import('./schema.js');
+    await db.update(leads).set(data).where(eq(leads.id, id));
+    res.json({ success: true });
+  } catch (err) {
+    console.error("POST /api/leads/update error:", err);
+    res.status(500).json({ error: "Failed to update lead" });
+  }
+});
+
+app.post("/api/submissions/create", async (req, res) => {
+  try {
+    const { submissions } = await import('./schema.js');
+    await db.insert(submissions).values(req.body);
+    res.json({ success: true });
+  } catch (err) {
+    console.error("POST /api/submissions/create error:", err);
+    res.status(500).json({ error: "Failed to create submission" });
+  }
+});
+
+app.post("/api/submit-to-airtel-form", async (req, res) => {
+  try {
+    const { submitToAirtelForm } = await import('./form-filler.js');
+    const result = await submitToAirtelForm(req.body);
+    res.json(result);
+  } catch (err) {
+    console.error("POST /api/submit-to-airtel-form error:", err);
+    res.status(500).json({ error: "Form submission failed" });
   }
 });
 

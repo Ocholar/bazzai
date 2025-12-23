@@ -3,7 +3,8 @@ import { mysqlTable, serial, varchar, text, timestamp, int, json, mysqlEnum } fr
 export const leads = mysqlTable('leads', {
     id: serial('id').primaryKey(),
     customerName: varchar('customerName', { length: 255 }),
-    phoneNumber: varchar('phoneNumber', { length: 20 }),
+    phone: varchar('phone', { length: 20 }),
+    email: varchar('email', { length: 320 }),
     status: mysqlEnum('status', ['new', 'contacted', 'qualified', 'submitted', 'installed', 'failed']).default('new'),
     preferredPackage: varchar('preferredPackage', { length: 50 }),
     installationTown: text('installationTown'),

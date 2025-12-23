@@ -10,8 +10,17 @@ export default function Leads() {
   const [statusFilter, setStatusFilter] = useState<string | null>(null);
   const [tagFilter, setTagFilter] = useState<string | null>(null);
 
-  const { data: leads, isLoading } = trpc.leads.getAll.useQuery(undefined, {
+  const { data: leads, isLoading, refetch } = trpc.leads.getAll.useQuery(undefined, {
     refetchInterval: 5000,
+  });
+  const submitMutation = trpc.leads.submitToAirtel.useMutation({
+    onSuccess: () => {
+      refetch();
+      alert("Lead submitted successfully!");
+    },
+    onError: (error) => {
+      alert(`Submission failed: ${error.message}`);
+    }
   });
 
   const filteredLeads = useMemo(() => {
@@ -153,6 +162,9 @@ export default function Leads() {
                   <th className="px-6 py-3 text-left text-sm font-semibold text-slate-900">
                     Created
                   </th>
+                  <th className="px-6 py-3 text-left text-sm font-semibold text-slate-900">
+                    Action
+                  </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200">
@@ -183,6 +195,20 @@ export default function Leads() {
                     </td>
                     <td className="px-6 py-4 text-sm text-slate-600">
                       {new Date(lead.createdAt).toLocaleDateString()}
+                    </td>
+                    <td className="px-6 py-4 text-sm">
+                      <Button
+                        size="sm"
+                        onClick={() => {
+                          if (confirm(`Submit ${lead.customerName} to Airtel?`)) {
+                            submitMutation.mutate({ id: lead.id });
+                          }
+                        }}
+                        disabled={submitMutation.isPending || lead.status === 'submitted'}
+                        className={`${lead.status === 'qualified' ? 'bg-indigo-600 hover:bg-indigo-700' : 'bg-slate-400'} text-white`}
+                      >
+                        {submitMutation.isPending && submitMutation.variables?.id === lead.id ? "Submitting..." : "Submit"}
+                      </Button>
                     </td>
                   </tr>
                 ))}
