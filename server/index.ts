@@ -7,7 +7,7 @@ import { sql } from 'drizzle-orm';
 
 console.log('--- BACKEND STARTUP SEQUENCE ---');
 console.log('Time:', new Date().toISOString());
-console.log('PORT ENV:', process.env.PORT);
+console.log('ENV KEYS:', Object.keys(process.env).join(', '));
 
 const app = express();
 app.use(express.json());
