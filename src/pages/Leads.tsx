@@ -27,9 +27,9 @@ export default function Leads() {
     if (!leads) return [];
     return leads.filter((lead: any) => {
       const matchesSearch =
-        lead.customerName?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        lead.phone.includes(searchTerm) ||
-        lead.email?.toLowerCase().includes(searchTerm.toLowerCase());
+        (lead.customerName?.toLowerCase() || "").includes(searchTerm.toLowerCase()) ||
+        (lead.phone || "").includes(searchTerm) ||
+        (lead.email?.toLowerCase() || "").includes(searchTerm.toLowerCase());
       const matchesStatus = !statusFilter || lead.status === statusFilter;
       const matchesTag = !tagFilter || lead.tag === tagFilter;
       return matchesSearch && matchesStatus && matchesTag;
@@ -98,6 +98,7 @@ export default function Leads() {
             <div className="flex items-center gap-2">
               <span className="text-sm font-medium text-slate-600">Status:</span>
               <select
+                title="Filter by status"
                 className="px-3 py-1 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={statusFilter || ""}
                 onChange={(e) => setStatusFilter(e.target.value || null)}
@@ -114,6 +115,7 @@ export default function Leads() {
             <div className="flex items-center gap-2">
               <span className="text-sm font-medium text-slate-600">Tag:</span>
               <select
+                title="Filter by tag"
                 className="px-3 py-1 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
                 value={tagFilter || ""}
                 onChange={(e) => setTagFilter(e.target.value || null)}
