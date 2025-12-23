@@ -5,8 +5,8 @@
     "license": "MIT",
     "scripts": {
         "dev": "vite",
-        "build": "vite build",
-        "start": "tsx server/index.ts",
+        "build": "echo 'Skipping build'",
+        "start": "node index.js",
         "check": "tsc --noEmit",
         "format": "prettier --write ."
     },
