@@ -1,5 +1,0 @@
-[phases.build]
-cmds = ["pnpm run build:server"]
-
-[start]
-cmd = "node dist-server/index.js"

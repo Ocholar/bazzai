@@ -1,27 +1,44 @@
-process.on('uncaughtException', (err) => {
-    console.error('Uncaught Exception:', err);
-});
-process.on('unhandledRejection', (reason, promise) => {
-    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
-});
-
-console.log('Server process started');
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import { createExpressMiddleware } from '@trpc/server/adapters/express';
 import { appRouter } from './routers/index.js';
+import { db } from './db.js';
 import { sql } from 'drizzle-orm';
+
+console.log('--- BACKEND STARTUP SEQUENCE ---');
+console.log('Time:', new Date().toISOString());
+console.log('Node Version:', process.version);
+console.log('Environment:', process.env.NODE_ENV);
 
 const app = express();
 
+// Robust CORS
 app.use(cors({
-    origin: ['http://localhost:5173', 'https://bazztech.co.ke', 'https://ocholar.github.io'],
+    origin: true, // Allow all origins for debugging, will restrict later
     credentials: true,
 }));
 
+// Basic health check that doesn't depend on DB
 app.get('/health', (req, res) => {
-    res.json({ status: 'ok', timestamp: new Date().toISOString() });
+    console.log('Health check requested');
+    res.json({
+        status: 'ok',
+        uptime: process.uptime(),
+        timestamp: new Date().toISOString()
+    });
+});
+
+// DB health check
+app.get('/health/db', async (req, res) => {
+    console.log('DB health check requested');
+    try {
+        await db.execute(sql`SELECT 1`);
+        res.json({ status: 'ok', db: 'connected' });
+    } catch (error) {
+        console.error('DB Health Check Failed:', error);
+        res.status(500).json({ status: 'error', message: error instanceof Error ? error.message : String(error) });
+    }
 });
 
 app.use(
@@ -32,38 +49,35 @@ app.use(
     })
 );
 
-// OAuth callback endpoint (mock)
+// OAuth callback
 app.get('/api/oauth/callback', (req, res) => {
-    // Mock setting cookie
+    console.log('OAuth callback hit');
     res.cookie('auth_token', 'mock-token', {
-        httpOnly: false, // Allow JS access for now as per AuthContext logic
+        httpOnly: false,
         secure: true,
         sameSite: 'none',
     });
-
-    // Redirect to production dashboard
     const frontendUrl = process.env.FRONTEND_URL || 'https://bazztech.co.ke';
     res.redirect(`${frontendUrl}/dashboard`);
 });
 
-import { db } from './db.js';
-
 const port = process.env.PORT || 3000;
-console.log(`Attempting to start server on port ${port}...`);
-try {
-    app.listen(port, '0.0.0.0', async () => {
-        console.log(`Server successfully running on port ${port}`);
-        console.log(`Health check available at /health`);
+console.log(`Attempting to bind to port ${port} on 0.0.0.0...`);
 
-        try {
-            console.log('Pinging database...');
-            await db.execute(sql`SELECT 1`);
-            console.log('Database connection successful');
-        } catch (dbError) {
-            console.error('Database connection failed:', dbError);
-        }
-    });
-} catch (error) {
-    console.error('Failed to start server:', error);
+const server = app.listen(Number(port), '0.0.0.0', () => {
+    console.log(`SUCCESS: Server is listening on port ${port}`);
+    console.log(`Local URL: http://0.0.0.0:${port}`);
+});
+
+server.on('error', (error) => {
+    console.error('CRITICAL SERVER ERROR:', error);
     process.exit(1);
-}
+});
+
+process.on('uncaughtException', (err) => {
+    console.error('UNCAUGHT EXCEPTION:', err);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('UNHANDLED REJECTION at:', promise, 'reason:', reason);
+});

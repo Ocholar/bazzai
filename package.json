@@ -10,8 +10,7 @@
     "scripts": {
         "dev": "vite",
         "build": "vite build",
-        "build:server": "esbuild server/index.ts --bundle --platform=node --format=esm --outfile=dist-server/index.js --external:mysql2 --external:express --external:cors --external:dotenv",
-        "start": "node server.js",
+        "start": "tsx server/index.ts",
         "check": "tsc --noEmit",
         "format": "prettier --write ."
     },
