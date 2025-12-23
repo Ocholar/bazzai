@@ -1,204 +1,126 @@
 # BAZZ AI Backend - API Quick Reference
 
-## Lead Creation Endpoint (for n8n)
-
-### Endpoint Details
+## Base URL
 ```
-POST https://bazz-ai-agentic-team-production.up.railway.app/api/leads/create
+https://bazz-ai-agentic-team-production-3203.up.railway.app
 ```
 
-### Headers
-```
-Content-Type: application/json
-```
+## Lead Management Endpoints (for n8n)
 
-### Request Body
+### 1. Fetch Leads
+**Endpoint**: `GET /api/leads`
+**Query Parameters**:
+- `status` (optional): Filter by status (e.g., `qualified`, `new`)
+
+**Example**: `GET /api/leads?status=qualified`
+
+---
+
+### 2. Create Lead
+**Endpoint**: `POST /api/leads/create`
+**Headers**: `Content-Type: application/json`
+**Request Body**:
 ```json
 {
   "source": "string (required)",
   "tag": "string (required: 'high_value' or 'high_volume')",
   "customerName": "string (optional)",
   "phone": "string (required)",
-  "email": "string (optional)"
+  "email": "string (optional)",
+  "connectionType": "string (optional)",
+  "installationTown": "string (optional)",
+  "deliveryLocation": "string (optional)",
+  "status": "string (optional, default: 'new')"
 }
 ```
-
-### Field Constraints
-- **source**: Any string (e.g., "linkedin", "google_maps", "whatsapp", "facebook", "website")
-- **tag**: Must be either `"high_value"` or `"high_volume"`
-- **phone**: Required, max 20 characters
-- **email**: Optional, max 320 characters
-- **customerName**: Optional
-
-### Response (Success)
-```json
-{
-  "success": true,
-  "leadId": 123
-}
-```
-
-### Response (Error)
-```json
-{
-  "success": false,
-  "error": "Error message here"
-}
-```
-
-### Example cURL Request
-```bash
-curl -X POST https://bazz-ai-agentic-team-production.up.railway.app/api/leads/create \
-  -H "Content-Type: application/json" \
-  -d '{
-    "source": "linkedin",
-    "tag": "high_value",
-    "customerName": "John Doe",
-    "phone": "0712345678",
-    "email": "john@example.com"
-  }'
-```
-
-### Example n8n HTTP Request Node Configuration
-```json
-{
-  "url": "https://bazz-ai-agentic-team-production.up.railway.app/api/leads/create",
-  "method": "POST",
-  "sendHeaders": true,
-  "headerParameters": {
-    "parameters": [
-      {
-        "name": "Content-Type",
-        "value": "application/json"
-      }
-    ]
-  },
-  "sendBody": true,
-  "specifyBody": "json",
-  "jsonBody": {
-    "source": "{{ $json.source }}",
-    "tag": "{{ $json.tag }}",
-    "customerName": "{{ $json.name }}",
-    "phone": "{{ $json.phone }}",
-    "email": "{{ $json.email }}"
-  }
-}
-  }
-}
-```
-
-### Store Lead Endpoint (Alternative for n8n)
-This endpoint is designed to be flexible and accept various field names for lead data.
-
-```
-POST /api/store-lead
-```
-
-### Request Body
-Accepts a JSON object with flexible field names.
-- `phone` / `phoneNumber` / `mobile` / `customerAirtelNumber` (Required)
-- `customerName` / `name` / `fullName`
-- `email` / `customerEmail`
-- `source` (default: 'n8n-store-lead')
-- `tag` ('high_value' or 'high_volume', default: 'high_volume')
-- `status` (default: 'new')
-- `preferredPackage`
-- `installationTown`
-- `deliveryLocation`
-- `preferredDate`
-- `preferredTime`
-- `conversationHistory`
-
-### Response
-```json
-{
-  "success": true,
-  "leadId": 123
-}
-```
-
-## Other Available Endpoints
-
-### OAuth Callback
-```
-GET /api/oauth/callback?code=<github_code>
-```
-
-### tRPC API
-```
-POST /api/trpc/<procedure>
-```
-
-Available procedures:
-- `leads.getAll`
-- `leads.create`
-- `leads.updateStatus`
-- `submissions.getAll`
-- `submissions.create`
-- `analytics.getLatest`
-- `config.get`
-- `config.set`
-
-### Health Check
-```
-GET /
-```
-Returns:
-```json
-{
-  "status": "online",
-  "service": "BAZZ AI Backend",
-  "version": "1.0.0"
-}
-```
-
-## Environment Variables (Railway)
-
-Required:
-- `DATABASE_URL` or `MYSQL_URL`
-- `GITHUB_CLIENT_ID`
-- `GITHUB_CLIENT_SECRET`
-- `GITHUB_OAUTH_REDIRECT_URI`
-- `JWT_SECRET`
-
-Optional:
-- `NODE_ENV` (default: "production")
-- `PORT` (default: 8080)
-
-## Database Schema
-
-### Leads Table
-```sql
-CREATE TABLE leads (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  customerName TEXT NULL,
-  phone VARCHAR(20) NOT NULL,
-  email VARCHAR(320) NULL,
-  source VARCHAR(50) NOT NULL,
-  tag ENUM('high_value', 'high_volume') NOT NULL,
-  status ENUM('new', 'contacted', 'qualified', 'submitted', 'installed', 'failed') NOT NULL DEFAULT 'new',
-  preferredPackage ENUM('15mbps', '30mbps', 'unspecified') DEFAULT 'unspecified',
-  installationTown TEXT NULL,
-  deliveryLocation TEXT NULL,
-  preferredDate TIMESTAMP NULL,
-  preferredTime VARCHAR(20) NULL,
-  conversationHistory JSON NULL,
-  createdAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  updatedAt TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-);
-```
-
-## Deployment
-
-### Railway
-- **Service**: bazz-ai-agentic-team
-- **URL**: https://bazz-ai-agentic-team-production.up.railway.app
-- **Auto-deploy**: Enabled on `main` branch push
-
-### GitHub Repository
-- **Backend**: https://github.com/Ocholar/bazz-ai-agentic-team
-- **Frontend**: https://github.com/Ocholar/bazzai
 
 ---
 
-**Last Updated**: 2025-11-29
+### 3. Update Lead
+**Endpoint**: `POST /api/leads/update`
+**Headers**: `Content-Type: application/json`
+**Request Body**:
+```json
+{
+  "id": number (required),
+  "status": "string (optional)",
+  "customerName": "string (optional)",
+  "phone": "string (optional)",
+  "email": "string (optional)",
+  "preferredPackage": "string (optional)",
+  "installationTown": "string (optional)",
+  "deliveryLocation": "string (optional)"
+}
+```
+
+---
+
+### 4. Create Submission Record
+**Endpoint**: `POST /api/submissions/create`
+**Headers**: `Content-Type: application/json`
+**Request Body**:
+```json
+{
+  "leadId": number (required),
+  "status": "pending|success|failed|retry",
+  "submissionPayload": object (optional),
+  "responseCode": number (optional),
+  "responseBody": "string (optional)",
+  "errorMessage": "string (optional)"
+}
+```
+
+---
+
+### 5. Submit to Airtel Form (Browser Automation)
+**Endpoint**: `POST /api/submit-to-airtel-form`
+**Headers**: `Content-Type: application/json`
+**Request Body**:
+```json
+{
+  "customerName": "string",
+  "customerAirtelNumber": "string",
+  "customerAlternateNumber": "string",
+  "customerEmail": "string",
+  "preferredPackage": "string",
+  "installationTown": "string",
+  "deliveryLocation": "string",
+  "connectionType": "string",
+  "units": "string"
+}
+```
+
+---
+
+## tRPC API
+**Endpoint**: `POST /api/trpc/<procedure>`
+**Procedures**:
+- `leads.getAll`
+- `leads.create`
+- `leads.update`
+- `leads.submitToAirtel`
+- `submissions.getAll`
+- `submissions.create`
+- `analytics.getLatest`
+- `config.getAll`
+- `config.set`
+
+---
+
+## Database Schema (MySQL)
+
+### Leads Table
+- `id`: INT AUTO_INCREMENT
+- `customerName`: VARCHAR(255)
+- `phone`: VARCHAR(20)
+- `email`: VARCHAR(320)
+- `status`: ENUM('new', 'contacted', 'qualified', 'submitted', 'installed', 'failed')
+- `preferredPackage`: VARCHAR(50)
+- `installationTown`: TEXT
+- `deliveryLocation`: TEXT
+- `source`: VARCHAR(255)
+- `tag`: VARCHAR(255)
+
+---
+
+**Last Updated**: 2025-12-23

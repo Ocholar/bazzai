@@ -91,7 +91,7 @@ git push
 1. Click **"Edit"** next to Callback URL
 2. **Enter**:
    ```
-   https://bazz-ai-agentic-team-production.up.railway.app/api/whatsapp/webhook
+   https://bazz-ai-agentic-team-production-3203.up.railway.app/api/whatsapp/webhook
    ```
    
 > **IMPORTANT**: This is your **BACKEND** URL (Railway), NOT the n8n URL!
