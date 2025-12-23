@@ -1,65 +1,57 @@
-import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import { createExpressMiddleware } from '@trpc/server/adapters/express';
 import { appRouter } from './routers/index.js';
-import { inferAsyncReturnType } from '@trpc/server';
 import { db } from './db.js';
+import { sql } from 'drizzle-orm';
 
 console.log('--- BACKEND STARTUP SEQUENCE ---');
 console.log('Time:', new Date().toISOString());
-console.log('Node Version:', process.version);
-console.log('Environment:', process.env.NODE_ENV);
+console.log('PORT ENV:', process.env.PORT);
 
 const app = express();
+app.use(express.json());
+
+// Root route
+app.get('/', (req, res) => {
+  res.send('Bazztech API is running');
+});
 
 // Robust CORS
 app.use(cors({
-    origin: true, // Allow all origins for debugging, will restrict later
-    credentials: true,
+  origin: true,
+  credentials: true,
 }));
-app.use(express.json());
 
-// Basic health check that doesn't depend on DB
-app.get('/health', async (req, res) => {
-    console.log('Health check requested');
-    try {
-        await db.execute('SELECT 1');
-        res.status(200).send('OK');
-    } catch (err) {
-        console.error('Health check failed:', err);
-        res.status(500).send('DB Error');
-    }
+// Basic health check
+app.get('/health', (req, res) => {
+  res.json({ status: 'ok', uptime: process.uptime() });
 });
 
 // DB health check
 app.get('/health/db', async (req, res) => {
-    console.log('DB health check requested');
-    try {
-        await db.execute('SELECT 1');
-        res.json({ status: 'ok', db: 'connected' });
-    } catch (error) {
-        console.error('DB Health Check Failed:', error);
-        res.status(500).json({ status: 'error', message: error instanceof Error ? error.message : String(error) });
-    }
+  try {
+    await db.execute(sql`SELECT 1`);
+    res.json({ status: 'ok', db: 'connected' });
+  } catch (error) {
+    res.status(500).json({ status: 'error', message: String(error) });
+  }
 });
 
 app.use(
-    '/api/trpc',
-    createExpressMiddleware({
-        router: appRouter,
-        createContext: (): inferAsyncReturnType<typeof appRouter["_def"]["_ctx"]> => ({}),
-        onError({ error, path }) {
-            console.error("tRPC error:", { path, error });
-        },
-    })
+  '/api/trpc',
+  createExpressMiddleware({
+    router: appRouter,
+    createContext: () => ({}),
+  })
 );
 
-// Legacy REST endpoint for n8n and direct POSTs
+// Legacy REST endpoint for n8n
 app.post("/api/leads/create", async (req, res) => {
   try {
     const { customerName, phone, email, source, tag, connectionType, installationTown, deliveryLocation, status } = req.body;
-    await db.insert("leads").values({
+    const { leads } from './schema.js';
+    await db.insert(leads).values({
       customerName,
       phoneNumber: phone,
       status,
@@ -82,20 +74,13 @@ app.post("/api/leads/create", async (req, res) => {
 
 // OAuth callback
 app.get('/api/oauth/callback', (req, res) => {
-    console.log('OAuth callback hit');
-    res.cookie('auth_token', 'mock-token', {
-        httpOnly: false,
-        secure: true,
-        sameSite: 'none',
-    });
-    const frontendUrl = process.env.FRONTEND_URL || 'https://bazztech.co.ke';
-    res.redirect(`${frontendUrl}/dashboard`);
-});
-
-// Global error handler
-app.use((err, req, res, next) => {
-  console.error("Express error:", err);
-  res.status(500).json({ error: "Internal server error" });
+  res.cookie('auth_token', 'mock-token', {
+    httpOnly: false,
+    secure: true,
+    sameSite: 'none',
+  });
+  const frontendUrl = process.env.FRONTEND_URL || 'https://bazztech.co.ke';
+  res.redirect(`${frontendUrl}/dashboard`);
 });
 
 const port = process.env.PORT || 3000;
@@ -103,7 +88,6 @@ app.listen(port, "0.0.0.0", () => {
   console.log(`[server] Listening on http://0.0.0.0:${port}`);
 });
 
-// Add error handlers for uncaught exceptions
 process.on("uncaughtException", (err) => {
   console.error("[server] Uncaught Exception:", err);
 });
