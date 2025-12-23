@@ -10,32 +10,34 @@ console.log('--- BAZZTECH BACKEND STARTUP ---');
 console.log('Time:', new Date().toISOString());
 console.log('Port:', process.env.PORT || 3000);
 
+console.log('[server] 1. Starting initialization...');
 const app = express();
 app.use(express.json());
 
-// Robust CORS
+console.log('[server] 2. Configuring CORS...');
 app.use(cors({
-  origin: true, // Allow all for now to debug
+  origin: true,
   credentials: true,
 }));
 
-// Root route
+console.log('[server] 3. Adding routes...');
 app.get('/', (req, res) => {
+  console.log('[server] GET / hit');
   res.send('Bazztech API is running');
 });
 
-// Health check with DB ping
 app.get("/health", async (req, res) => {
+  console.log('[server] GET /health hit');
   try {
-    await db.execute("SELECT 1");
+    await db.execute(sql`SELECT 1`);
     res.status(200).send("OK");
   } catch (err) {
-    console.error("Health check failed:", err);
+    console.error("[server] Health check failed:", err);
     res.status(500).send("DB Error");
   }
 });
 
-// tRPC Middleware
+console.log('[server] 4. Adding tRPC middleware...');
 app.use(
   '/api/trpc',
   createExpressMiddleware({
@@ -134,7 +136,7 @@ app.get('/api/oauth/callback', (req, res) => {
   res.redirect(`${frontendUrl}/dashboard`);
 });
 
-// Database connection check on startup
+console.log('[server] 5. Starting DB check...');
 (async () => {
   try {
     await db.execute(sql`SELECT 1`);
@@ -145,9 +147,9 @@ app.get('/api/oauth/callback', (req, res) => {
 })();
 
 const port = process.env.PORT || 3000;
-console.log(`[server] Attempting to listen on port ${port}...`);
+console.log(`[server] 6. Attempting to listen on port ${port}...`);
 app.listen(port, () => {
-  console.log(`[server] Listening on port ${port}`);
+  console.log(`[server] 7. Listening on port ${port}`);
   console.log(`[server] Environment: ${process.env.NODE_ENV || 'development'}`);
 });
 
