@@ -136,8 +136,21 @@ app.get('/api/oauth/callback', (req, res) => {
   res.redirect(`${frontendUrl}/dashboard`);
 });
 
-console.log('[server] 5. Starting DB check...');
+const port = Number(process.env.PORT) || 3000;
+console.log(`[server] 6. Attempting to listen on 0.0.0.0:${port}...`);
+
+const server = app.listen(port, "0.0.0.0", () => {
+  console.log(`[server] 7. Listening on 0.0.0.0:${port}`);
+  console.log(`[server] Environment: ${process.env.NODE_ENV || 'development'}`);
+});
+
+server.on('error', (err) => {
+  console.error('[server] Server error:', err);
+});
+
+// Database connection check on startup (async)
 (async () => {
+  console.log('[server] 5. Starting DB check...');
   try {
     await db.execute(sql`SELECT 1`);
     console.log('[server] Database connection successful');
@@ -146,13 +159,6 @@ console.log('[server] 5. Starting DB check...');
   }
 })();
 
-const port = process.env.PORT || 3000;
-console.log(`[server] 6. Attempting to listen on port ${port}...`);
-app.listen(port, () => {
-  console.log(`[server] 7. Listening on port ${port}`);
-  console.log(`[server] Environment: ${process.env.NODE_ENV || 'development'}`);
-});
-
 // Error handlers
 process.on("uncaughtException", (err) => {
   console.error("[server] Uncaught Exception:", err);
@@ -160,3 +166,15 @@ process.on("uncaughtException", (err) => {
 process.on("unhandledRejection", (reason) => {
   console.error("[server] Unhandled Rejection:", reason);
 });
+
+// Shutdown handlers
+const shutdown = () => {
+  console.log('[server] Shutting down...');
+  server.close(() => {
+    console.log('[server] Server closed');
+    process.exit(0);
+  });
+};
+
+process.on('SIGTERM', shutdown);
+process.on('SIGINT', shutdown);
