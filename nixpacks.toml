@@ -1,5 +1,5 @@
 [phases.build]
-cmds = ["echo 'Skipping frontend build'"]
+cmds = ["pnpm run build:server"]
 
 [start]
-cmd = "node --import tsx server/index.ts"
+cmd = "node dist-server/index.js"
