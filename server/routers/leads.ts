@@ -42,7 +42,7 @@ export const leadsRouter = router({
                 });
                 return { success: true };
             } catch (err) {
-                console.error("Lead creation error:", err);
+                console.error("tRPC leads.create error:", err);
                 throw new Error("Failed to save lead");
             }
         }),

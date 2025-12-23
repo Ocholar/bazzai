@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Route, Switch, useLocation } from "wouter";
 import { AuthProvider, useAuth } from "@/contexts/AuthContext";
-import Portfolio from "@/pages/Portfolio";
 import Login from "@/pages/Login";
 import Dashboard from "@/pages/Dashboard";
 import Leads from "@/pages/Leads";
