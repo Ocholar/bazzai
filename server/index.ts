@@ -11,6 +11,7 @@ import express from 'express';
 import cors from 'cors';
 import { createExpressMiddleware } from '@trpc/server/adapters/express';
 import { appRouter } from './routers/index.js';
+import { sql } from 'drizzle-orm';
 
 const app = express();
 
@@ -45,12 +46,22 @@ app.get('/api/oauth/callback', (req, res) => {
     res.redirect(`${frontendUrl}/dashboard`);
 });
 
+import { db } from './db.js';
+
 const port = process.env.PORT || 3000;
 console.log(`Attempting to start server on port ${port}...`);
 try {
-    app.listen(port, '0.0.0.0', () => {
+    app.listen(port, '0.0.0.0', async () => {
         console.log(`Server successfully running on port ${port}`);
         console.log(`Health check available at /health`);
+
+        try {
+            console.log('Pinging database...');
+            await db.execute(sql`SELECT 1`);
+            console.log('Database connection successful');
+        } catch (dbError) {
+            console.error('Database connection failed:', dbError);
+        }
     });
 } catch (error) {
     console.error('Failed to start server:', error);

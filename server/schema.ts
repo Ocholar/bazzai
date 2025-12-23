@@ -1,4 +1,4 @@
-import { mysqlTable, serial, varchar, text, timestamp, int, json, date, mysqlEnum } from 'drizzle-orm/mysql-core';
+import { mysqlTable, serial, varchar, text, timestamp, int, json, mysqlEnum } from 'drizzle-orm/mysql-core';
 
 export const leads = mysqlTable('leads', {
     id: serial('id').primaryKey(),
@@ -12,12 +12,11 @@ export const leads = mysqlTable('leads', {
     preferredTime: varchar('preferredTime', { length: 20 }),
     conversationHistory: json('conversationHistory'),
     lastTemplateSent: varchar('lastTemplateSent', { length: 255 }),
-    lastTemplateSentAt: date('lastTemplateSentAt'),
+    lastTemplateSentAt: timestamp('lastTemplateSentAt'),
     createdAt: timestamp('createdAt').defaultNow(),
     updatedAt: timestamp('updatedAt').defaultNow().onUpdateNow(),
-    // These were in my previous schema but missing in DB, adding them back as optional
-    source: varchar('source', { length: 100 }),
-    tag: varchar('tag', { length: 50 }),
+    source: varchar('source', { length: 255 }),
+    tag: varchar('tag', { length: 255 }),
 });
 
 export const submissions = mysqlTable('submissions', {
