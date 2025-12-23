@@ -1,3 +1,4 @@
+console.log('Server process started');
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
@@ -40,7 +41,7 @@ app.get('/api/oauth/callback', (req, res) => {
 const port = Number(process.env.PORT) || 3000;
 console.log(`Attempting to start server on port ${port}...`);
 try {
-    app.listen(port, '0.0.0.0', () => {
+    app.listen(port, () => {
         console.log(`Server successfully running on port ${port}`);
         console.log(`Health check available at /health`);
     });
