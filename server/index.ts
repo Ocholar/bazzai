@@ -24,8 +24,14 @@ app.use(cors({
 }));
 
 // Basic health check
-app.get('/health', (req, res) => {
-  res.json({ status: 'ok', uptime: process.uptime() });
+app.get('/health', async (req, res) => {
+  try {
+    await db.execute("SELECT 1");
+    res.status(200).send("OK");
+  } catch (err) {
+    console.error("Health check failed:", err);
+    res.status(500).send("DB Error");
+  }
 });
 
 // DB health check
