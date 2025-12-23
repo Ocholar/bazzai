@@ -1,3 +1,10 @@
+process.on('uncaughtException', (err) => {
+    console.error('Uncaught Exception:', err);
+});
+process.on('unhandledRejection', (reason, promise) => {
+    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
 console.log('Server process started');
 import 'dotenv/config';
 import express from 'express';
@@ -38,10 +45,10 @@ app.get('/api/oauth/callback', (req, res) => {
     res.redirect(`${frontendUrl}/dashboard`);
 });
 
-const port = Number(process.env.PORT) || 3000;
+const port = process.env.PORT || 3000;
 console.log(`Attempting to start server on port ${port}...`);
 try {
-    app.listen(port, () => {
+    app.listen(port, '0.0.0.0', () => {
         console.log(`Server successfully running on port ${port}`);
         console.log(`Health check available at /health`);
     });
