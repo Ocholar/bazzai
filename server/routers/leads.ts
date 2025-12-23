@@ -16,27 +16,34 @@ export const leadsRouter = router({
             source: z.string(),
             tag: z.string(),
             connectionType: z.string(),
-            installationTown: z.string(),
+            installationTown: z.string().optional(),
             deliveryLocation: z.string().optional(),
-            status: z.string(),
+            status: z.string()
         }))
         .mutation(async ({ input }) => {
-            await db.insert(leads).values({
-                customerName: input.customerName,
-                phoneNumber: input.phone,
-                status: input.status,
-                preferredPackage: input.connectionType,
-                source: input.source,
-                tag: input.tag,
-                conversationHistory: [{
-                    type: 'submission',
-                    data: {
-                        email: input.email,
-                        location: input.installationTown,
-                        message: input.deliveryLocation
-                    }
-                }]
-            });
-            return { success: true };
+            try {
+                await db.insert(leads).values({
+                    customerName: input.customerName,
+                    phoneNumber: input.phone,
+                    status: input.status,
+                    preferredPackage: input.connectionType,
+                    source: input.source,
+                    tag: input.tag,
+                    conversationHistory: JSON.stringify([
+                        {
+                            type: "submission",
+                            data: {
+                                email: input.email,
+                                installationTown: input.installationTown,
+                                deliveryLocation: input.deliveryLocation,
+                            },
+                        },
+                    ]),
+                });
+                return { success: true };
+            } catch (err) {
+                console.error("Lead creation error:", err);
+                throw new Error("Failed to save lead");
+            }
         }),
 });

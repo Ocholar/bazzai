@@ -23,6 +23,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return false;
     });
 
+    const [user, setUser] = useState<User | null>(() => {
+        // Try to restore user from localStorage/sessionStorage
+        const stored = localStorage.getItem("bazztech_user");
+        return stored ? JSON.parse(stored) : null;
+    });
+
     useEffect(() => {
         const checkAuth = () => {
             const localAuth = localStorage.getItem('auth');
@@ -37,6 +43,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         window.addEventListener('focus', checkAuth);
         return () => window.removeEventListener('focus', checkAuth);
     }, [isAuthenticated]);
+
+    useEffect(() => {
+        if (user) {
+            localStorage.setItem("bazztech_user", JSON.stringify(user));
+        } else {
+            localStorage.removeItem("bazztech_user");
+        }
+    }, [user]);
 
     const login = (password: string) => {
         if (password === 'admin123') {

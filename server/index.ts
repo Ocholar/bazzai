@@ -61,23 +61,15 @@ app.get('/api/oauth/callback', (req, res) => {
     res.redirect(`${frontendUrl}/dashboard`);
 });
 
-const port = process.env.PORT || 3000;
-console.log(`Attempting to bind to port ${port} on 0.0.0.0...`);
-
-const server = app.listen(Number(port), '0.0.0.0', () => {
-    console.log(`SUCCESS: Server is listening on port ${port}`);
-    console.log(`Local URL: http://0.0.0.0:${port}`);
+const port = process.env.PORT ? Number(process.env.PORT) : 3000;
+app.listen(port, "0.0.0.0", () => {
+  console.log(`[server] Listening on http://0.0.0.0:${port}`);
 });
 
-server.on('error', (error) => {
-    console.error('CRITICAL SERVER ERROR:', error);
-    process.exit(1);
+// Add error handlers for uncaught exceptions
+process.on("uncaughtException", (err) => {
+  console.error("[server] Uncaught Exception:", err);
 });
-
-process.on('uncaughtException', (err) => {
-    console.error('UNCAUGHT EXCEPTION:', err);
-});
-
-process.on('unhandledRejection', (reason, promise) => {
-    console.error('UNHANDLED REJECTION at:', promise, 'reason:', reason);
+process.on("unhandledRejection", (reason) => {
+  console.error("[server] Unhandled Rejection:", reason);
 });

@@ -327,6 +327,13 @@ export default function Dashboard() {
     }
   };
 
+  const { data, isLoading, error, refetch } = trpc.dashboard.getAll.useQuery(undefined, {
+    refetchInterval: 5000, // Poll every 5 seconds
+  });
+
+  if (isLoading) return <Spinner />;
+  if (error) return <ErrorMessage error={error} />;
+
   return (
     <div className="space-y-6 p-6">
       <div className="flex items-center justify-between">

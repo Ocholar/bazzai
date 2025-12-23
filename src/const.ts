@@ -7,23 +7,5 @@ export const APP_TITLE = import.meta.env.VITE_APP_TITLE || "App";
 export const APP_LOGO = "https://placehold.co/128x128/E1E7EF/1F2937?text=App";
 
 // Generate GitHub OAuth login URL
-export const getLoginUrl = () => {
-  const clientId = "Ov23liFUp6GWScjoRxZL";
-  const redirectUri = "https://bazz-ai-agentic-team-production-3203.up.railway.app/api/oauth/callback";
-
-  if (!clientId || !redirectUri) {
-    console.warn("Missing GitHub auth configuration");
-    return "/login-error";
-  }
-
-  try {
-    const url = new URL("https://github.com/login/oauth/authorize");
-    url.searchParams.set("client_id", clientId);
-    url.searchParams.set("redirect_uri", redirectUri);
-    url.searchParams.set("scope", "read:user user:email");
-    return url.toString();
-  } catch (e) {
-    console.error("Failed to construct GitHub login URL", e);
-    return "/login-error";
-  }
-};
+export const getLoginUrl = () =>
+  "https://github.com/login/oauth/authorize?client_id=Ov23liFUp6GWScjoRxZL&redirect_uri=https%3A%2F%2Fbazz-ai-agentic-team-production-3203.up.railway.app%2Fapi%2Foauth%2Fcallback&scope=read%3Auser+user%3Aemail";

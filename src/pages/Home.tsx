@@ -150,18 +150,8 @@ export default function Home() {
                 </span>
               </motion.div>
 
-              <h1 className="text-5xl lg:text-7xl font-bold text-slate-900 leading-[1.1] tracking-tight">
-                <span className="relative inline-block">
-                  Internet that
-                  <span className="absolute inset-x-0 bottom-2 h-3 bg-red-100/60 -z-10"></span>
-                </span> <br />
-                <span className="text-red-600">
-                  moves as fast
-                </span> <br />
-                <span className="relative inline-block">
-                  as you do.
-                  <span className="absolute inset-x-0 bottom-2 h-3 bg-red-100/60 -z-10"></span>
-                </span>
+              <h1 className="text-4xl md:text-6xl font-extrabold text-center mb-4">
+                Internet that <span className="text-red-600 bg-red-100 px-2 rounded">moves as fast</span> as you do
               </h1>
 
               <p className="text-xl text-slate-600 leading-relaxed max-w-lg">
