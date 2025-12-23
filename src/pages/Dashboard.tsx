@@ -16,6 +16,8 @@ import {
   RefreshCw
 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Spinner } from "@/components/ui/spinner";
+import { ErrorMessage } from "@/components/ui/error-message";
 
 interface KPI {
   label: string;

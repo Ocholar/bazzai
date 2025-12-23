@@ -57,7 +57,7 @@ export default function App() {
     (trpc as any).createClient({
       links: [
         httpBatchLink({
-          url: "https://bazz-ai-agentic-team-production-3203.up.railway.app/api/trpc",
+          url: "/api/trpc",
           async headers() {
             return {};
           },
