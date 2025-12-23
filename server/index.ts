@@ -90,8 +90,8 @@ app.get('/api/oauth/callback', (req, res) => {
 });
 
 const port = process.env.PORT || 3000;
-app.listen(port, "0.0.0.0", () => {
-  console.log(`[server] Listening on http://0.0.0.0:${port}`);
+app.listen(port, () => {
+  console.log(`[server] Listening on port ${port}`);
 });
 
 process.on("uncaughtException", (err) => {
