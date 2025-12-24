@@ -84,8 +84,8 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             <div className="flex items-center gap-3 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
-              <div className="w-10 h-10 bg-white border-2 border-red-600 rounded-xl shadow-lg shadow-red-600/10 flex items-center justify-center transform hover:scale-105 transition-transform">
-                <Wifi className="text-red-600" size={24} />
+              <div className="w-10 h-10 bg-gradient-to-br from-red-600 to-red-700 rounded-xl shadow-lg shadow-red-600/20 flex items-center justify-center transform hover:scale-105 transition-transform">
+                <Wifi className="text-white" size={24} />
               </div>
               <span className="text-xl font-bold text-slate-900 tracking-tight">Bazztech<span className="text-red-600">Networks</span></span>
             </div>
@@ -136,7 +136,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
-              className="space-y-8"
+              className="space-y-8 flex flex-col items-center text-center"
             >
               <motion.div
                 initial={{ opacity: 0, x: -20 }}
@@ -150,8 +150,8 @@ export default function Home() {
                 </span>
               </motion.div>
 
-              <h1 className="text-4xl md:text-6xl font-extrabold text-center mb-4">
-                Internet that <span className="text-red-600 bg-red-100 px-2 rounded">moves as fast</span> as you do
+              <h1 className="text-4xl md:text-6xl font-extrabold mb-4 leading-tight tracking-tight">
+                Internet that <span className="text-red-600 bg-red-50 px-4 py-1 rounded-2xl border border-red-100/50 shadow-sm inline-block my-1">moves as fast</span> as you do
               </h1>
 
               <p className="text-xl text-slate-600 leading-relaxed max-w-lg">
@@ -159,7 +159,7 @@ export default function Home() {
                 Zero lag, unlimited possibilities, and support that actually cares.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
                 <Button
                   onClick={() => document.getElementById("contact-form")?.scrollIntoView({ behavior: "smooth" })}
                   className="h-14 px-8 bg-red-600 hover:bg-red-700 text-white text-lg rounded-full shadow-lg shadow-red-600/20 hover:shadow-xl hover:shadow-red-600/30 transition-all hover:-translate-y-1 group"
@@ -176,17 +176,17 @@ export default function Home() {
                 </Button>
               </div>
 
-              <div className="flex items-center gap-8 pt-8 border-t border-slate-100">
+              <div className="flex flex-wrap items-center justify-center gap-8 pt-8 border-t border-slate-100 w-full">
                 <div>
                   <p className="text-3xl font-bold text-slate-900">10k+</p>
                   <p className="text-sm text-slate-500">Happy Customers</p>
                 </div>
-                <div className="w-px h-12 bg-slate-200"></div>
+                <div className="hidden sm:block w-px h-12 bg-slate-200"></div>
                 <div>
                   <p className="text-3xl font-bold text-slate-900">99.9%</p>
                   <p className="text-sm text-slate-500">Uptime Guarantee</p>
                 </div>
-                <div className="w-px h-12 bg-slate-200"></div>
+                <div className="hidden sm:block w-px h-12 bg-slate-200"></div>
                 <div>
                   <p className="text-3xl font-bold text-slate-900">24/7</p>
                   <p className="text-sm text-slate-500">Local Support</p>
@@ -209,8 +209,8 @@ export default function Home() {
                   transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
                   className="absolute -top-12 -right-12 bg-white p-4 rounded-2xl shadow-xl border border-slate-100 flex items-center gap-3"
                 >
-                  <div className="w-10 h-10 bg-red-50 rounded-full flex items-center justify-center">
-                    <Wifi className="text-red-600" size={20} />
+                  <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                    <Wifi className="text-green-600" size={20} />
                   </div>
                   <div>
                     <p className="text-xs text-slate-500 font-semibold uppercase">Speed</p>
@@ -838,7 +838,7 @@ export default function Home() {
 
       {/* WhatsApp FAB */}
       <motion.a
-        href="https://wa.me/254103339197"
+        href="https://wa.me/15558219787"
         target="_blank"
         rel="noopener noreferrer"
         initial={{ scale: 0 }}
